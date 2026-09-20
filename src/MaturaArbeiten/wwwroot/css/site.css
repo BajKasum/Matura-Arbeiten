@@ -108,3 +108,23 @@ h1 {
         border-color: var(--blau);
         box-shadow: 0 0 0 .25rem rgba(0, 56, 168, .25);
     }
+
+.anmelde-karte {
+    max-width: 30rem;
+    margin: 3rem auto 0;
+    padding: 2rem 2.5rem 2.25rem;
+    border: 1px solid var(--grau);
+}
+
+    .anmelde-karte h1 {
+        margin-bottom: 1.75rem;
+    }
+
+.anmelde-karte__hinweis {
+    margin: 1.5rem 0 0;
+    text-align: center;
+    font-size: .875rem;
+    color: var(--text-gedaempft);
+}
+
+
