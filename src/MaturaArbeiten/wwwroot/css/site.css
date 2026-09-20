@@ -1,31 +1,110 @@
-html {
-  font-size: 14px;
+/* farben und schrift nach dem styleguide im software design (kapitel 7.1) */
+:root {
+    --blau: #0038A8;
+    --dunkelblau: #1F3864;
+    --grau: #B4C2D4;
+    --gruen: #1E7B34;
+    --gruen-hell: #E6F4EA;
+    --rot: #B85450;
+    --text-gedaempft: #5B6470;
+    /* Bootstrap auf unsere Farben umstellen */
+    --bs-primary: #0038A8;
+    --bs-primary-rgb: 0, 56, 168;
+    --bs-link-color: #0038A8;
+    --bs-link-color-rgb: 0, 56, 168;
+    --bs-link-hover-color: #1F3864;
+    --bs-link-hover-color-rgb: 31, 56, 100;
+    --bs-heading-color: #1F3864;
+    --bs-border-color: #B4C2D4;
+    --bs-border-radius: 0;
+    --bs-border-radius-sm: 0;
+    --bs-border-radius-lg: 0;
 }
 
-@media (min-width: 768px) {
-  html {
+html {
     font-size: 16px;
-  }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.app-header {
+    background: var(--blau);
+    color: #fff;
 }
 
-body {
-  margin-bottom: 60px;
+.app-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 4rem;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.app-header__brand {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    .app-header__brand:hover {
+        color: #fff;
+    }
+
+.app-header__nav {
+    font-size: .95rem;
 }
+
+    .app-header__nav a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+        .app-header__nav a:hover {
+            text-decoration: underline;
+        }
+
+    .app-header__nav > * + *::before {
+        content: "·";
+        display: inline-block;
+        margin: 0 .5rem;
+    }
+
+.app-header a:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+.app-main {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+}
+
+.btn {
+    --bs-btn-padding-y: .65rem;
+    --bs-btn-padding-x: 1.25rem;
+    --bs-btn-font-weight: 700;
+}
+
+.btn-primary {
+    --bs-btn-bg: #0038A8;
+    --bs-btn-border-color: #0038A8;
+    --bs-btn-hover-bg: #1F3864;
+    --bs-btn-hover-border-color: #1F3864;
+    --bs-btn-active-bg: #1F3864;
+    --bs-btn-active-border-color: #1F3864;
+    --bs-btn-disabled-bg: #0038A8;
+    --bs-btn-disabled-border-color: #0038A8;
+    --bs-btn-focus-shadow-rgb: 0, 56, 168;
+}
+
+.form-control {
+    padding: .65rem .75rem;
+}
+
+    .form-control:focus {
+        border-color: var(--blau);
+        box-shadow: 0 0 0 .25rem rgba(0, 56, 168, .25);
+    }
