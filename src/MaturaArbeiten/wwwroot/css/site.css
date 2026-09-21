@@ -30,51 +30,37 @@ h1 {
     font-weight: 700;
 }
 
-.app-header {
+.navbar.app-header {
+    --bs-navbar-padding-y: .75rem;
+    --bs-navbar-color: #fff;
+    --bs-navbar-hover-color: #fff;
+    --bs-navbar-active-color: #fff;
+    --bs-navbar-brand-color: #fff;
+    --bs-navbar-brand-hover-color: #fff;
+    --bs-navbar-brand-font-size: 1.25rem;
+    --bs-navbar-toggler-border-color: rgba(255, 255, 255, .6);
     background: var(--blau);
-    color: #fff;
 }
 
-.app-header__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 4rem;
-}
-
-.app-header__brand {
-    color: #fff;
-    font-size: 1.25rem;
+.app-header .navbar-brand {
     font-weight: 700;
-    text-decoration: none;
 }
 
-    .app-header__brand:hover {
-        color: #fff;
-    }
-
-.app-header__nav {
-    font-size: .95rem;
+.app-header a:hover {
+    text-decoration: underline;
 }
-
-    .app-header__nav a {
-        color: #fff;
-        text-decoration: none;
-    }
-
-        .app-header__nav a:hover {
-            text-decoration: underline;
-        }
-
-    .app-header__nav > * + *::before {
-        content: "·";
-        display: inline-block;
-        margin: 0 .5rem;
-    }
 
 .app-header a:focus-visible {
     outline: 2px solid #fff;
     outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+    .app-header .navbar-nav > * + *::before {
+        content: "·";
+        display: inline-block;
+        margin-right: .5rem;
+    }
 }
 
 .app-main {

@@ -9,13 +9,22 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <header class="app-header">
-        <div class="container-xl app-header__inner">
-            <a class="app-header__brand" asp-controller="Home" asp-action="Index">Zusehendenverwaltung</a>
-            <nav class="app-header__nav" aria-label="Hauptmenü">
-                @await RenderSectionAsync("HeaderRechts", required: false)
-            </nav>
-        </div>
+    <header>
+        <nav class="navbar navbar-expand-md app-header" data-bs-theme="dark" aria-label="Hauptmenü">
+            <div class="container-xl">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Zusehendenverwaltung</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#hauptmenue" aria-controls="hauptmenue"
+                        aria-expanded="false" aria-label="Menü ein- und ausklappen">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="hauptmenue">
+                    <div class="navbar-nav">
+                        @await RenderSectionAsync("HeaderRechts", required: false)
+                    </div>
+                </div>
+            </div>
+        </nav>
     </header>
 
     <main class="container-xl app-main">
