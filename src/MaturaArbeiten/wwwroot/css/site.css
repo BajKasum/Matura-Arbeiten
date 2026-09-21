@@ -127,4 +127,41 @@ h1 {
     color: var(--text-gedaempft);
 }
 
+.seiten-untertitel {
+    margin-bottom: 1.75rem;
+    color: var(--text-gedaempft);
+}
 
+.tabelle {
+    font-size: .875rem;
+}
+
+    .tabelle thead {
+        --bs-table-bg: #F4F4F4;
+        --bs-table-color: #1F3864;
+    }
+
+    .tabelle th,
+    .tabelle td {
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    .tabelle .btn {
+        --bs-btn-padding-y: .45rem;
+        min-width: 7.5rem;
+    }
+
+.status {
+    display: inline-block;
+    min-width: 7.5rem;
+    padding: .45rem 1rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+.status--ok {
+    background: var(--gruen-hell);
+    color: var(--gruen);
+    border: 1px solid rgba(30, 123, 52, .4);
+}
