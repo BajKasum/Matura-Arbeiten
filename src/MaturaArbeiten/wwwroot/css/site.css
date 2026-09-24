@@ -151,3 +151,11 @@ h1 {
     color: var(--gruen);
     border: 1px solid rgba(30, 123, 52, .4);
 }
+
+.alert-success {
+    --bs-alert-color: #1E7B34;
+    --bs-alert-bg: #E6F4EA;
+    --bs-alert-border-color: rgba(30, 123, 52, .4);
+    --bs-alert-padding-y: 1.1rem;
+    --bs-alert-padding-x: 2rem;
+}
