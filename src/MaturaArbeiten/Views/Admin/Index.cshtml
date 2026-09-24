@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Administration";
+}
+
+@section HeaderRechts {
+    <span class="navbar-text">Administration</span>
+    <a class="nav-link" href="#">Passwort ändern</a>
+    <a class="nav-link" href="#">Abmelden</a>
+}
+
+@section Unternavigation {
+    <nav class="unternavigation" aria-label="Administration">
+        <div class="container-xl">
+            <ul class="nav">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Übersicht</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Präsentationen</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">G3-SuS verwalten</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Eintragungen verwalten</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Administrationslogins</a></li>
+            </ul>
+        </div>
+    </nav>
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+    <div>
+        <h1>Administration</h1>
+        <p class="seiten-untertitel mb-0">Eintragungsphase: <strong>offen</strong> · 87 von 100 G3-SuS haben zwei Präsentationen gewählt</p>
+    </div>
+    <button type="button" class="btn btn-outline-primary">Eintragungsphase schliessen</button>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <section class="card kachel h-100">
+            <div class="card-body">
+                <h2 class="card-title">Daten laden</h2>
+                <div class="kachel-zeile">
+                    <span>Präsentationen (CSV)</span>
+                    <button type="button" class="btn btn-primary">Importieren</button>
+                </div>
+                <div class="kachel-zeile">
+                    <span>G3-SuS (CSV)</span>
+                    <button type="button" class="btn btn-primary">Importieren</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-6">
+        <section class="card kachel h-100">
+            <div class="card-body">
+                <h2 class="card-title">E-Mail-Versand</h2>
+                <div class="kachel-zeile">
+                    <span>Zugangsdaten an alle G3-SuS</span>
+                    <button type="button" class="btn btn-primary">Versenden</button>
+                </div>
+                <div class="kachel-zeile">
+                    <span>Bestätigungen an G3-SuS mit 2 Eintragungen</span>
+                    <button type="button" class="btn btn-primary">Versenden</button>
+                </div>
+                <p class="mt-4 mb-0">Versendet: 100 von 100</p>
+                <div class="kachel-zeile">
+                    <span>Fehlgeschlagen: 0 <a class="ms-3" href="#">Liste anzeigen</a></span>
+                    <button type="button" class="btn btn-outline-primary">Erneut senden</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-6">
+        <section class="card kachel h-100">
+            <div class="card-body">
+                <h2 class="card-title">Listen erzeugen</h2>
+                <div class="kachel-zeile">
+                    <span>Raumübersicht</span>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-primary">Anzeigen</button>
+                        <button type="button" class="btn btn-outline-primary">CSV</button>
+                    </div>
+                </div>
+                <div class="kachel-zeile">
+                    <span>Zuseherliste je Präsentation</span>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-primary">Anzeigen</button>
+                        <button type="button" class="btn btn-outline-primary">CSV</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-6">
+        <section class="card kachel kachel--gefahr h-100">
+            <div class="card-body">
+                <h2 class="card-title">Schuljahr zurücksetzen</h2>
+                <p class="mt-3 text-body-secondary">Löscht alle G3-SuS, alle Präsentationen, alle Eintragungen und das E-Mail-Protokoll. Die Administrationslogins bleiben bestehen.</p>
+                <button type="button" class="btn btn-danger">Zurücksetzen</button>
+            </div>
+        </section>
+    </div>
+</div>

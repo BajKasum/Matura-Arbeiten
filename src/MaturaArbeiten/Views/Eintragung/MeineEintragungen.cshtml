@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Meine Eintragungen";
+}
+
+@section HeaderRechts {
+    <span class="navbar-text">G3-SuS</span>
+    <a class="nav-link" asp-controller="Praesentation" asp-action="Index">Präsentationen auswählen</a>
+    <a class="nav-link" href="#">Abmelden</a>
+}
+
+<div class="alert alert-success mb-4" role="status">
+    Pflichtbesuch erfüllt. Die Bestätigung wurde per E-Mail versendet.
+</div>
+
+<h1>Meine Eintragungen</h1>
+<p class="seiten-untertitel">2 von 2 Präsentationen gewählt</p>
+
+<table class="table table-bordered tabelle">
+    <thead>
+        <tr>
+            <th scope="col">Thema</th>
+            <th scope="col">Datum</th>
+            <th scope="col">Uhrzeit</th>
+            <th scope="col">Raum</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Klimawandel und Landwirtschaft</td>
+            <td>12.01.2027</td>
+            <td>08:30</td>
+            <td>204</td>
+            <td><span class="status status--ok">Eingetragen</span></td>
+        </tr>
+        <tr>
+            <td>Fairtrade im Detailhandel</td>
+            <td>13.01.2027</td>
+            <td>09:00</td>
+            <td>302</td>
+            <td><span class="status status--ok">Eingetragen</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<p class="mt-4 text-body-secondary">Änderungen an den Eintragungen sind nur über die Administration möglich.</p>

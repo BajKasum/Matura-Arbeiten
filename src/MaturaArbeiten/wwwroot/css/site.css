@@ -1,31 +1,239 @@
+/* farben und schrift nach dem styleguide im software design (kapitel 7.1) */
+:root {
+    --blau: #0038A8;
+    --dunkelblau: #1F3864;
+    --grau: #B4C2D4;
+    --gruen: #1E7B34;
+    --gruen-hell: #E6F4EA;
+    --rot: #B85450;
+    --text-gedaempft: #5B6470;
+    /* Bootstrap auf unsere Farben umstellen */
+    --bs-primary: #0038A8;
+    --bs-primary-rgb: 0, 56, 168;
+    --bs-link-color: #0038A8;
+    --bs-link-color-rgb: 0, 56, 168;
+    --bs-link-hover-color: #1F3864;
+    --bs-link-hover-color-rgb: 31, 56, 100;
+    --bs-heading-color: #1F3864;
+    --bs-border-color: #B4C2D4;
+    --bs-border-radius: 0;
+    --bs-border-radius-sm: 0;
+    --bs-border-radius-lg: 0;
+}
+
 html {
-  font-size: 14px;
+    font-size: 16px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.navbar.app-header {
+    --bs-navbar-padding-y: .75rem;
+    --bs-navbar-color: #fff;
+    --bs-navbar-hover-color: #fff;
+    --bs-navbar-active-color: #fff;
+    --bs-navbar-brand-color: #fff;
+    --bs-navbar-brand-hover-color: #fff;
+    --bs-navbar-brand-font-size: 1.25rem;
+    --bs-navbar-toggler-border-color: rgba(255, 255, 255, .6);
+    background: var(--blau);
+}
+
+.app-header .navbar-brand {
+    font-weight: 700;
+}
+
+.app-header a:hover {
+    text-decoration: underline;
+}
+
+.app-header a:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    .app-header .navbar-nav > * + *::before {
+        content: "·";
+        display: inline-block;
+        margin-right: .5rem;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.app-main {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.btn {
+    --bs-btn-padding-y: .65rem;
+    --bs-btn-padding-x: 1.25rem;
+    --bs-btn-font-weight: 700;
 }
 
-body {
-  margin-bottom: 60px;
+.btn-primary {
+    --bs-btn-bg: #0038A8;
+    --bs-btn-border-color: #0038A8;
+    --bs-btn-hover-bg: #1F3864;
+    --bs-btn-hover-border-color: #1F3864;
+    --bs-btn-active-bg: #1F3864;
+    --bs-btn-active-border-color: #1F3864;
+    --bs-btn-disabled-bg: #0038A8;
+    --bs-btn-disabled-border-color: #0038A8;
+    --bs-btn-focus-shadow-rgb: 0, 56, 168;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.form-control {
+    padding: .65rem .75rem;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    .form-control:focus {
+        border-color: var(--blau);
+        box-shadow: 0 0 0 .25rem rgba(0, 56, 168, .25);
+    }
+
+.anmelde-karte {
+    max-width: 30rem;
+    margin: 3rem auto 0;
+    padding: 2rem 2.5rem 2.25rem;
+    border: 1px solid var(--grau);
 }
+
+    .anmelde-karte h1 {
+        margin-bottom: 1.75rem;
+    }
+
+.anmelde-karte__hinweis {
+    margin: 1.5rem 0 0;
+    text-align: center;
+    font-size: .875rem;
+    color: var(--text-gedaempft);
+}
+
+.seiten-untertitel {
+    margin-bottom: 1.75rem;
+    color: var(--text-gedaempft);
+}
+
+.tabelle {
+    font-size: .875rem;
+}
+
+    .tabelle thead {
+        --bs-table-bg: #F4F4F4;
+        --bs-table-color: #1F3864;
+    }
+
+    .tabelle th,
+    .tabelle td {
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    .tabelle .btn {
+        --bs-btn-padding-y: .45rem;
+        min-width: 7.5rem;
+    }
+
+.status {
+    display: inline-block;
+    min-width: 7.5rem;
+    padding: .45rem 1rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+.status--ok {
+    background: var(--gruen-hell);
+    color: var(--gruen);
+    border: 1px solid rgba(30, 123, 52, .4);
+}
+
+.alert-success {
+    --bs-alert-color: #1E7B34;
+    --bs-alert-bg: #E6F4EA;
+    --bs-alert-border-color: rgba(30, 123, 52, .4);
+    --bs-alert-padding-y: 1.1rem;
+    --bs-alert-padding-x: 2rem;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #0038A8;
+    --bs-btn-border-color: #0038A8;
+    --bs-btn-hover-bg: #0038A8;
+    --bs-btn-hover-border-color: #0038A8;
+    --bs-btn-active-bg: #0038A8;
+    --bs-btn-active-border-color: #0038A8;
+    --bs-btn-focus-shadow-rgb: 0, 56, 168;
+}
+
+.btn-danger {
+    --bs-btn-bg: #B85450;
+    --bs-btn-border-color: #B85450;
+    --bs-btn-hover-bg: #9C4440;
+    --bs-btn-hover-border-color: #9C4440;
+    --bs-btn-active-bg: #9C4440;
+    --bs-btn-active-border-color: #9C4440;
+    --bs-btn-focus-shadow-rgb: 184, 84, 80;
+}
+
+.unternavigation {
+    background: #F4F4F4;
+    border-bottom: 1px solid var(--grau);
+}
+
+    .unternavigation .nav {
+        --bs-nav-link-color: #212529;
+        --bs-nav-link-hover-color: #1F3864;
+        --bs-nav-link-padding-x: .5rem;
+        --bs-nav-link-padding-y: .9rem;
+        --bs-nav-link-font-size: .95rem;
+    }
+
+    .unternavigation .nav-item {
+        display: flex;
+        align-items: center;
+    }
+
+        .unternavigation .nav-item + .nav-item::before {
+            content: "·";
+        }
+
+    .unternavigation .nav-link.active {
+        font-weight: 700;
+    }
+
+.kachel {
+    --bs-card-border-color: #B4C2D4;
+    --bs-card-spacer-x: 2rem;
+    --bs-card-spacer-y: 2rem;
+}
+
+    .kachel .card-title {
+        margin-bottom: 0;
+        font-size: 1.125rem;
+        font-weight: 700;
+    }
+
+    .kachel .btn {
+        min-width: 8rem;
+    }
+
+.kachel-zeile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.25rem;
+}
+
+.kachel--gefahr {
+    --bs-card-border-color: #B85450;
+}
+
+    .kachel--gefahr .card-title {
+        color: var(--rot);
+    }
