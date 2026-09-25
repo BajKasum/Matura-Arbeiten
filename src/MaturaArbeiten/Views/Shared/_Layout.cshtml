@@ -6,13 +6,12 @@
     <title>@ViewData["Title"] - Zusehendenverwaltung</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-md app-header" data-bs-theme="dark" aria-label="Hauptmenü">
+        <nav class="navbar navbar-expand-md bg-primary" data-bs-theme="dark" aria-label="Hauptmenü">
             <div class="container-xl">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Zusehendenverwaltung</a>
+                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">Zusehendenverwaltung</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#hauptmenue" aria-controls="hauptmenue"
                         aria-expanded="false" aria-label="Menü ein- und ausklappen">
@@ -29,7 +28,7 @@
 
     @await RenderSectionAsync("Unternavigation", required: false)
 
-    <main class="container-xl app-main">
+    <main class="container-xl py-5">
         @RenderBody()
     </main>
 
