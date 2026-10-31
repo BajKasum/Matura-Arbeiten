@@ -34,5 +34,16 @@ public class AppDbContext : DbContext
 
             entity.HasIndex(x => x.Email).IsUnique();
         });
+
+        modelBuilder.Entity<Praesentation>(entity =>
+        {
+            entity.ToTable("praesentation");
+
+            entity.Property(x => x.Id).HasColumnName("id");
+            entity.Property(x => x.Thema).HasColumnName("thema").HasMaxLength(200);
+            entity.Property(x => x.Datum).HasColumnName("datum");
+            entity.Property(x => x.Uhrzeit).HasColumnName("uhrzeit").HasColumnType("time(0)");
+            entity.Property(x => x.Raum).HasColumnName("raum").HasMaxLength(20);
+        });
     }
 }
