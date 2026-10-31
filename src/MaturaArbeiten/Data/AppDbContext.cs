@@ -83,5 +83,20 @@ public class AppDbContext : DbContext
                 .HasForeignKey(x => x.G3susId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+
+        modelBuilder.Entity<Administrationslogin>(entity =>
+        {
+            entity.ToTable("administrationslogin");
+
+            entity.Property(x => x.Id).HasColumnName("id");
+            entity.Property(x => x.Vorname).HasColumnName("vorname").HasMaxLength(50);
+            entity.Property(x => x.Nachname).HasColumnName("nachname").HasMaxLength(50);
+            entity.Property(x => x.Email).HasColumnName("email").HasMaxLength(100);
+            entity.Property(x => x.PasswortHash).HasColumnName("passwort_hash").HasMaxLength(255);
+            entity.Property(x => x.Fehlversuche).HasColumnName("fehlversuche");
+            entity.Property(x => x.GesperrtBis).HasColumnName("gesperrt_bis");
+
+            entity.HasIndex(x => x.Email).IsUnique();
+        });
     }
 }
