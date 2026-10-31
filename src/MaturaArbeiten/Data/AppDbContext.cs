@@ -67,5 +67,21 @@ public class AppDbContext : DbContext
 
             entity.HasIndex(x => new { x.G3susId, x.PraesentationId }).IsUnique();
         });
+
+        modelBuilder.Entity<EmailVersand>(entity =>
+        {
+            entity.ToTable("email_versand");
+
+            entity.Property(x => x.Id).HasColumnName("id");
+            entity.Property(x => x.G3susId).HasColumnName("g3sus_id");
+            entity.Property(x => x.Typ).HasColumnName("typ").HasMaxLength(20);
+            entity.Property(x => x.Status).HasColumnName("status").HasMaxLength(20);
+            entity.Property(x => x.GesendetAm).HasColumnName("gesendet_am");
+
+            entity.HasOne<G3SuS>()
+                .WithMany()
+                .HasForeignKey(x => x.G3susId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }
