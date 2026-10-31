@@ -98,5 +98,21 @@ public class AppDbContext : DbContext
 
             entity.HasIndex(x => x.Email).IsUnique();
         });
+
+        modelBuilder.Entity<Systemeinstellung>(entity =>
+        {
+            entity.ToTable("systemeinstellung");
+
+            entity.Property(x => x.Id).HasColumnName("id").ValueGeneratedNever();
+            entity.Property(x => x.Platzkontingent).HasColumnName("platzkontingent");
+            entity.Property(x => x.EintragungsphaseOffen).HasColumnName("eintragungsphase_offen");
+
+            entity.HasData(new Systemeinstellung
+            {
+                Id = 1,
+                Platzkontingent = 6,
+                EintragungsphaseOffen = true
+            });
+        });
     }
 }
