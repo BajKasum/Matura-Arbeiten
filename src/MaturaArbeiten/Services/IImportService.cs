@@ -1,6 +1,10 @@
-﻿namespace MaturaArbeiten.Services
+﻿using MaturaArbeiten.ViewModels;
+
+namespace MaturaArbeiten.Services;
+
+public interface IImportService
 {
-    public class IImportService
-    {
-    }
+    ImportErgebnisViewModel PraesentationenLaden(Stream datei);
+
+    ImportErgebnisViewModel G3SuSLaden(Stream datei);
 }
