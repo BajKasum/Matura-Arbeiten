@@ -7,4 +7,6 @@ public interface IPraesentationService
     PraesentationenViewModel Liste(int g3susId);
 
     AdminPraesentationenViewModel Alle();
+
+    IReadOnlyList<string> OhneMoeglichkeit();
 }

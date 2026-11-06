@@ -40,7 +40,8 @@ public sealed class PraesentationService(AppDbContext db) : IPraesentationServic
             zeilen,
             eigene.Count,
             Regeln.PflichtEintragungen,
-            einstellung.EintragungsphaseOffen);
+            einstellung.EintragungsphaseOffen,
+            NochErreichbar(einstellung, praesentationen, g3susId));
     }
 
     public AdminPraesentationenViewModel Alle()
@@ -66,6 +67,28 @@ public sealed class PraesentationService(AppDbContext db) : IPraesentationServic
         return new AdminPraesentationenViewModel(zeilen, einstellung.Platzkontingent);
     }
 
+    public IReadOnlyList<string> OhneMoeglichkeit()
+    {
+        var einstellung = db.Systemeinstellungen.Single();
+
+        var praesentationen = db.Praesentationen
+            .Include(p => p.Eintragungen)
+            .ToList();
+
+        if (praesentationen.Count == 0)
+        {
+            return [];
+        }
+
+        return db.G3SuSListe
+            .OrderBy(g => g.Nachname)
+            .ThenBy(g => g.Vorname)
+            .ToList()
+            .Where(g => !NochErreichbar(einstellung, praesentationen, g.Id))
+            .Select(g => $"{g.Nachname} {g.Vorname}")
+            .ToList();
+    }
+
     private static bool IstWaehlbar(
         Systemeinstellung einstellung,
         Praesentation praesentation,
@@ -76,4 +99,28 @@ public sealed class PraesentationService(AppDbContext db) : IPraesentationServic
             praesentation.Termin,
             praesentation.Eintragungen.Count,
             eigeneTermine) is EintragungErgebnis.Erfolg;
+
+    private static bool NochErreichbar(
+        Systemeinstellung einstellung,
+        IReadOnlyList<Praesentation> praesentationen,
+        int g3susId)
+    {
+        var eigene = praesentationen
+            .Where(p => p.Eintragungen.Any(e => e.G3susId == g3susId))
+            .ToList();
+        var eigeneIds = eigene.Select(p => p.Id).ToHashSet();
+        var eigeneTermine = eigene.Select(p => p.Termin).ToList();
+
+        var waehlbareTermine = praesentationen
+            .Where(p => !eigeneIds.Contains(p.Id))
+            .Where(p => Regeln.Pruefe(
+                true,
+                einstellung.Platzkontingent,
+                p.Termin,
+                p.Eintragungen.Count,
+                eigeneTermine) is EintragungErgebnis.Erfolg)
+            .Select(p => p.Termin);
+
+        return Regeln.NochErreichbar(eigeneTermine, waehlbareTermine);
+    }
 }

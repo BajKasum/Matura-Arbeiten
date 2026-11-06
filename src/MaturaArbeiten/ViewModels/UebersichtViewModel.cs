@@ -7,4 +7,8 @@ public sealed record UebersichtViewModel(
     int Pflicht,
     int ZugangsdatenVersendet,
     int BestaetigungenVersendet,
-    int Fehlgeschlagen);
+    int Fehlgeschlagen,
+    IReadOnlyList<string> OhneMoeglichkeit)
+{
+    public bool AlleFertig => GesamtG3SuS > 0 && MitPflicht == GesamtG3SuS;
+}
