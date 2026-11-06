@@ -1,0 +1,65 @@
+@model AdminEintragungenViewModel
+@{
+    ViewData["Title"] = "Eintragungen verwalten";
+}
+
+@if (TempData["Erfolg"] is string erfolg)
+{
+    <div class="alert alert-success mb-4" role="status">@erfolg</div>
+}
+
+@if (TempData["Fehler"] is string fehler)
+{
+    <div class="alert alert-danger mb-4" role="alert">@fehler</div>
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+    <div>
+        <h1 class="fs-4 fw-bold text-primary-emphasis">Eintragungen verwalten</h1>
+        <p class="text-body-secondary mb-0">@Model.Zeilen.Count Eintragungen</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Neu">Eintragung anlegen</a>
+</div>
+
+@if (Model.Zeilen.Count == 0)
+{
+    <p class="text-body-secondary">Es gibt noch keine Eintragungen.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">G3-SuS</th>
+                    <th scope="col">Präsentation</th>
+                    <th scope="col">Datum</th>
+                    <th scope="col">Uhrzeit</th>
+                    <th scope="col">Raum</th>
+                    <th scope="col">Erstellt am</th>
+                    <th scope="col">Aktion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var zeile in Model.Zeilen)
+                {
+                    <tr>
+                        <td>@zeile.G3SuS</td>
+                        <td>@zeile.Thema</td>
+                        <td>@zeile.Datum.ToString("dd.MM.yyyy")</td>
+                        <td>@zeile.Uhrzeit.ToString("HH:mm")</td>
+                        <td>@zeile.Raum</td>
+                        <td>@Zeitzone.InZuerich(zeile.ErstelltAm).ToString("dd.MM.yyyy HH:mm")</td>
+                        <td class="text-nowrap">
+                            <a class="btn btn-outline-primary btn-sm" asp-action="Aendern" asp-route-id="@zeile.Id">Ändern</a>
+                            <form asp-action="Loeschen" asp-route-id="@zeile.Id" method="post" class="d-inline"
+                                  onsubmit="return confirm('Diese Eintragung wirklich löschen?')">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Löschen</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
