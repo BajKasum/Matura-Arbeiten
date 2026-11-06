@@ -4,7 +4,9 @@ using MaturaArbeiten.ViewModels;
 
 namespace MaturaArbeiten.Services;
 
-public sealed class AdministrationService(AppDbContext db) : IAdministrationService
+public sealed class AdministrationService(
+    AppDbContext db,
+    IPraesentationService praesentationService) : IAdministrationService
 {
     public UebersichtViewModel Uebersicht()
     {
@@ -23,7 +25,8 @@ public sealed class AdministrationService(AppDbContext db) : IAdministrationServ
             Regeln.PflichtEintragungen,
             VersendetAn(protokoll, "Zugangsdaten"),
             VersendetAn(protokoll, "Bestaetigung"),
-            EmailProtokoll.OffeneFehlschlaege(protokoll).Count);
+            EmailProtokoll.OffeneFehlschlaege(protokoll).Count,
+            praesentationService.OhneMoeglichkeit());
     }
 
     public bool PhaseUmschalten()
