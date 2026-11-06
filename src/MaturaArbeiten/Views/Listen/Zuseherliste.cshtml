@@ -45,24 +45,26 @@ else
     }
     else
     {
-        <table class="table table-bordered align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th scope="col">Nachname</th>
-                    <th scope="col">Vorname</th>
-                    <th scope="col">E-Mail</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var zeile in Model.Zuseher)
-                {
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+                <thead class="table-light">
                     <tr>
-                        <td>@zeile.Nachname</td>
-                        <td>@zeile.Vorname</td>
-                        <td>@zeile.Email</td>
+                        <th scope="col">Nachname</th>
+                        <th scope="col">Vorname</th>
+                        <th scope="col">E-Mail</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var zeile in Model.Zuseher)
+                    {
+                        <tr>
+                            <td>@zeile.Nachname</td>
+                            <td>@zeile.Vorname</td>
+                            <td>@zeile.Email</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 }

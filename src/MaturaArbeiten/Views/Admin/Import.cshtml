@@ -11,23 +11,25 @@
 
 @if (Model.Fehler.Count > 0)
 {
-    <table class="table table-bordered align-middle">
-        <thead class="table-light">
-            <tr>
-                <th scope="col">Zeile</th>
-                <th scope="col">Grund</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var zeile in Model.Fehler)
-            {
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
                 <tr>
-                    <td>@zeile.Zeile</td>
-                    <td>@zeile.Grund</td>
+                    <th scope="col">Zeile</th>
+                    <th scope="col">Grund</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var zeile in Model.Fehler)
+                {
+                    <tr>
+                        <td>@zeile.Zeile</td>
+                        <td>@zeile.Grund</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
 <a class="btn btn-outline-primary" asp-action="Index">Zurück zur Administration</a>

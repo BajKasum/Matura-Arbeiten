@@ -20,35 +20,37 @@
 {
     <section class="mb-4">
         <h2 class="fs-5 fw-bold">Raum @raum.Raum</h2>
-        <table class="table table-bordered align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th scope="col">Datum</th>
-                    <th scope="col">Uhrzeit</th>
-                    <th scope="col">Thema</th>
-                    <th scope="col">Zuseher</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var praesentation in raum.Praesentationen)
-                {
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+                <thead class="table-light">
                     <tr>
-                        <td>@praesentation.Datum.ToString("dd.MM.yyyy")</td>
-                        <td>@praesentation.Uhrzeit.ToString("HH:mm")</td>
-                        <td>@praesentation.Thema</td>
-                        <td>
-                            @if (praesentation.Zuseher.Count == 0)
-                            {
-                                <span class="text-body-secondary">keine</span>
-                            }
-                            else
-                            {
-                                @string.Join(", ", praesentation.Zuseher)
-                            }
-                        </td>
+                        <th scope="col">Datum</th>
+                        <th scope="col">Uhrzeit</th>
+                        <th scope="col">Thema</th>
+                        <th scope="col">Zuseher</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var praesentation in raum.Praesentationen)
+                    {
+                        <tr>
+                            <td>@praesentation.Datum.ToString("dd.MM.yyyy")</td>
+                            <td>@praesentation.Uhrzeit.ToString("HH:mm")</td>
+                            <td>@praesentation.Thema</td>
+                            <td>
+                                @if (praesentation.Zuseher.Count == 0)
+                                {
+                                    <span class="text-body-secondary">keine</span>
+                                }
+                                else
+                                {
+                                    @string.Join(", ", praesentation.Zuseher)
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </section>
 }
