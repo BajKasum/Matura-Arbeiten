@@ -10,35 +10,48 @@ Es gibt zwei Rollen:
 
 | Rolle | Aufgaben |
 |---|---|
-| G3-SuS | Präsentationen mit freien Plätzen ansehen, genau zwei auswählen, die eigenen Eintragungen mit Datum, Uhrzeit und Raum ansehen |
-| Administration | Präsentationen und G3-SuS per CSV importieren, E-Mails auslösen, Listen erzeugen, Eintragungen anpassen, Eintragungsphase öffnen und schliessen, das System für ein neues Schuljahr zurücksetzen |
+| G3-SuS | Präsentationen mit freien Plätzen ansehen, genau zwei auswählen, die eigenen Eintragungen mit Datum, Uhrzeit und Raum ansehen, das Passwort ändern |
+| Administration | Präsentationen und G3-SuS per CSV importieren, Zugangsdaten und Bestätigungen per E-Mail auslösen, Listen erzeugen, G3-SuS, Eintragungen und Administrationslogins verwalten, Eintragungsphase öffnen und schliessen, das System für ein neues Schuljahr zurücksetzen |
 
 Diese Regeln prüft die Applikation schon bei der Auswahl:
 
 - Jede Person wählt genau zwei Präsentationen.
 - Pro Präsentation gibt es höchstens sechs Zusehende.
 - Zwei Präsentationen zur gleichen Zeit sind nicht möglich.
-- Nur die Administration kann Eintragungen löschen.
+- Nur die Administration kann Eintragungen ändern oder löschen.
 
 ## Technik
 
 | Bereich | Verwendet |
 |---|---|
 | Sprache und Framework | C#, ASP.NET Core MVC, .NET 10 |
-| Oberfläche | Razor-Views, Bootstrap 5.3 |
+| Oberfläche | Razor-Views, Bootstrap 5.3 (ohne eigenes CSS) |
 | Datenbank | SQL Server (lokal SQL Server Express) |
 | Datenzugriff | Entity Framework Core 10 |
+| Anmeldung | Cookie-Anmeldung, Passwörter mit PBKDF2, Sperre nach fünf falschen Versuchen |
+| Tests | MSTest, Entity Framework Core InMemory |
 | Versionsverwaltung | Git, Bitbucket (offiziell), GitHub (Spiegel) |
+
+Aufbau von `src/MaturaArbeiten`:
+
+| Ordner | Inhalt |
+|---|---|
+| `Domain` | Fachregeln als reine Funktionen und unveränderliche Records, ohne Datenbankzugriff |
+| `Services` | Anwendungsfälle, die Daten laden, die Regeln aufrufen und speichern |
+| `Controllers`, `Views`, `ViewModels` | Oberfläche |
+| `Models`, `Data`, `Migrations` | Datenmodell, `AppDbContext` und Datenbankschema |
 
 ## Stand
 
 | Bereich | Stand |
 |---|---|
-| Grundgerüst (ASP.NET Core, Datenbankanbindung, Git) | fertig |
-| Oberfläche Desktop (Anmeldung, Präsentationen auswählen, Meine Eintragungen, Administration) | fertig, aber statisch: Die Daten stehen fest im HTML, die Buttons haben noch keine Funktion |
-| Datenmodell | In Arbeit: Die sechs Klassen sind geschrieben, `AppDbContext`, Migration und Tabellen folgen |
-| Regeln, Anmeldung, CSV-Import, Eintragen, Administration, E-Mail-Versand, Listen | offen |
-| Handy-Ansicht und Tests | offen |
+| Grundgerüst, Datenbank, Migrationen | fertig |
+| Regeln, Anmeldung, Passwort ändern | fertig |
+| CSV-Import, Eintragen, Meine Eintragungen | fertig |
+| Administration (Übersicht, Verwaltung, Listen, Zurücksetzen) | fertig |
+| E-Mails (Zugangsdaten, Bestätigung, E-Mail-Protokoll) | fertig, aber nur mit Konsolenausgabe: Ein echter E-Mail-Dienst ist noch nicht angebunden |
+| Handy-Ansicht, Tests | fertig |
+| Veröffentlichung (Azure) | offen |
 
 ## Projekt starten
 
@@ -70,6 +83,24 @@ Datenbank anlegen und Migrationen anwenden:
 dotnet ef database update
 ```
 
+Das erste Administrationslogin kommt aus den User Secrets. Beim Start wird es angelegt, solange es noch kein Administrationslogin gibt:
+
+```bash
+dotnet user-secrets set "Administration:Email" "vorname.nachname@schule.ch"
+```
+
+```bash
+dotnet user-secrets set "Administration:Vorname" "Vorname"
+```
+
+```bash
+dotnet user-secrets set "Administration:Nachname" "Nachname"
+```
+
+```bash
+dotnet user-secrets set "Administration:Passwort" "ein-langes-passwort"
+```
+
 Applikation starten:
 
 ```bash
@@ -82,14 +113,35 @@ Die Applikation läuft dann unter `http://localhost:5283`. Mit dem Profil `https
 dotnet run --launch-profile https
 ```
 
-Die Startseite leitet zur Anmeldung weiter. Diese Seiten gibt es bisher:
+### Ablauf
+
+1. Als Administration anmelden (`/Account/Anmelden`).
+2. Unter "Übersicht" die Präsentationen und die G3-SuS als CSV-Datei laden. Die Dateien sind UTF-8, mit Strichpunkt getrennt und haben eine Kopfzeile:
+   - Präsentationen: `Thema;Datum;Uhrzeit;Raum`, zum Beispiel `Klimawandel;12.01.2027;08:30;204`
+   - G3-SuS: `Vorname;Nachname;E-Mail`
+3. Zugangsdaten an die G3-SuS versenden. Jede Person bekommt ein eigenes Passwort und muss es bei der ersten Anmeldung ändern.
+4. Die G3-SuS wählen ihre zwei Präsentationen, solange die Eintragungsphase offen ist.
+5. Bestätigungen versenden, Listen ansehen oder herunterladen.
+
+Im Entwicklungsmodus schreibt die Applikation E-Mails in die Konsole, auch mit dem Passwort. Ausserhalb davon verschickt sie nichts, solange kein E-Mail-Dienst eingerichtet ist.
+
+### Seiten
 
 | Seite | Adresse |
 |---|---|
 | Anmeldung | `/Account/Anmelden` |
+| Passwort ändern | `/Account/PasswortAendern` |
 | Präsentationen auswählen | `/Praesentation` |
 | Meine Eintragungen | `/Eintragung/MeineEintragungen` |
 | Administration | `/Admin` |
+
+### Tests
+
+Im Hauptordner des Repositorys:
+
+```bash
+dotnet test MaturaArbeiten.slnx
+```
 
 ### Datenbank
 
