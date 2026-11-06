@@ -1,0 +1,68 @@
+@model ZuseherlisteViewModel
+@{
+    ViewData["Title"] = "Zuseherliste";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+    <h1 class="fs-4 fw-bold text-primary-emphasis">Zuseherliste</h1>
+    @if (Model.Gewaehlt is not null)
+    {
+        <div class="d-flex gap-2 d-print-none">
+            <button type="button" class="btn btn-primary" onclick="window.print()">Drucken</button>
+            <a class="btn btn-outline-primary" asp-action="ZuseherlisteCsv" asp-route-id="@Model.Gewaehlt.Id">CSV</a>
+        </div>
+    }
+</div>
+
+@if (Model.Gewaehlt is null)
+{
+    <p class="text-body-secondary">Es sind noch keine Präsentationen geladen.</p>
+}
+else
+{
+    <form method="get" asp-action="Zuseherliste" class="mb-4 d-print-none">
+        <label for="id" class="form-label">Präsentation</label>
+        <div class="d-flex gap-2">
+            <select class="form-select" id="id" name="id">
+                @foreach (var auswahl in Model.Praesentationen)
+                {
+                    <option value="@auswahl.Wert" selected="@(auswahl.Wert == Model.Gewaehlt.Id)">@auswahl.Text</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-outline-primary">Anzeigen</button>
+        </div>
+    </form>
+
+    <h2 class="fs-5 fw-bold">@Model.Gewaehlt.Thema</h2>
+    <p class="text-body-secondary">
+        @Model.Gewaehlt.Datum.ToString("dd.MM.yyyy"), @Model.Gewaehlt.Uhrzeit.ToString("HH:mm") Uhr, Raum @Model.Gewaehlt.Raum
+        · @Model.Gewaehlt.Zuseher Zuseher
+    </p>
+
+    @if (Model.Zuseher.Count == 0)
+    {
+        <p class="text-body-secondary">Für diese Präsentation hat sich noch niemand eingetragen.</p>
+    }
+    else
+    {
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Nachname</th>
+                    <th scope="col">Vorname</th>
+                    <th scope="col">E-Mail</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var zeile in Model.Zuseher)
+                {
+                    <tr>
+                        <td>@zeile.Nachname</td>
+                        <td>@zeile.Vorname</td>
+                        <td>@zeile.Email</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

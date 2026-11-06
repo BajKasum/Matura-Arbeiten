@@ -1,0 +1,54 @@
+@model RaumuebersichtViewModel
+@{
+    ViewData["Title"] = "Raumübersicht";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+    <h1 class="fs-4 fw-bold text-primary-emphasis">Raumübersicht</h1>
+    <div class="d-flex gap-2 d-print-none">
+        <button type="button" class="btn btn-primary" onclick="window.print()">Drucken</button>
+        <a class="btn btn-outline-primary" asp-action="RaumuebersichtCsv">CSV</a>
+    </div>
+</div>
+
+@if (Model.Raeume.Count == 0)
+{
+    <p class="text-body-secondary">Es sind noch keine Präsentationen geladen.</p>
+}
+
+@foreach (var raum in Model.Raeume)
+{
+    <section class="mb-4">
+        <h2 class="fs-5 fw-bold">Raum @raum.Raum</h2>
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Datum</th>
+                    <th scope="col">Uhrzeit</th>
+                    <th scope="col">Thema</th>
+                    <th scope="col">Zuseher</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var praesentation in raum.Praesentationen)
+                {
+                    <tr>
+                        <td>@praesentation.Datum.ToString("dd.MM.yyyy")</td>
+                        <td>@praesentation.Uhrzeit.ToString("HH:mm")</td>
+                        <td>@praesentation.Thema</td>
+                        <td>
+                            @if (praesentation.Zuseher.Count == 0)
+                            {
+                                <span class="text-body-secondary">keine</span>
+                            }
+                            else
+                            {
+                                @string.Join(", ", praesentation.Zuseher)
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+}

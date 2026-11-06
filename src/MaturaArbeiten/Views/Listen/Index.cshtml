@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Listen";
+}
+
+<h1 class="fs-4 fw-bold text-primary-emphasis mb-4">Listen</h1>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <section class="card h-100">
+            <div class="card-body p-4">
+                <h2 class="card-title fs-5 fw-bold">Raumübersicht</h2>
+                <p class="text-body-secondary">Alle Präsentationen pro Raum, mit den Zusehern.</p>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-primary" asp-action="Raumuebersicht">Anzeigen</a>
+                    <a class="btn btn-outline-primary" asp-action="RaumuebersichtCsv">CSV</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-6">
+        <section class="card h-100">
+            <div class="card-body p-4">
+                <h2 class="card-title fs-5 fw-bold">Zuseherliste</h2>
+                <p class="text-body-secondary">Die Zuseher einer Präsentation. Zum Drucken die Liste anzeigen.</p>
+                <a class="btn btn-primary" asp-action="Zuseherliste">Anzeigen</a>
+            </div>
+        </section>
+    </div>
+</div>
