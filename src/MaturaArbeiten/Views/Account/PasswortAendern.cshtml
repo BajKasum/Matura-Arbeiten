@@ -1,0 +1,48 @@
+@model PasswortAendernFormular
+@{
+    ViewData["Title"] = "Passwort ändern";
+    var erzwungen = User.HasClaim(Ansprueche.PasswortAendern, "true");
+}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+        <div class="card card-body p-4">
+            <h1 class="fs-4 fw-bold text-primary-emphasis mb-4">Passwort ändern</h1>
+
+            @if (erzwungen)
+            {
+                <div class="alert alert-info" role="status">
+                    Du meldest dich zum ersten Mal an. Bitte wähle jetzt dein eigenes Passwort, bevor du weitermachst.
+                </div>
+            }
+
+            @if (ViewData.ModelState.TryGetValue(string.Empty, out var modellFehler) && modellFehler.Errors.Count > 0)
+            {
+                <div class="alert alert-danger" role="alert">@string.Join(" ", modellFehler.Errors.Select(f => f.ErrorMessage))</div>
+            }
+
+            <form method="post" asp-action="PasswortAendern">
+                <div class="mb-3">
+                    <label asp-for="Aktuell" class="form-label">Bisheriges Passwort</label>
+                    <input asp-for="Aktuell" type="password" class="form-control" autocomplete="current-password" maxlength="100" />
+                    <span asp-validation-for="Aktuell" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Neu" class="form-label">Neues Passwort</label>
+                    <input asp-for="Neu" type="password" class="form-control" autocomplete="new-password" maxlength="100" />
+                    <span asp-validation-for="Neu" class="text-danger"></span>
+                    <div class="form-text">Mindestens @Passwoerter.MindestLaenge Zeichen.</div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Wiederholung" class="form-label">Neues Passwort wiederholen</label>
+                    <input asp-for="Wiederholung" type="password" class="form-control" autocomplete="new-password" maxlength="100" />
+                    <span asp-validation-for="Wiederholung" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Passwort ändern</button>
+            </form>
+        </div>
+    </div>
+</div>

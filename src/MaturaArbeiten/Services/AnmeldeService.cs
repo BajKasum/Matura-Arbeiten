@@ -30,7 +30,8 @@ public sealed class AnmeldeService(
                 () => new AnmeldeErgebnis.Erfolg(
                     admin.Id,
                     $"{admin.Vorname} {admin.Nachname}",
-                    Rollen.Administration));
+                    Rollen.Administration,
+                    false));
         }
 
         var schueler = db.G3SuSListe.SingleOrDefault(g => g.Email == email);
@@ -50,7 +51,8 @@ public sealed class AnmeldeService(
                 () => new AnmeldeErgebnis.Erfolg(
                     schueler.Id,
                     $"{schueler.Vorname} {schueler.Nachname}",
-                    Rollen.G3SuS));
+                    Rollen.G3SuS,
+                    !schueler.PasswortGeaendert));
         }
 
         return new AnmeldeErgebnis.Abgewiesen();

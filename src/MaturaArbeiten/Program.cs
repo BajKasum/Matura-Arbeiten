@@ -1,4 +1,5 @@
 using MaturaArbeiten.Data;
+using MaturaArbeiten.Filters;
 using MaturaArbeiten.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(optionen => optionen.Filters.Add<PasswortAendernFilter>());
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IAdminLoginService, AdminLoginService>();
 builder.Services.AddScoped<IBestaetigungService, BestaetigungService>();
 builder.Services.AddScoped<IEmailProtokollService, EmailProtokollService>();
 builder.Services.AddScoped<IListenService, ListenService>();
+builder.Services.AddScoped<IPasswortService, PasswortService>();
 builder.Services.AddSingleton<IEmailService, KonsolenEmailService>();
 
 builder.Services
