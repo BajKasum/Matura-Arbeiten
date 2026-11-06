@@ -1,4 +1,5 @@
-﻿@{
+﻿@model PraesentationenViewModel
+@{
     ViewData["Title"] = "Präsentationen auswählen";
 }
 
@@ -8,60 +9,69 @@
     <partial name="_Abmelden" />
 }
 
-<h1 class="fs-4 fw-bold text-primary-emphasis">Präsentationen auswählen</h1>
-<p class="text-body-secondary mb-4">1 von 2 Präsentationen gewählt</p>
+@if (TempData["Erfolg"] is string erfolg)
+{
+    <div class="alert alert-success mb-4" role="status">@erfolg</div>
+}
 
-<table class="table table-bordered align-middle">
-    <thead class="table-light">
-        <tr>
-            <th scope="col">Thema</th>
-            <th scope="col">Datum</th>
-            <th scope="col">Uhrzeit</th>
-            <th scope="col">Raum</th>
-            <th scope="col">Freie Plätze</th>
-            <th scope="col">Aktion</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Klimawandel und Landwirtschaft</td>
-            <td>12.01.2027</td>
-            <td>08:30</td>
-            <td>204</td>
-            <td>3</td>
-            <td><span class="badge text-bg-success">Gewählt</span></td>
-        </tr>
-        <tr>
-            <td>Musiktherapie bei Demenz</td>
-            <td>12.01.2027</td>
-            <td>10:15</td>
-            <td>204</td>
-            <td>1</td>
-            <td><button type="button" class="btn btn-primary btn-sm">Auswählen</button></td>
-        </tr>
-        <tr>
-            <td>Fairtrade im Detailhandel</td>
-            <td>13.01.2027</td>
-            <td>09:00</td>
-            <td>302</td>
-            <td>6</td>
-            <td><button type="button" class="btn btn-primary btn-sm">Auswählen</button></td>
-        </tr>
-        <tr>
-            <td>Sportverletzungen im Handball</td>
-            <td>13.01.2027</td>
-            <td>11:00</td>
-            <td>110</td>
-            <td>2</td>
-            <td><button type="button" class="btn btn-primary btn-sm">Auswählen</button></td>
-        </tr>
-        <tr>
-            <td>Digitalisierung im Gewerbe</td>
-            <td>14.01.2027</td>
-            <td>08:30</td>
-            <td>105</td>
-            <td>4</td>
-            <td><button type="button" class="btn btn-primary btn-sm">Auswählen</button></td>
-        </tr>
-    </tbody>
-</table>
+@if (TempData["Fehler"] is string fehler)
+{
+    <div class="alert alert-danger mb-4" role="alert">@fehler</div>
+}
+
+<h1 class="fs-4 fw-bold text-primary-emphasis">Präsentationen auswählen</h1>
+<p class="text-body-secondary mb-4">@Model.GewaehlteAnzahl von @Model.Pflicht Präsentationen gewählt</p>
+
+@if (!Model.PhaseOffen)
+{
+    <div class="alert alert-warning" role="status">Die Eintragungsphase ist geschlossen. Du kannst keine Präsentation mehr wählen.</div>
+}
+else if (Model.GewaehlteAnzahl >= Model.Pflicht)
+{
+    <div class="alert alert-success" role="status">Du hast alle Präsentationen gewählt. Deine Eintragungen findest du unter "Meine Eintragungen".</div>
+}
+
+@if (Model.Zeilen.Count == 0)
+{
+    <p class="text-body-secondary">Im Moment gibt es keine Präsentation, die du wählen kannst.</p>
+}
+else
+{
+    <table class="table table-bordered align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">Thema</th>
+                <th scope="col">Datum</th>
+                <th scope="col">Uhrzeit</th>
+                <th scope="col">Raum</th>
+                <th scope="col">Freie Plätze</th>
+                <th scope="col">Aktion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var zeile in Model.Zeilen)
+            {
+                <tr>
+                    <td>@zeile.Thema</td>
+                    <td>@zeile.Datum.ToString("dd.MM.yyyy")</td>
+                    <td>@zeile.Uhrzeit.ToString("HH:mm")</td>
+                    <td>@zeile.Raum</td>
+                    <td>@zeile.FreiePlaetze</td>
+                    <td>
+                        @if (zeile.Gewaehlt)
+                        {
+                            <span class="badge text-bg-success">Gewählt</span>
+                        }
+                        else
+                        {
+                            <form asp-controller="Eintragung" asp-action="WaehlePraesentation" method="post">
+                                <input type="hidden" name="praesentationId" value="@zeile.Id" />
+                                <button type="submit" class="btn btn-primary btn-sm">Auswählen</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

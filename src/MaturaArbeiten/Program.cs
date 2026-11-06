@@ -15,6 +15,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton<IPasswordHasher<string>, PasswordHasher<string>>();
 builder.Services.AddScoped<IAnmeldeService, AnmeldeService>();
+builder.Services.AddScoped<IPraesentationService, PraesentationService>();
+builder.Services.AddScoped<IEintragungService, EintragungService>();
 
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
