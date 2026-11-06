@@ -9,9 +9,9 @@
     <p class="mb-2">Willst du das Schuljahr wirklich zurücksetzen? Dabei werden gelöscht:</p>
     <ul class="mb-2">
         <li>@Model.AnzahlG3SuS G3-SuS</li>
-        <li>@Model.AnzahlPraesentationen Präsentationen</li>
-        <li>@Model.AnzahlEintragungen Eintragungen</li>
-        <li>@Model.AnzahlEmails Einträge im E-Mail-Protokoll</li>
+        <li>@Mehrzahl.Von(Model.AnzahlPraesentationen, "Präsentation", "Präsentationen")</li>
+        <li>@Mehrzahl.Von(Model.AnzahlEintragungen, "Eintragung", "Eintragungen")</li>
+        <li>@Mehrzahl.Von(Model.AnzahlEmails, "Eintrag", "Einträge") im E-Mail-Protokoll</li>
     </ul>
     <p class="mb-0">Die Administrationslogins bleiben bestehen. Die Eintragungsphase wird wieder geöffnet.</p>
 </div>

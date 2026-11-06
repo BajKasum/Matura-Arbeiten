@@ -46,7 +46,14 @@ var app = builder.Build();
 
 using (var bereich = app.Services.CreateScope())
 {
-    Startdaten.ErstesAdministrationslogin(bereich.ServiceProvider);
+    try
+    {
+        Startdaten.ErstesAdministrationslogin(bereich.ServiceProvider);
+    }
+    catch (Exception fehler)
+    {
+        app.Logger.LogError(fehler, "Das erste Administrationslogin konnte nicht angelegt werden.");
+    }
 }
 
 if (!app.Environment.IsDevelopment())

@@ -1,5 +1,6 @@
 using MaturaArbeiten.Data;
 using MaturaArbeiten.Services;
+using Microsoft.Extensions.Logging.Abstractions;
 using MaturaArbeiten.ViewModels;
 
 namespace MaturaArbeiten.Tests;
@@ -9,7 +10,7 @@ public class AdministrationServiceTests
 {
     private readonly AppDbContext _db = TestDb.Neu();
 
-    private AdministrationService Dienst() => new(_db, new PraesentationService(_db));
+    private AdministrationService Dienst() => new(_db, new PraesentationService(_db), NullLogger<AdministrationService>.Instance);
 
     [TestMethod]
     public void PhaseUmschalten_wechselt_zwischen_offen_und_geschlossen()

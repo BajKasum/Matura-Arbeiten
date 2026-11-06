@@ -11,8 +11,8 @@
 }
 
 <div class="alert alert-danger my-4" role="alert">
-    Das kann nicht rückgängig gemacht werden. @Model.AnzahlG3SuS G3-SuS, @Model.AnzahlPraesentationen Präsentationen,
-    @Model.AnzahlEintragungen Eintragungen und @Model.AnzahlEmails Einträge im E-Mail-Protokoll werden endgültig gelöscht.
+    Das kann nicht rückgängig gemacht werden. @Model.AnzahlG3SuS G3-SuS, @Mehrzahl.Von(Model.AnzahlPraesentationen, "Präsentation", "Präsentationen"),
+    @Mehrzahl.Von(Model.AnzahlEintragungen, "Eintragung", "Eintragungen") und @Mehrzahl.Von(Model.AnzahlEmails, "Eintrag", "Einträge") im E-Mail-Protokoll werden endgültig gelöscht.
 </div>
 
 <form asp-action="ZuruecksetzenAusfuehren" method="post">

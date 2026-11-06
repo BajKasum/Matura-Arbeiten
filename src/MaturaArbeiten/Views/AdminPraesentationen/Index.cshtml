@@ -5,7 +5,7 @@
 
 <h1 class="fs-4 fw-bold text-primary-emphasis">Präsentationen</h1>
 <p class="text-body-secondary mb-4">
-    @Model.Zeilen.Count Präsentationen, Platzkontingent @Model.Platzkontingent.
+    @Mehrzahl.Von(Model.Zeilen.Count, "Präsentation", "Präsentationen"), Platzkontingent @Model.Platzkontingent.
     Präsentationen werden nicht einzeln geändert: Fehler in der CSV-Datei korrigieren und neu laden.
 </p>
 
