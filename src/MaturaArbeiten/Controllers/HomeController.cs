@@ -1,15 +1,16 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+using MaturaArbeiten.Domain;
 using MaturaArbeiten.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MaturaArbeiten.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
-    {
-        return RedirectToAction("Anmelden", "Account");
-    }
+    public IActionResult Index() =>
+        User.IsInRole(Rollen.Administration) ? RedirectToAction("Index", "Admin")
+        : User.IsInRole(Rollen.G3SuS) ? RedirectToAction("Index", "Praesentation")
+        : RedirectToAction("Anmelden", "Account");
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
