@@ -29,4 +29,15 @@ public static class Mailtexte
             Benutzername: {email}
             Passwort: {passwort}
             """);
+
+    public static Mail Bestaetigung(string vorname, string email, IEnumerable<MailEintragung> eintragungen) =>
+        new(
+            email,
+            "Deine Bestätigung für die Zusehendenverwaltung",
+            $"Hallo {vorname}\n\n"
+            + "du hast dich für diese Präsentationen eingetragen:\n\n"
+            + string.Join(
+                "\n",
+                eintragungen.Select(e => $"{e.Datum:dd.MM.yyyy}, {e.Uhrzeit:HH:mm} Uhr, Raum {e.Raum}: {e.Thema}"))
+            + "\n\nDamit hast du den Pflichtbesuch erfüllt.");
 }
