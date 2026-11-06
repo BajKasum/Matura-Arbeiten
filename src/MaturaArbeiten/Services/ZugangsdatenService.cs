@@ -29,6 +29,21 @@ public sealed class ZugangsdatenService(
         return (ergebnisse.Count(erfolg => erfolg), ergebnisse.Count(erfolg => !erfolg));
     }
 
+    public bool AnG3SuS(int g3susId)
+    {
+        var schueler = db.G3SuSListe.SingleOrDefault(g => g.Id == g3susId);
+
+        if (schueler is null)
+        {
+            return false;
+        }
+
+        var erfolg = Sende(schueler, zeit.GetUtcNow().UtcDateTime);
+        db.SaveChanges();
+
+        return erfolg;
+    }
+
     public bool AnAdministrationslogin(int id)
     {
         var login = db.Administrationslogins.SingleOrDefault(a => a.Id == id);
