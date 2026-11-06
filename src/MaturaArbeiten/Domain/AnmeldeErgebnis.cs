@@ -1,4 +1,4 @@
-﻿namespace MaturaArbeiten.Domain;
+namespace MaturaArbeiten.Domain;
 
 public abstract record AnmeldeErgebnis
 {
@@ -6,7 +6,7 @@ public abstract record AnmeldeErgebnis
     {
     }
 
-    public sealed record Erfolg(int Id, string Name, string Rolle) : AnmeldeErgebnis;
+    public sealed record Erfolg(int Id, string Name, string Rolle, bool PasswortAendern) : AnmeldeErgebnis;
 
     public sealed record Gesperrt(DateTime Bis) : AnmeldeErgebnis;
 
