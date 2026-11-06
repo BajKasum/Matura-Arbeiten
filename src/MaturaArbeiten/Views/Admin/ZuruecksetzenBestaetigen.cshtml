@@ -1,0 +1,33 @@
+@model ZuruecksetzenViewModel
+@{
+    ViewData["Title"] = "Letzte Rückfrage";
+}
+
+@section HeaderRechts {
+    <span class="navbar-text">Administration</span>
+    <a class="nav-link" asp-action="Index">Übersicht</a>
+    <partial name="_Abmelden" />
+}
+
+<h1 class="fs-4 fw-bold text-danger">Letzte Rückfrage</h1>
+
+@if (TempData["Fehler"] is string fehler)
+{
+    <div class="alert alert-warning mt-4 mb-0" role="alert">@fehler</div>
+}
+
+<div class="alert alert-danger my-4" role="alert">
+    Das kann nicht rückgängig gemacht werden. @Model.AnzahlG3SuS G3-SuS, @Model.AnzahlPraesentationen Präsentationen,
+    @Model.AnzahlEintragungen Eintragungen und @Model.AnzahlEmails Einträge im E-Mail-Protokoll werden endgültig gelöscht.
+</div>
+
+<form asp-action="ZuruecksetzenAusfuehren" method="post">
+    <div class="mb-3">
+        <label for="bestaetigung" class="form-label">Gib zur Bestätigung das Wort <strong>ZURÜCKSETZEN</strong> ein.</label>
+        <input type="text" class="form-control" id="bestaetigung" name="bestaetigung" autocomplete="off" required />
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-primary" asp-action="Index">Abbrechen</a>
+        <button type="submit" class="btn btn-danger">Endgültig zurücksetzen</button>
+    </div>
+</form>

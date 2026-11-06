@@ -1,0 +1,28 @@
+@model ZuruecksetzenViewModel
+@{
+    ViewData["Title"] = "Schuljahr zurücksetzen";
+}
+
+@section HeaderRechts {
+    <span class="navbar-text">Administration</span>
+    <a class="nav-link" asp-action="Index">Übersicht</a>
+    <partial name="_Abmelden" />
+}
+
+<h1 class="fs-4 fw-bold text-danger">Schuljahr zurücksetzen</h1>
+
+<div class="alert alert-warning my-4" role="alert">
+    <p class="mb-2">Willst du das Schuljahr wirklich zurücksetzen? Dabei werden gelöscht:</p>
+    <ul class="mb-2">
+        <li>@Model.AnzahlG3SuS G3-SuS</li>
+        <li>@Model.AnzahlPraesentationen Präsentationen</li>
+        <li>@Model.AnzahlEintragungen Eintragungen</li>
+        <li>@Model.AnzahlEmails Einträge im E-Mail-Protokoll</li>
+    </ul>
+    <p class="mb-0">Die Administrationslogins bleiben bestehen. Die Eintragungsphase wird wieder geöffnet.</p>
+</div>
+
+<div class="d-flex gap-2">
+    <a class="btn btn-outline-primary" asp-action="Index">Abbrechen</a>
+    <a class="btn btn-danger" asp-action="ZuruecksetzenBestaetigen">Ja, weiter</a>
+</div>
