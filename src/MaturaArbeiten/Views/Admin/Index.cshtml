@@ -1,4 +1,5 @@
-﻿@{
+@model UebersichtViewModel
+@{
     ViewData["Title"] = "Administration";
 }
 
@@ -35,9 +36,14 @@
 <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
     <div>
         <h1 class="fs-4 fw-bold text-primary-emphasis">Administration</h1>
-        <p class="text-body-secondary mb-0">Eintragungsphase: <strong>offen</strong> · 87 von 100 G3-SuS haben zwei Präsentationen gewählt</p>
+        <p class="text-body-secondary mb-0">
+            Eintragungsphase: <strong>@(Model.PhaseOffen ? "offen" : "geschlossen")</strong>
+            · @Model.MitPflicht von @Model.GesamtG3SuS G3-SuS haben @Model.Pflicht Präsentationen gewählt
+        </p>
     </div>
-    <button type="button" class="btn btn-outline-primary">Eintragungsphase schliessen</button>
+    <form asp-action="PhaseUmschalten" method="post">
+        <button type="submit" class="btn btn-outline-primary">@(Model.PhaseOffen ? "Eintragungsphase schliessen" : "Eintragungsphase öffnen")</button>
+    </form>
 </div>
 
 <div class="row g-4">
@@ -78,9 +84,9 @@
                     <span>Bestätigungen an G3-SuS mit 2 Eintragungen</span>
                     <button type="button" class="btn btn-primary">Versenden</button>
                 </div>
-                <p class="mt-4 mb-0">Versendet: 100 von 100</p>
+                <p class="mt-4 mb-0">Zugangsdaten versendet: @Model.ZugangsdatenVersendet von @Model.GesamtG3SuS</p>
                 <div class="d-flex justify-content-between align-items-center gap-3 mt-3">
-                    <span>Fehlgeschlagen: 0 <a class="ms-3" href="#">Liste anzeigen</a></span>
+                    <span>Fehlgeschlagen: @Model.ZugangsdatenFehlgeschlagen <a class="ms-3" href="#">Liste anzeigen</a></span>
                     <button type="button" class="btn btn-outline-primary">Erneut senden</button>
                 </div>
             </div>
@@ -114,7 +120,7 @@
             <div class="card-body p-4">
                 <h2 class="card-title fs-5 fw-bold mb-0 text-danger">Schuljahr zurücksetzen</h2>
                 <p class="mt-3 text-body-secondary">Löscht alle G3-SuS, alle Präsentationen, alle Eintragungen und das E-Mail-Protokoll. Die Administrationslogins bleiben bestehen.</p>
-                <button type="button" class="btn btn-danger">Zurücksetzen</button>
+                <a class="btn btn-danger" asp-action="Zuruecksetzen">Zurücksetzen</a>
             </div>
         </section>
     </div>

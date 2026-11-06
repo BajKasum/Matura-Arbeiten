@@ -19,6 +19,7 @@ builder.Services.AddScoped<IPraesentationService, PraesentationService>();
 builder.Services.AddScoped<IEintragungService, EintragungService>();
 builder.Services.AddScoped<IImportService, ImportService>();
 builder.Services.AddScoped<IZugangsdatenService, ZugangsdatenService>();
+builder.Services.AddScoped<IAdministrationService, AdministrationService>();
 builder.Services.AddSingleton<IEmailService, KonsolenEmailService>();
 
 builder.Services

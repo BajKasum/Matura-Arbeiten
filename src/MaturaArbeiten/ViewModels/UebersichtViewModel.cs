@@ -1,0 +1,9 @@
+namespace MaturaArbeiten.ViewModels;
+
+public sealed record UebersichtViewModel(
+    bool PhaseOffen,
+    int GesamtG3SuS,
+    int MitPflicht,
+    int Pflicht,
+    int ZugangsdatenVersendet,
+    int ZugangsdatenFehlgeschlagen);

@@ -1,4 +1,4 @@
-﻿using MaturaArbeiten.Domain;
+using MaturaArbeiten.Domain;
 using MaturaArbeiten.Services;
 using MaturaArbeiten.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -8,12 +8,43 @@ namespace MaturaArbeiten.Controllers;
 
 [Authorize(Roles = Rollen.Administration)]
 public class AdminController(
+    IAdministrationService administrationService,
     IImportService importService,
     IZugangsdatenService zugangsdatenService) : Controller
 {
     private const long MaxDateigroesse = 1_000_000;
+    private const string Bestaetigungswort = "ZURÜCKSETZEN";
 
-    public IActionResult Index() => View();
+    public IActionResult Index() => View(administrationService.Uebersicht());
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public IActionResult PhaseUmschalten()
+    {
+        TempData["Erfolg"] = administrationService.PhaseUmschalten()
+            ? "Die Eintragungsphase ist jetzt offen."
+            : "Die Eintragungsphase ist jetzt geschlossen.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public IActionResult Zuruecksetzen() => View(administrationService.Vorschau());
+
+    public IActionResult ZuruecksetzenBestaetigen() => View(administrationService.Vorschau());
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public IActionResult ZuruecksetzenAusfuehren(string? bestaetigung)
+    {
+        if (!string.Equals(bestaetigung?.Trim(), Bestaetigungswort, StringComparison.Ordinal))
+        {
+            TempData["Fehler"] = $"Bitte gib zur Bestätigung das Wort {Bestaetigungswort} genau so ein.";
+            return RedirectToAction(nameof(ZuruecksetzenBestaetigen));
+        }
+
+        administrationService.Zuruecksetzen();
+        TempData["Erfolg"] = "Das Schuljahr wurde zurückgesetzt. Die Eintragungsphase ist wieder offen.";
+
+        return RedirectToAction(nameof(Index));
+    }
 
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult ImportPraesentationen(IFormFile? datei) =>
