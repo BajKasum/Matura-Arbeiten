@@ -3,12 +3,6 @@
     ViewData["Title"] = "Import " + Model.Titel;
 }
 
-@section HeaderRechts {
-    <span class="navbar-text">Administration</span>
-    <a class="nav-link" asp-action="Index">Übersicht</a>
-    <partial name="_Abmelden" />
-}
-
 <h1 class="fs-4 fw-bold text-primary-emphasis">Import: @Model.Titel</h1>
 
 <div class="alert @(Model.Geladen > 0 ? "alert-success" : "alert-warning") my-4" role="status">

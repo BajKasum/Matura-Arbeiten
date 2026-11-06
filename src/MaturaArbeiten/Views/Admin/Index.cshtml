@@ -3,26 +3,6 @@
     ViewData["Title"] = "Administration";
 }
 
-@section HeaderRechts {
-    <span class="navbar-text">Administration</span>
-    <a class="nav-link" href="#">Passwort ändern</a>
-    <partial name="_Abmelden" />
-}
-
-@section Unternavigation {
-    <nav class="bg-body-tertiary border-bottom" aria-label="Administration">
-        <div class="container-xl">
-            <ul class="nav nav-underline">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Übersicht</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Präsentationen</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">G3-SuS verwalten</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Eintragungen verwalten</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Administrationslogins</a></li>
-            </ul>
-        </div>
-    </nav>
-}
-
 @if (TempData["Erfolg"] is string erfolg)
 {
     <div class="alert alert-success mb-4" role="status">@erfolg</div>

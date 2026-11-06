@@ -3,12 +3,6 @@
     ViewData["Title"] = "Präsentationen auswählen";
 }
 
-@section HeaderRechts {
-    <span class="navbar-text">G3-SuS</span>
-    <a class="nav-link" asp-controller="Eintragung" asp-action="MeineEintragungen">Meine Eintragungen</a>
-    <partial name="_Abmelden" />
-}
-
 @if (TempData["Erfolg"] is string erfolg)
 {
     <div class="alert alert-success mb-4" role="status">@erfolg</div>

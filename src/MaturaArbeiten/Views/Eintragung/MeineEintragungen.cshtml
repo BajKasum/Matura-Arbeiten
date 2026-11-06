@@ -3,12 +3,6 @@
     ViewData["Title"] = "Meine Eintragungen";
 }
 
-@section HeaderRechts {
-    <span class="navbar-text">G3-SuS</span>
-    <a class="nav-link" asp-controller="Praesentation" asp-action="Index">Präsentationen auswählen</a>
-    <partial name="_Abmelden" />
-}
-
 @if (Model.PflichtErfuellt)
 {
     <div class="alert alert-success mb-4" role="status">Pflichtbesuch erfüllt.</div>
