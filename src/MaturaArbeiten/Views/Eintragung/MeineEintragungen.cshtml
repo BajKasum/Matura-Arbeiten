@@ -34,29 +34,47 @@ else
 }
 else
 {
-    <table class="table table-bordered align-middle">
-        <thead class="table-light">
-            <tr>
-                <th scope="col">Thema</th>
-                <th scope="col">Datum</th>
-                <th scope="col">Uhrzeit</th>
-                <th scope="col">Raum</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var zeile in Model.Zeilen)
-            {
+    <div class="d-none d-md-block">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
                 <tr>
-                    <td>@zeile.Thema</td>
-                    <td>@zeile.Datum.ToString("dd.MM.yyyy")</td>
-                    <td>@zeile.Uhrzeit.ToString("HH:mm")</td>
-                    <td>@zeile.Raum</td>
-                    <td><span class="badge text-bg-success">Eingetragen</span></td>
+                    <th scope="col">Thema</th>
+                    <th scope="col">Datum</th>
+                    <th scope="col">Uhrzeit</th>
+                    <th scope="col">Raum</th>
+                    <th scope="col">Status</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var zeile in Model.Zeilen)
+                {
+                    <tr>
+                        <td>@zeile.Thema</td>
+                        <td>@zeile.Datum.ToString("dd.MM.yyyy")</td>
+                        <td>@zeile.Uhrzeit.ToString("HH:mm")</td>
+                        <td>@zeile.Raum</td>
+                        <td><span class="badge text-bg-success">Eingetragen</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-md-none">
+        @foreach (var zeile in Model.Zeilen)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="card-title fs-6 fw-bold">@zeile.Thema</h2>
+                    <ul class="list-unstyled text-body-secondary mb-3">
+                        <li>@zeile.Datum.ToString("dd.MM.yyyy"), @zeile.Uhrzeit.ToString("HH:mm") Uhr</li>
+                        <li>Raum @zeile.Raum</li>
+                    </ul>
+                    <span class="badge text-bg-success">Eingetragen</span>
+                </div>
+            </div>
+        }
+    </div>
 }
 
 <p class="mt-4 text-body-secondary">Änderungen an den Eintragungen sind nur über die Administration möglich.</p>
