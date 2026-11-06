@@ -1,0 +1,51 @@
+@model AdminPraesentationenViewModel
+@{
+    ViewData["Title"] = "Präsentationen";
+}
+
+<h1 class="fs-4 fw-bold text-primary-emphasis">Präsentationen</h1>
+<p class="text-body-secondary mb-4">
+    @Model.Zeilen.Count Präsentationen, Platzkontingent @Model.Platzkontingent.
+    Präsentationen werden nicht einzeln geändert: Fehler in der CSV-Datei korrigieren und neu laden.
+</p>
+
+@if (Model.Zeilen.Count == 0)
+{
+    <p class="text-body-secondary">Es sind noch keine Präsentationen geladen.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Thema</th>
+                    <th scope="col">Datum</th>
+                    <th scope="col">Uhrzeit</th>
+                    <th scope="col">Raum</th>
+                    <th scope="col">Zuseher</th>
+                    <th scope="col">Freie Plätze</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var zeile in Model.Zeilen)
+                {
+                    <tr>
+                        <td>@zeile.Thema</td>
+                        <td>@zeile.Datum.ToString("dd.MM.yyyy")</td>
+                        <td>@zeile.Uhrzeit.ToString("HH:mm")</td>
+                        <td>@zeile.Raum</td>
+                        <td>@zeile.Zuseher</td>
+                        <td>
+                            @zeile.FreiePlaetze
+                            @if (zeile.FreiePlaetze <= 0)
+                            {
+                                <span class="badge text-bg-danger ms-2">voll</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
