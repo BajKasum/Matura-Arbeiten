@@ -1,6 +1,8 @@
-﻿namespace MaturaArbeiten.Services
+﻿using MaturaArbeiten.Domain;
+
+namespace MaturaArbeiten.Services;
+
+public interface IEmailService
 {
-    public class IEmailService
-    {
-    }
+    bool Senden(Mail mail);
 }
