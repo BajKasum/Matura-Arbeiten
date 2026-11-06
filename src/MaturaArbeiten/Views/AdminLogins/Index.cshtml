@@ -16,7 +16,7 @@
 <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
     <div>
         <h1 class="fs-4 fw-bold text-primary-emphasis">Administrationslogins</h1>
-        <p class="text-body-secondary mb-0">@Model.Count @(Model.Count == 1 ? "Administrationslogin" : "Administrationslogins")</p>
+        <p class="text-body-secondary mb-0">@Mehrzahl.Von(Model.Count, "Administrationslogin", "Administrationslogins")</p>
     </div>
     <a class="btn btn-primary" asp-action="Neu">Administrationslogin anlegen</a>
 </div>
