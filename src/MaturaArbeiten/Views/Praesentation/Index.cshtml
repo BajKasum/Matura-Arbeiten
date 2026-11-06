@@ -1,4 +1,4 @@
-﻿@model PraesentationenViewModel
+@model PraesentationenViewModel
 @{
     ViewData["Title"] = "Präsentationen auswählen";
 }
@@ -23,6 +23,12 @@
 else if (Model.GewaehlteAnzahl >= Model.Pflicht)
 {
     <div class="alert alert-success" role="status">Du hast alle Präsentationen gewählt. Deine Eintragungen findest du unter "Meine Eintragungen".</div>
+}
+else if (!Model.NochErreichbar)
+{
+    <div class="alert alert-warning" role="alert">
+        Für dich gibt es nicht mehr genug passende Präsentationen. Die Administration sieht das und trägt dich von Hand ein.
+    </div>
 }
 
 @if (Model.Zeilen.Count == 0)
