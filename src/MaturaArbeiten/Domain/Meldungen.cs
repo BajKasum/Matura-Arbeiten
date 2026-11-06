@@ -1,4 +1,4 @@
-﻿namespace MaturaArbeiten.Domain;
+namespace MaturaArbeiten.Domain;
 
 public static class Meldungen
 {
@@ -10,6 +10,15 @@ public static class Meldungen
         Abweisung.SchonZweiEintragungen => "Du hast schon zwei Präsentationen gewählt.",
         Abweisung.PraesentationVoll => "Diese Präsentation ist inzwischen voll. Bitte wähle eine andere.",
         Abweisung.Terminkollision => "Diese Präsentation läuft gleichzeitig mit einer, die du schon gewählt hast.",
+        _ => throw new ArgumentOutOfRangeException(nameof(grund))
+    };
+
+    public static string FuerAdministration(Abweisung grund) => grund switch
+    {
+        Abweisung.PhaseGeschlossen => "Die Eintragungsphase ist geschlossen.",
+        Abweisung.SchonZweiEintragungen => "Dieser G3-SuS hat schon zwei Eintragungen.",
+        Abweisung.PraesentationVoll => "Diese Präsentation ist voll.",
+        Abweisung.Terminkollision => "Dieser G3-SuS ist schon bei einer Präsentation zur gleichen Zeit eingetragen.",
         _ => throw new ArgumentOutOfRangeException(nameof(grund))
     };
 

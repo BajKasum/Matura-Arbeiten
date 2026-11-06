@@ -1,0 +1,55 @@
+@model EintragungFormularViewModel
+@{
+    var neu = ViewContext.RouteData.Values["action"]?.ToString() == "Neu";
+    ViewData["Title"] = neu ? "Eintragung anlegen" : "Eintragung ändern";
+}
+
+<h1 class="fs-4 fw-bold text-primary-emphasis mb-4">@ViewData["Title"]</h1>
+
+@if (ViewData.ModelState.TryGetValue(string.Empty, out var modellFehler) && modellFehler.Errors.Count > 0)
+{
+    <div class="alert alert-danger" role="alert">@string.Join(" ", modellFehler.Errors.Select(f => f.ErrorMessage))</div>
+}
+
+<div class="row">
+    <div class="col-12 col-lg-8">
+        <form method="post" asp-action="@(neu ? "Neu" : "Aendern")" asp-route-id="@ViewContext.RouteData.Values["id"]">
+            <div class="mb-3">
+                <label for="G3susId" class="form-label">G3-SuS</label>
+                @if (neu)
+                {
+                    <select class="form-select" id="G3susId" name="G3susId" required>
+                        <option value="">Bitte wählen</option>
+                        @foreach (var auswahl in Model.G3SuS)
+                        {
+                            <option value="@auswahl.Wert" selected="@(auswahl.Wert == Model.Eingabe.G3susId)">@auswahl.Text</option>
+                        }
+                    </select>
+                    <div class="text-danger">@Html.ValidationMessage("G3susId")</div>
+                }
+                else
+                {
+                    <input type="text" class="form-control" id="G3susId" value="@Model.G3SuSName" disabled />
+                    <input type="hidden" name="G3susId" value="@Model.Eingabe.G3susId" />
+                }
+            </div>
+
+            <div class="mb-4">
+                <label for="PraesentationId" class="form-label">Präsentation</label>
+                <select class="form-select" id="PraesentationId" name="PraesentationId" required>
+                    <option value="">Bitte wählen</option>
+                    @foreach (var auswahl in Model.Praesentationen)
+                    {
+                        <option value="@auswahl.Wert" selected="@(auswahl.Wert == Model.Eingabe.PraesentationId)">@auswahl.Text</option>
+                    }
+                </select>
+                <div class="text-danger">@Html.ValidationMessage("PraesentationId")</div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-primary" asp-action="Index">Abbrechen</a>
+                <button type="submit" class="btn btn-primary">Speichern</button>
+            </div>
+        </form>
+    </div>
+</div>
