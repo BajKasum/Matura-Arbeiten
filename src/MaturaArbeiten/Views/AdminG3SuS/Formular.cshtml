@@ -1,4 +1,4 @@
-@model G3SuSFormular
+@model PersonFormular
 @{
     var neu = ViewContext.RouteData.Values["action"]?.ToString() == "Neu";
     ViewData["Title"] = neu ? "G3-SuS anlegen" : "G3-SuS ändern";

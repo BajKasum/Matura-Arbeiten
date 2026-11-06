@@ -1,0 +1,67 @@
+@model IReadOnlyList<AdminLoginZeile>
+@{
+    ViewData["Title"] = "Administrationslogins";
+}
+
+@if (TempData["Erfolg"] is string erfolg)
+{
+    <div class="alert alert-success mb-4" role="status">@erfolg</div>
+}
+
+@if (TempData["Fehler"] is string fehler)
+{
+    <div class="alert alert-danger mb-4" role="alert">@fehler</div>
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+    <div>
+        <h1 class="fs-4 fw-bold text-primary-emphasis">Administrationslogins</h1>
+        <p class="text-body-secondary mb-0">@Model.Count @(Model.Count == 1 ? "Administrationslogin" : "Administrationslogins")</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Neu">Administrationslogin anlegen</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">Nachname</th>
+                <th scope="col">Vorname</th>
+                <th scope="col">E-Mail</th>
+                <th scope="col">Zugangsdaten</th>
+                <th scope="col">Aktion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var zeile in Model)
+            {
+                <tr>
+                    <td>@zeile.Nachname</td>
+                    <td>@zeile.Vorname</td>
+                    <td>@zeile.Email</td>
+                    <td>
+                        @if (zeile.HatPasswort)
+                        {
+                            <span class="badge text-bg-success">verschickt</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-secondary">noch nicht</span>
+                        }
+                    </td>
+                    <td class="text-nowrap">
+                        <a class="btn btn-outline-primary btn-sm" asp-action="Bearbeiten" asp-route-id="@zeile.Id">Ändern</a>
+                        <form asp-action="ZugangsdatenSenden" asp-route-id="@zeile.Id" method="post" class="d-inline"
+                              onsubmit="return confirm('Neue Zugangsdaten verschicken? Das bisherige Passwort gilt dann nicht mehr.')">
+                            <button type="submit" class="btn btn-outline-primary btn-sm">Neue Zugangsdaten</button>
+                        </form>
+                        <form asp-action="Loeschen" asp-route-id="@zeile.Id" method="post" class="d-inline"
+                              onsubmit="return confirm('Dieses Administrationslogin wirklich löschen?')">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Löschen</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

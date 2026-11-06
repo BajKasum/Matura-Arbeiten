@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using MaturaArbeiten.Data;
 using MaturaArbeiten.Domain;
 using MaturaArbeiten.Models;
@@ -27,6 +27,29 @@ public sealed class ZugangsdatenService(
         db.SaveChanges();
 
         return (ergebnisse.Count(erfolg => erfolg), ergebnisse.Count(erfolg => !erfolg));
+    }
+
+    public bool AnAdministrationslogin(int id)
+    {
+        var login = db.Administrationslogins.SingleOrDefault(a => a.Id == id);
+
+        if (login is null)
+        {
+            return false;
+        }
+
+        var passwort = NeuesPasswort();
+        var erfolg = emailService.Senden(Mailtexte.ZugangsdatenAdministration(login.Vorname, login.Email, passwort));
+
+        if (erfolg)
+        {
+            login.PasswortHash = hasher.HashPassword(login.Email, passwort);
+            login.Fehlversuche = 0;
+            login.GesperrtBis = null;
+            db.SaveChanges();
+        }
+
+        return erfolg;
     }
 
     private bool Sende(G3SuS schueler, DateTime jetzt)

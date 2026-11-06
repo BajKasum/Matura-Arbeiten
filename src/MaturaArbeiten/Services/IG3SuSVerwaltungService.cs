@@ -6,11 +6,11 @@ public interface IG3SuSVerwaltungService
 {
     IReadOnlyList<G3SuSZeile> Liste();
 
-    G3SuSFormular? Finden(int id);
+    PersonFormular? Finden(int id);
 
-    string? Anlegen(G3SuSFormular eingabe);
+    string? Anlegen(PersonFormular eingabe);
 
-    string? Aendern(int id, G3SuSFormular eingabe);
+    string? Aendern(int id, PersonFormular eingabe);
 
     bool Loeschen(int id);
 }

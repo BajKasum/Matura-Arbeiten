@@ -29,17 +29,17 @@ public sealed class G3SuSVerwaltungService(AppDbContext db) : IG3SuSVerwaltungSe
             .ToList();
     }
 
-    public G3SuSFormular? Finden(int id) =>
+    public PersonFormular? Finden(int id) =>
         db.G3SuSListe
             .Where(g => g.Id == id)
-            .Select(g => new G3SuSFormular { Vorname = g.Vorname, Nachname = g.Nachname, Email = g.Email })
+            .Select(g => new PersonFormular { Vorname = g.Vorname, Nachname = g.Nachname, Email = g.Email })
             .SingleOrDefault();
 
-    public string? Anlegen(G3SuSFormular eingabe)
+    public string? Anlegen(PersonFormular eingabe)
     {
         var email = eingabe.Email.Trim();
 
-        if (IstVergeben(email, null))
+        if (db.EmailVergeben(email))
         {
             return EmailVergeben;
         }
@@ -55,7 +55,7 @@ public sealed class G3SuSVerwaltungService(AppDbContext db) : IG3SuSVerwaltungSe
         return null;
     }
 
-    public string? Aendern(int id, G3SuSFormular eingabe)
+    public string? Aendern(int id, PersonFormular eingabe)
     {
         var schueler = db.G3SuSListe.SingleOrDefault(g => g.Id == id);
 
@@ -66,7 +66,7 @@ public sealed class G3SuSVerwaltungService(AppDbContext db) : IG3SuSVerwaltungSe
 
         var email = eingabe.Email.Trim();
 
-        if (IstVergeben(email, id))
+        if (db.EmailVergeben(email, ausserG3SuSId: id))
         {
             return EmailVergeben;
         }
@@ -95,8 +95,4 @@ public sealed class G3SuSVerwaltungService(AppDbContext db) : IG3SuSVerwaltungSe
 
         return true;
     }
-
-    private bool IstVergeben(string email, int? ausserG3SuSId) =>
-        db.G3SuSListe.Any(g => g.Email == email && g.Id != ausserG3SuSId)
-        || db.Administrationslogins.Any(a => a.Email == email);
 }

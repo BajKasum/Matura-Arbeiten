@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MaturaArbeiten.ViewModels;
 
-public sealed class G3SuSFormular
+public sealed class PersonFormular
 {
     [Required(ErrorMessage = "Bitte gib den Vornamen ein.")]
     [StringLength(50, ErrorMessage = "Der Vorname darf höchstens 50 Zeichen lang sein.")]
