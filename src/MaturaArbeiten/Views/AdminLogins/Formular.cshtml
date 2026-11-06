@@ -1,0 +1,40 @@
+@model PersonFormular
+@{
+    var neu = ViewContext.RouteData.Values["action"]?.ToString() == "Neu";
+    ViewData["Title"] = neu ? "Administrationslogin anlegen" : "Administrationslogin ändern";
+}
+
+<h1 class="fs-4 fw-bold text-primary-emphasis mb-4">@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-12 col-md-8 col-lg-6">
+        <form method="post" asp-action="@(neu ? "Neu" : "Bearbeiten")" asp-route-id="@ViewContext.RouteData.Values["id"]">
+            <div class="mb-3">
+                <label asp-for="Vorname" class="form-label">Vorname</label>
+                <input asp-for="Vorname" class="form-control" maxlength="50" autocomplete="off" />
+                <span asp-validation-for="Vorname" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Nachname" class="form-label">Nachname</label>
+                <input asp-for="Nachname" class="form-control" maxlength="50" autocomplete="off" />
+                <span asp-validation-for="Nachname" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Email" class="form-label">E-Mail-Adresse</label>
+                <input asp-for="Email" class="form-control" maxlength="100" autocomplete="off" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                @if (neu)
+                {
+                    <div class="form-text">Die Zugangsdaten werden nach dem Speichern an diese Adresse verschickt.</div>
+                }
+            </div>
+
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-primary" asp-action="Index">Abbrechen</a>
+                <button type="submit" class="btn btn-primary">Speichern</button>
+            </div>
+        </form>
+    </div>
+</div>
