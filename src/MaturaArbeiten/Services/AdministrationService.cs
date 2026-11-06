@@ -6,7 +6,8 @@ namespace MaturaArbeiten.Services;
 
 public sealed class AdministrationService(
     AppDbContext db,
-    IPraesentationService praesentationService) : IAdministrationService
+    IPraesentationService praesentationService,
+    ILogger<AdministrationService> logger) : IAdministrationService
 {
     public UebersichtViewModel Uebersicht()
     {
@@ -35,6 +36,8 @@ public sealed class AdministrationService(
         einstellung.EintragungsphaseOffen = !einstellung.EintragungsphaseOffen;
         db.SaveChanges();
 
+        logger.LogInformation("Die Eintragungsphase wurde {Zustand}.", einstellung.EintragungsphaseOffen ? "geöffnet" : "geschlossen");
+
         return einstellung.EintragungsphaseOffen;
     }
 
@@ -54,6 +57,8 @@ public sealed class AdministrationService(
         db.Systemeinstellungen.Single().EintragungsphaseOffen = true;
 
         db.SaveChanges();
+
+        logger.LogWarning("Das Schuljahr wurde zurückgesetzt.");
     }
 
     private static int VersendetAn(IEnumerable<ProtokollEintrag> protokoll, string typ) =>

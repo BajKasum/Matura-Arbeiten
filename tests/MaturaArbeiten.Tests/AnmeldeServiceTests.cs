@@ -1,6 +1,7 @@
 using MaturaArbeiten.Data;
 using MaturaArbeiten.Domain;
 using MaturaArbeiten.Services;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace MaturaArbeiten.Tests;
 
@@ -12,7 +13,7 @@ public class AnmeldeServiceTests
     private readonly TestZeit _zeit = new();
     private readonly AppDbContext _db = TestDb.Neu();
 
-    private AnmeldeService Dienst() => new(_db, TestDb.Hasher, _zeit);
+    private AnmeldeService Dienst() => new(_db, TestDb.Hasher, _zeit, NullLogger<AnmeldeService>.Instance);
 
     [TestMethod]
     public void Eine_unbekannte_Adresse_wird_abgewiesen()

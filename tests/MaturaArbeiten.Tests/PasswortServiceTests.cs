@@ -1,6 +1,7 @@
 using MaturaArbeiten.Data;
 using MaturaArbeiten.Domain;
 using MaturaArbeiten.Services;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace MaturaArbeiten.Tests;
 
@@ -14,7 +15,7 @@ public class PasswortServiceTests
     private readonly AppDbContext _db = TestDb.Neu();
 
     private PasswortService Dienst() =>
-        new(_db, new AnmeldeService(_db, TestDb.Hasher, _zeit), TestDb.Hasher, _zeit);
+        new(_db, new AnmeldeService(_db, TestDb.Hasher, _zeit, NullLogger<AnmeldeService>.Instance), TestDb.Hasher, _zeit);
 
     [TestMethod]
     public void G3SuS_aendert_das_Passwort_und_gilt_danach_als_geaendert()
@@ -25,7 +26,7 @@ public class PasswortServiceTests
 
         Assert.IsNull(fehler);
         Assert.IsTrue(_db.G3SuSListe.Single().PasswortGeaendert);
-        var anmeldung = new AnmeldeService(_db, TestDb.Hasher, _zeit);
+        var anmeldung = new AnmeldeService(_db, TestDb.Hasher, _zeit, NullLogger<AnmeldeService>.Instance);
         Assert.IsInstanceOfType<AnmeldeErgebnis.Erfolg>(anmeldung.Anmelden(anna.Email, Neu));
         Assert.IsInstanceOfType<AnmeldeErgebnis.Abgewiesen>(anmeldung.Anmelden(anna.Email, Alt));
     }
@@ -38,7 +39,7 @@ public class PasswortServiceTests
         var fehler = Dienst().Aendern(Rollen.Administration, admin.Id, Alt, Neu);
 
         Assert.IsNull(fehler);
-        var anmeldung = new AnmeldeService(_db, TestDb.Hasher, _zeit);
+        var anmeldung = new AnmeldeService(_db, TestDb.Hasher, _zeit, NullLogger<AnmeldeService>.Instance);
         Assert.IsInstanceOfType<AnmeldeErgebnis.Erfolg>(anmeldung.Anmelden(admin.Email, Neu));
     }
 

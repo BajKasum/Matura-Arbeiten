@@ -7,7 +7,8 @@ namespace MaturaArbeiten.Services;
 public sealed class AnmeldeService(
     AppDbContext db,
     IPasswordHasher<string> hasher,
-    TimeProvider zeit) : IAnmeldeService
+    TimeProvider zeit,
+    ILogger<AnmeldeService> logger) : IAnmeldeService
 {
     public AnmeldeErgebnis Anmelden(string email, string passwort)
     {
@@ -88,8 +89,13 @@ public sealed class AnmeldeService(
             return erfolg();
         }
 
-        return Sperre.IstGesperrt(neu, jetzt)
-            ? new AnmeldeErgebnis.Gesperrt(neu.GesperrtBis!.Value)
-            : new AnmeldeErgebnis.Abgewiesen();
+        if (Sperre.IstGesperrt(neu, jetzt))
+        {
+            logger.LogWarning("Ein Konto wurde nach zu vielen falschen Passwörtern bis {Bis} gesperrt.", neu.GesperrtBis);
+
+            return new AnmeldeErgebnis.Gesperrt(neu.GesperrtBis!.Value);
+        }
+
+        return new AnmeldeErgebnis.Abgewiesen();
     }
 }
