@@ -12,10 +12,10 @@ public class AdminG3SuSController(IG3SuSVerwaltungService service) : Controller
     public IActionResult Index() => View(service.Liste());
 
     [HttpGet]
-    public IActionResult Neu() => View("Formular", new G3SuSFormular());
+    public IActionResult Neu() => View("Formular", new PersonFormular());
 
     [HttpPost, ValidateAntiForgeryToken]
-    public IActionResult Neu(G3SuSFormular eingabe)
+    public IActionResult Neu(PersonFormular eingabe)
     {
         if (!ModelState.IsValid)
         {
@@ -26,7 +26,7 @@ public class AdminG3SuSController(IG3SuSVerwaltungService service) : Controller
 
         if (fehler is not null)
         {
-            ModelState.AddModelError(nameof(G3SuSFormular.Email), fehler);
+            ModelState.AddModelError(nameof(PersonFormular.Email), fehler);
             return View("Formular", eingabe);
         }
 
@@ -39,7 +39,7 @@ public class AdminG3SuSController(IG3SuSVerwaltungService service) : Controller
         service.Finden(id) is { } formular ? View("Formular", formular) : NotFound();
 
     [HttpPost, ValidateAntiForgeryToken]
-    public IActionResult Bearbeiten(int id, G3SuSFormular eingabe)
+    public IActionResult Bearbeiten(int id, PersonFormular eingabe)
     {
         if (!ModelState.IsValid)
         {
@@ -50,7 +50,7 @@ public class AdminG3SuSController(IG3SuSVerwaltungService service) : Controller
 
         if (fehler is not null)
         {
-            ModelState.AddModelError(nameof(G3SuSFormular.Email), fehler);
+            ModelState.AddModelError(nameof(PersonFormular.Email), fehler);
             return View("Formular", eingabe);
         }
 
