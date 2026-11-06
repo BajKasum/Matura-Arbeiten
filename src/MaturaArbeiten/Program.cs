@@ -22,6 +22,8 @@ builder.Services.AddScoped<IZugangsdatenService, ZugangsdatenService>();
 builder.Services.AddScoped<IAdministrationService, AdministrationService>();
 builder.Services.AddScoped<IG3SuSVerwaltungService, G3SuSVerwaltungService>();
 builder.Services.AddScoped<IAdminLoginService, AdminLoginService>();
+builder.Services.AddScoped<IBestaetigungService, BestaetigungService>();
+builder.Services.AddScoped<IEmailProtokollService, EmailProtokollService>();
 builder.Services.AddSingleton<IEmailService, KonsolenEmailService>();
 
 builder.Services

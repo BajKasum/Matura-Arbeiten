@@ -6,4 +6,5 @@ public sealed record UebersichtViewModel(
     int MitPflicht,
     int Pflicht,
     int ZugangsdatenVersendet,
-    int ZugangsdatenFehlgeschlagen);
+    int BestaetigungenVersendet,
+    int Fehlgeschlagen);

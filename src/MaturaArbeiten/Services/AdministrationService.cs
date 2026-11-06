@@ -14,31 +14,16 @@ public sealed class AdministrationService(AppDbContext db) : IAdministrationServ
             .GroupBy(e => e.G3susId)
             .Count(gruppe => gruppe.Count() >= Regeln.PflichtEintragungen);
 
-        var zugangsdaten = db.EmailVersandListe
-            .Where(m => m.Typ == "Zugangsdaten")
-            .Select(m => new { m.G3susId, m.Status })
-            .ToList();
-
-        var versendet = zugangsdaten
-            .Where(z => z.Status == "Gesendet")
-            .Select(z => z.G3susId)
-            .Distinct()
-            .ToList();
-
-        var fehlgeschlagen = zugangsdaten
-            .Where(z => z.Status == "Fehlgeschlagen")
-            .Select(z => z.G3susId)
-            .Distinct()
-            .Except(versendet)
-            .Count();
+        var protokoll = db.Protokoll();
 
         return new UebersichtViewModel(
             einstellung.EintragungsphaseOffen,
             db.G3SuSListe.Count(),
             mitPflicht,
             Regeln.PflichtEintragungen,
-            versendet.Count,
-            fehlgeschlagen);
+            VersendetAn(protokoll, "Zugangsdaten"),
+            VersendetAn(protokoll, "Bestaetigung"),
+            EmailProtokoll.OffeneFehlschlaege(protokoll).Count);
     }
 
     public bool PhaseUmschalten()
@@ -67,4 +52,11 @@ public sealed class AdministrationService(AppDbContext db) : IAdministrationServ
 
         db.SaveChanges();
     }
+
+    private static int VersendetAn(IEnumerable<ProtokollEintrag> protokoll, string typ) =>
+        protokoll
+            .Where(e => e.Typ == typ && e.Status == "Gesendet")
+            .Select(e => e.G3susId)
+            .Distinct()
+            .Count();
 }

@@ -10,7 +10,8 @@ namespace MaturaArbeiten.Controllers;
 public class AdminController(
     IAdministrationService administrationService,
     IImportService importService,
-    IZugangsdatenService zugangsdatenService) : Controller
+    IZugangsdatenService zugangsdatenService,
+    IBestaetigungService bestaetigungService) : Controller
 {
     private const long MaxDateigroesse = 1_000_000;
     private const string Bestaetigungswort = "ZURÜCKSETZEN";
@@ -70,6 +71,27 @@ public class AdminController(
         else
         {
             TempData["Erfolg"] = $"{gesendet} Zugangsdaten wurden verschickt.";
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public IActionResult BestaetigungenVersenden()
+    {
+        var (gesendet, fehlgeschlagen) = bestaetigungService.AnAlle();
+
+        if (gesendet + fehlgeschlagen == 0)
+        {
+            TempData["Fehler"] = "Kein G3-SuS hat schon zwei Eintragungen. Es wurde nichts verschickt.";
+        }
+        else if (fehlgeschlagen > 0)
+        {
+            TempData["Fehler"] = $"{fehlgeschlagen} E-Mails konnten nicht verschickt werden. {gesendet} wurden verschickt.";
+        }
+        else
+        {
+            TempData["Erfolg"] = $"{gesendet} Bestätigungen wurden verschickt.";
         }
 
         return RedirectToAction(nameof(Index));
