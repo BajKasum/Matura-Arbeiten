@@ -1,4 +1,5 @@
-﻿@{
+﻿@model MeineEintragungenViewModel
+@{
     ViewData["Title"] = "Meine Eintragungen";
 }
 
@@ -8,39 +9,50 @@
     <partial name="_Abmelden" />
 }
 
-<div class="alert alert-success mb-4" role="status">
-    Pflichtbesuch erfüllt. Die Bestätigung wurde per E-Mail versendet.
-</div>
+@if (Model.PflichtErfuellt)
+{
+    <div class="alert alert-success mb-4" role="status">Pflichtbesuch erfüllt.</div>
+}
+else
+{
+    <div class="alert alert-info mb-4" role="status">
+        Du hast erst @Model.Zeilen.Count von @Model.Pflicht Präsentationen gewählt.
+        <a class="alert-link" asp-controller="Praesentation" asp-action="Index">Präsentationen auswählen</a>
+    </div>
+}
 
 <h1 class="fs-4 fw-bold text-primary-emphasis">Meine Eintragungen</h1>
-<p class="text-body-secondary mb-4">2 von 2 Präsentationen gewählt</p>
+<p class="text-body-secondary mb-4">@Model.Zeilen.Count von @Model.Pflicht Präsentationen gewählt</p>
 
-<table class="table table-bordered align-middle">
-    <thead class="table-light">
-        <tr>
-            <th scope="col">Thema</th>
-            <th scope="col">Datum</th>
-            <th scope="col">Uhrzeit</th>
-            <th scope="col">Raum</th>
-            <th scope="col">Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Klimawandel und Landwirtschaft</td>
-            <td>12.01.2027</td>
-            <td>08:30</td>
-            <td>204</td>
-            <td><span class="badge text-bg-success">Eingetragen</span></td>
-        </tr>
-        <tr>
-            <td>Fairtrade im Detailhandel</td>
-            <td>13.01.2027</td>
-            <td>09:00</td>
-            <td>302</td>
-            <td><span class="badge text-bg-success">Eingetragen</span></td>
-        </tr>
-    </tbody>
-</table>
+@if (Model.Zeilen.Count == 0)
+{
+    <p class="text-body-secondary">Du hast noch keine Präsentation gewählt.</p>
+}
+else
+{
+    <table class="table table-bordered align-middle">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">Thema</th>
+                <th scope="col">Datum</th>
+                <th scope="col">Uhrzeit</th>
+                <th scope="col">Raum</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var zeile in Model.Zeilen)
+            {
+                <tr>
+                    <td>@zeile.Thema</td>
+                    <td>@zeile.Datum.ToString("dd.MM.yyyy")</td>
+                    <td>@zeile.Uhrzeit.ToString("HH:mm")</td>
+                    <td>@zeile.Raum</td>
+                    <td><span class="badge text-bg-success">Eingetragen</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <p class="mt-4 text-body-secondary">Änderungen an den Eintragungen sind nur über die Administration möglich.</p>
