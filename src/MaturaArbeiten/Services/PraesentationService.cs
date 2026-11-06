@@ -1,4 +1,4 @@
-﻿using MaturaArbeiten.Data;
+using MaturaArbeiten.Data;
 using MaturaArbeiten.Domain;
 using MaturaArbeiten.Models;
 using MaturaArbeiten.ViewModels;
@@ -41,6 +41,29 @@ public sealed class PraesentationService(AppDbContext db) : IPraesentationServic
             eigene.Count,
             Regeln.PflichtEintragungen,
             einstellung.EintragungsphaseOffen);
+    }
+
+    public AdminPraesentationenViewModel Alle()
+    {
+        var einstellung = db.Systemeinstellungen.Single();
+
+        var zeilen = db.Praesentationen
+            .Include(p => p.Eintragungen)
+            .OrderBy(p => p.Datum)
+            .ThenBy(p => p.Uhrzeit)
+            .ThenBy(p => p.Raum)
+            .ToList()
+            .Select(p => new AdminPraesentationZeile(
+                p.Id,
+                p.Thema,
+                p.Datum,
+                p.Uhrzeit,
+                p.Raum,
+                p.Eintragungen.Count,
+                p.GetFreiePlaetze(einstellung.Platzkontingent)))
+            .ToList();
+
+        return new AdminPraesentationenViewModel(zeilen, einstellung.Platzkontingent);
     }
 
     private static bool IstWaehlbar(

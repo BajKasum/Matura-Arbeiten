@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="utf-8" />
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body>
-    <header>
+    <header class="d-print-none">
         <nav class="navbar navbar-expand-md bg-primary" data-bs-theme="dark" aria-label="Hauptmenü">
             <div class="container-xl">
                 <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">Zusehendenverwaltung</a>
@@ -19,14 +19,32 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="hauptmenue">
                     <div class="navbar-nav">
-                        @await RenderSectionAsync("HeaderRechts", required: false)
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <span class="navbar-text">@(User.IsInRole(Rollen.Administration) ? "Administration" : "G3-SuS")</span>
+
+                            @if (User.IsInRole(Rollen.G3SuS))
+                            {
+                                <a class="nav-link" asp-controller="Praesentation" asp-action="Index">Präsentationen auswählen</a>
+                                <a class="nav-link" asp-controller="Eintragung" asp-action="MeineEintragungen">Meine Eintragungen</a>
+                            }
+
+                            <partial name="_Abmelden" />
+                        }
+                        else
+                        {
+                            <span class="navbar-text">Wirtschaftsgymnasium Basel</span>
+                        }
                     </div>
                 </div>
             </div>
         </nav>
-    </header>
 
-    @await RenderSectionAsync("Unternavigation", required: false)
+        @if (User.IsInRole(Rollen.Administration))
+        {
+            <partial name="_AdminNavigation" />
+        }
+    </header>
 
     <main class="container-xl py-5">
         @RenderBody()

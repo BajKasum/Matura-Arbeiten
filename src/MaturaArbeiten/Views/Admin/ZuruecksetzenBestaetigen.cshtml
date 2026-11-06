@@ -3,12 +3,6 @@
     ViewData["Title"] = "Letzte Rückfrage";
 }
 
-@section HeaderRechts {
-    <span class="navbar-text">Administration</span>
-    <a class="nav-link" asp-action="Index">Übersicht</a>
-    <partial name="_Abmelden" />
-}
-
 <h1 class="fs-4 fw-bold text-danger">Letzte Rückfrage</h1>
 
 @if (TempData["Fehler"] is string fehler)
