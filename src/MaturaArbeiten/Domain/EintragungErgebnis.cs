@@ -1,6 +1,12 @@
-﻿namespace MaturaArbeiten.Domain
+﻿namespace MaturaArbeiten.Domain;
+
+public abstract record EintragungErgebnis
 {
-    public class Class
+    private EintragungErgebnis()
     {
     }
+
+    public sealed record Erfolg : EintragungErgebnis;
+
+    public sealed record Abgewiesen(Abweisung Grund) : EintragungErgebnis;
 }
