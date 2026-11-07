@@ -80,9 +80,9 @@
                 </form>
                 <p class="mt-4 mb-1">Zugangsdaten versendet: @Model.ZugangsdatenVersendet von @Model.GesamtG3SuS</p>
                 <p class="mb-0">Bestätigungen versendet: @Model.BestaetigungenVersendet von @Model.MitPflicht</p>
-                <form asp-controller="EmailProtokoll" asp-action="AlleErneutSenden" method="post" class="d-flex justify-content-between align-items-center gap-3 mt-3">
-                    <span>Fehlgeschlagen: @Model.Fehlgeschlagen <a class="ms-3" asp-controller="EmailProtokoll" asp-action="Index">Liste anzeigen</a></span>
-                    <button type="submit" class="btn btn-outline-primary">Erneut senden</button>
+                <form asp-controller="EmailProtokoll" asp-action="AlleErneutSenden" method="post" class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-3">
+                    <span class="text-nowrap">Fehlgeschlagen: @Model.Fehlgeschlagen <a class="ms-3" asp-controller="EmailProtokoll" asp-action="Index">Liste anzeigen</a></span>
+                    <button type="submit" class="btn btn-outline-primary text-nowrap ms-auto">Erneut senden</button>
                 </form>
             </div>
         </section>
