@@ -8,7 +8,7 @@
 </head>
 <body>
     <header class="d-print-none">
-        <nav class="navbar navbar-expand-md bg-primary" data-bs-theme="dark" aria-label="Hauptmenü">
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark" aria-label="Hauptmenü">
             <div class="container-xl">
                 <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">Zusehendenverwaltung</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -20,20 +20,20 @@
                     <div class="navbar-nav">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <span class="navbar-text">@(User.IsInRole(Rollen.Administration) ? "Administration" : "G3-SuS")</span>
+                            <span class="navbar-text text-white">@(User.IsInRole(Rollen.Administration) ? "Administration" : "G3-SuS")</span>
 
                             @if (User.IsInRole(Rollen.G3SuS))
                             {
-                                <a class="nav-link" asp-controller="Praesentation" asp-action="Index">Präsentationen auswählen</a>
-                                <a class="nav-link" asp-controller="Eintragung" asp-action="MeineEintragungen">Meine Eintragungen</a>
+                                <a class="nav-link text-white" asp-controller="Praesentation" asp-action="Index">Präsentationen auswählen</a>
+                                <a class="nav-link text-white" asp-controller="Eintragung" asp-action="MeineEintragungen">Meine Eintragungen</a>
                             }
 
-                            <a class="nav-link" asp-controller="Account" asp-action="PasswortAendern">Passwort ändern</a>
+                            <a class="nav-link text-white" asp-controller="Account" asp-action="PasswortAendern">Passwort ändern</a>
                             <partial name="_Abmelden" />
                         }
                         else
                         {
-                            <span class="navbar-text">Wirtschaftsgymnasium Basel</span>
+                            <span class="navbar-text text-white">Wirtschaftsgymnasium Basel</span>
                         }
                     </div>
                 </div>

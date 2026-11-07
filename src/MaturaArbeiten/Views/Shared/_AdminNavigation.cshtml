@@ -20,7 +20,7 @@
                 var aktiv = controller == name;
 
                 <li class="nav-item">
-                    <a class="nav-link text-nowrap @(aktiv ? "active" : "")" aria-current="@(aktiv ? "page" : null)" asp-controller="@name" asp-action="Index">@text</a>
+                    <a class="nav-link text-nowrap @(aktiv ? "active" : "text-primary-emphasis")" aria-current="@(aktiv ? "page" : null)" asp-controller="@name" asp-action="Index">@text</a>
                 </li>
             }
         </ul>
