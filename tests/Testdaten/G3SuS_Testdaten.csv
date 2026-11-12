@@ -1,0 +1,49 @@
+﻿Vorname;Nachname;E-Mail
+Anna;Muster;anna.muster@stud.edubs.ch
+Ben;Beispiel;ben.beispiel@stud.edubs.ch
+Clara;Keller;clara.keller@stud.edubs.ch
+David;Meier;david.meier@stud.edubs.ch
+Elena;Schmid;elena.schmid@stud.edubs.ch
+Fabian;Weber;fabian.weber@stud.edubs.ch
+Gianna;Huber;gianna.huber@stud.edubs.ch
+Hamza;Yilmaz;hamza.yilmaz@stud.edubs.ch
+Ilir;Krasniqi;ilir.krasniqi@stud.edubs.ch
+Jana;Brunner;jana.brunner@stud.edubs.ch
+Kevin;Baumann;kevin.baumann@stud.edubs.ch
+Lara;Fischer;lara.fischer@stud.edubs.ch
+Marco;Rossi;marco.rossi@stud.edubs.ch
+Nina;Zürcher;nina.zuercher@stud.edubs.ch
+Omar;Hadzic;omar.hadzic@stud.edubs.ch
+Petra;Müller;petra.mueller@stud.edubs.ch
+Quentin;Dubois;quentin.dubois@stud.edubs.ch
+Rina;Berisha;rina.berisha@stud.edubs.ch
+Samuel;Schärer;samuel.schaerer@stud.edubs.ch
+Tamara;Kovac;tamara.kovac@stud.edubs.ch
+Urs;Frei;urs.frei@stud.edubs.ch
+Valentina;Bianchi;valentina.bianchi@stud.edubs.ch
+Xhenis;Hoxha;xhenis.hoxha@stud.edubs.ch
+Yara;El-Amin;yara.el-amin@stud.edubs.ch
+Zoé;O'Brien;zoe.obrien@stud.edubs.ch
+ Lea ; Zimmermann ; lea.zimmermann@stud.edubs.ch 
+Mia;Gross;Mia.Gross@Stud.Edubs.ch
+VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV;NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.testfall@stud.edubs.ch
+
+Testfall;Nur zwei Spalten
+Testfall;Zu;viele.spalten@stud.edubs.ch;extra
+;Ohne Vorname;ohne.vorname@stud.edubs.ch
+Ohne;;ohne.nachname@stud.edubs.ch
+Ohne;Email;
+VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV;Lang;vorname.lang@stud.edubs.ch
+Lang;NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN;nachname.lang@stud.edubs.ch
+Lang;Email;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.testfall@stud.edubs.ch
+Ohne;Klammeraffe;keine-adresse
+Ohne;Domain;anna@
+Ohne;Lokalteil;@stud.edubs.ch
+Mit;Leerzeichen;anna muster@stud.edubs.ch
+Mit;Anzeigename;Anna Muster <anna.anzeigename@stud.edubs.ch>
+Zwei;Adressen;zwei.eins@stud.edubs.ch,zwei.zwei@stud.edubs.ch
+Doppelt;Gleiche Schreibweise;anna.muster@stud.edubs.ch
+Doppelt;Andere Schreibweise;ANNA.MUSTER@STUD.EDUBS.CH
+Doppelt;Mit Leerzeichen; anna.muster@stud.edubs.ch 
+kaputt
+"Testfall;offenes;Anführungszeichen@stud.edubs.ch
