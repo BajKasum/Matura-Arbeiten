@@ -1,0 +1,42 @@
+﻿Thema;Datum;Uhrzeit;Raum
+Klimawandel und Landwirtschaft in der Nordwestschweiz;12.01.2027;08:30;A101
+Social Media und Jugendsprache;12.01.2027;08:30;A102
+Nachhaltige Mode im Vergleich;12.01.2027;09:30;A101
+Künstliche Intelligenz im Schulalltag;12.01.2027;09:30;B201
+Der Rhein als Wirtschaftsraum;12.01.2027;10:30;A101
+Mentale Gesundheit im Leistungssport;13.01.2027;08:30;A101
+Fairtrade-Schokolade: Anspruch und Wirklichkeit;13.01.2027;09:30;A102
+Elektromobilität in Basel;13.01.2027;10:30;B201
+Schweizer Neutralität im Wandel;14.01.2027;08:30;A101
+Testfall kurzes Datum und kurze Uhrzeit;5.1.2027;8:05;C1
+Testfall Uhrzeit mit Sekunden;15.01.2027;10:30:00;C2
+ Testfall Leerzeichen um die Felder ; 15.01.2027 ; 08:30 ; C3 
+"Testfall: Strichpunkt; im Thema";15.01.2027;09:30;C1
+"Testfall ""Anführungszeichen"" im Thema";15.01.2027;10:30;C2
+=1+1 Testfall Formelschutz im Export;15.01.2027;11:30;C3
+Testfall Sonderzeichen: Äpfel, Öl & Übergrössen – Zürich «Ärger»;16.01.2027;08:30;D1
+Testfall Grenzwert Thema mit genau 200 Zeichen Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wor;16.01.2027;09:30;R2345678901234567890
+Testfall Uhrzeit 00:00;16.01.2027;00:00;D2
+Testfall Uhrzeit 23:59;16.01.2027;23:59;D2
+Testfall Schalttag;29.02.2028;08:30;D3
+
+Testfall zu wenig Spalten;12.01.2027;08:30
+Testfall zu viele Spalten;12.01.2027;08:30;A101;extra
+;12.01.2027;08:30;A101
+Testfall Thema mit 201 Zeichen ist zu lang Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wort Wor;12.01.2027;08:30;A101
+Testfall Raum fehlt;12.01.2027;08:30;
+Testfall Raum mit 21 Zeichen;12.01.2027;08:30;R23456789012345678901
+Testfall Datum ISO-Format;2027-01-12;08:30;A101
+Testfall Monat 13;12.13.2027;08:30;A101
+Testfall 31. Februar;31.02.2027;08:30;A101
+Testfall Schalttag im Nicht-Schaltjahr;29.02.2027;08:30;A101
+Testfall Datum fehlt;;08:30;A101
+Testfall Datum als Text;morgen;08:30;A101
+Testfall Jahr mit zwei Ziffern;12.01.27;08:30;A101
+Testfall Uhrzeit 25:00;12.01.2027;25:00;A101
+Testfall Uhrzeit 08:60;12.01.2027;08:60;A101
+Testfall Uhrzeit mit Punkt;12.01.2027;08.30;A101
+Testfall Uhrzeit als Text;12.01.2027;acht Uhr;A101
+Testfall Uhrzeit fehlt;12.01.2027;;A101
+kaputt
+"Testfall offenes Anführungszeichen;12.01.2027;08:30;A101
