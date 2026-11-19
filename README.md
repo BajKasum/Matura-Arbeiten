@@ -50,7 +50,8 @@ Aufbau von `src/MaturaArbeiten`:
 | CSV-Import, Eintragen, Meine Eintragungen | fertig |
 | Administration (Übersicht, Verwaltung, Listen, Zurücksetzen) | fertig |
 | E-Mails (Zugangsdaten, Bestätigung, E-Mail-Protokoll) | fertig, aber nur mit Konsolenausgabe: Ein echter E-Mail-Dienst ist noch nicht angebunden |
-| Handy-Ansicht, Tests | fertig |
+| Handy-Ansicht | fertig |
+| Automatisierte Tests | offen, werden im Modul Testen selbst geschrieben |
 | Veröffentlichung (Azure) | offen |
 
 ## Projekt starten
