@@ -6,5 +6,7 @@ public enum Abweisung
     SchonZweiEintragungen,
     PraesentationVoll,
     Terminkollision,
-    Konflikt
+    Konflikt,
+    PraesentationUnbekannt,
+    G3SuSUnbekannt
 }

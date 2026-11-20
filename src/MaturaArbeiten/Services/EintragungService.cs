@@ -211,8 +211,19 @@ public sealed class EintragungService(AppDbContext db, TimeProvider zeit) : IEin
         bool phaseOffenErzwingen,
         int? ausserEintragungId = null)
     {
+        if (!db.G3SuSListe.Any(g => g.Id == g3susId))
+        {
+            return new EintragungErgebnis.Abgewiesen(Abweisung.G3SuSUnbekannt);
+        }
+
+        var wunsch = db.Praesentationen.SingleOrDefault(p => p.Id == praesentationId);
+
+        if (wunsch is null)
+        {
+            return new EintragungErgebnis.Abgewiesen(Abweisung.PraesentationUnbekannt);
+        }
+
         var einstellung = db.Systemeinstellungen.Single();
-        var wunsch = db.Praesentationen.Single(p => p.Id == praesentationId);
         var belegt = db.Eintragungen.Count(e => e.PraesentationId == praesentationId && e.Id != ausserEintragungId);
 
         var eigene = db.Eintragungen
