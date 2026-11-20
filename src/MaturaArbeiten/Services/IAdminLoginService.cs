@@ -12,5 +12,5 @@ public interface IAdminLoginService
 
     string? Aendern(int id, PersonFormular eingabe);
 
-    string? Loeschen(int id);
+    string? Loeschen(int id, int angemeldetId);
 }

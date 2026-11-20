@@ -69,7 +69,7 @@ public sealed class AdminLoginService(AppDbContext db) : IAdminLoginService
         return null;
     }
 
-    public string? Loeschen(int id)
+    public string? Loeschen(int id, int angemeldetId)
     {
         var login = db.Administrationslogins.SingleOrDefault(a => a.Id == id);
 
@@ -78,9 +78,17 @@ public sealed class AdminLoginService(AppDbContext db) : IAdminLoginService
             return "Dieses Administrationslogin gibt es nicht mehr.";
         }
 
-        if (!AdminLogins.DarfGeloeschtWerden(db.Administrationslogins.Count()))
+        var logins = db.Administrationslogins
+            .Select(a => new { a.Id, HatPasswort = a.PasswortHash != null })
+            .ToList()
+            .Select(a => (a.Id, a.HatPasswort))
+            .ToList();
+
+        var hindernis = AdminLogins.Loeschhindernis(id, angemeldetId, logins);
+
+        if (hindernis is not null)
         {
-            return "Das letzte Administrationslogin kann nicht gelöscht werden.";
+            return hindernis;
         }
 
         db.Administrationslogins.Remove(login);
