@@ -24,8 +24,6 @@ public sealed class ZugangsdatenService(
             .Select(g => Sende(g, jetzt))
             .ToList();
 
-        db.SaveChanges();
-
         return (ergebnisse.Count(erfolg => erfolg), ergebnisse.Count(erfolg => !erfolg));
     }
 
@@ -38,10 +36,7 @@ public sealed class ZugangsdatenService(
             return false;
         }
 
-        var erfolg = Sende(schueler, zeit.GetUtcNow().UtcDateTime);
-        db.SaveChanges();
-
-        return erfolg;
+        return Sende(schueler, zeit.GetUtcNow().UtcDateTime);
     }
 
     public bool AnAdministrationslogin(int id)
@@ -87,6 +82,7 @@ public sealed class ZugangsdatenService(
             Status = erfolg ? "Gesendet" : "Fehlgeschlagen",
             GesendetAm = jetzt
         });
+        db.SaveChanges();
 
         return erfolg;
     }
