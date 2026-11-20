@@ -3,12 +3,16 @@ using MaturaArbeiten.Data;
 using MaturaArbeiten.Domain;
 using MaturaArbeiten.Models;
 using MaturaArbeiten.ViewModels;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace MaturaArbeiten.Services;
 
 public sealed class EintragungService(AppDbContext db, TimeProvider zeit) : IEintragungService
 {
+    private const int MaxVersuche = 2;
+    private static readonly int[] KonfliktNummern = [1205, 2601, 2627];
+
     public EintragungErgebnis Eintragen(int g3susId, int praesentationId) =>
         Speichern(g3susId, praesentationId, false);
 
@@ -160,6 +164,27 @@ public sealed class EintragungService(AppDbContext db, TimeProvider zeit) : IEin
     }
 
     private EintragungErgebnis Speichern(int g3susId, int praesentationId, bool phaseOffenErzwingen)
+    {
+        for (var versuch = 1; versuch <= MaxVersuche; versuch++)
+        {
+            try
+            {
+                return SpeichernEinmal(g3susId, praesentationId, phaseOffenErzwingen);
+            }
+            catch (Exception fehler) when (IstKonflikt(fehler))
+            {
+                db.ChangeTracker.Clear();
+            }
+        }
+
+        return new EintragungErgebnis.Abgewiesen(Abweisung.Konflikt);
+    }
+
+    private static bool IstKonflikt(Exception fehler) =>
+        (fehler as SqlException ?? fehler.InnerException as SqlException) is { } sql
+        && KonfliktNummern.Contains(sql.Number);
+
+    private EintragungErgebnis SpeichernEinmal(int g3susId, int praesentationId, bool phaseOffenErzwingen)
     {
         using var transaktion = db.Database.BeginTransaction(IsolationLevel.Serializable);
 

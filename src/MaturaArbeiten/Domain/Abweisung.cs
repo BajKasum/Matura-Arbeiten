@@ -5,5 +5,6 @@ public enum Abweisung
     PhaseGeschlossen,
     SchonZweiEintragungen,
     PraesentationVoll,
-    Terminkollision
+    Terminkollision,
+    Konflikt
 }

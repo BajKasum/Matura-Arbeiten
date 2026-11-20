@@ -10,6 +10,7 @@ public static class Meldungen
         Abweisung.SchonZweiEintragungen => "Du hast schon zwei Präsentationen gewählt.",
         Abweisung.PraesentationVoll => "Diese Präsentation ist inzwischen voll. Bitte wähle eine andere.",
         Abweisung.Terminkollision => "Diese Präsentation läuft gleichzeitig mit einer, die du schon gewählt hast.",
+        Abweisung.Konflikt => "Gerade wählen viele gleichzeitig. Deine Eintragung wurde nicht gespeichert, bitte versuche es noch einmal.",
         _ => throw new ArgumentOutOfRangeException(nameof(grund))
     };
 
@@ -19,6 +20,7 @@ public static class Meldungen
         Abweisung.SchonZweiEintragungen => "Dieser G3-SuS hat schon zwei Eintragungen.",
         Abweisung.PraesentationVoll => "Diese Präsentation ist voll.",
         Abweisung.Terminkollision => "Dieser G3-SuS ist schon bei einer Präsentation zur gleichen Zeit eingetragen.",
+        Abweisung.Konflikt => "Gerade wird gleichzeitig eingetragen. Die Eintragung wurde nicht gespeichert, bitte versuche es noch einmal.",
         _ => throw new ArgumentOutOfRangeException(nameof(grund))
     };
 
