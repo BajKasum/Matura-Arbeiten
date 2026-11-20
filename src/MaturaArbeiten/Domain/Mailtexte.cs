@@ -2,7 +2,7 @@ namespace MaturaArbeiten.Domain;
 
 public static class Mailtexte
 {
-    public static Mail Zugangsdaten(string vorname, string email, string passwort) =>
+    public static Mail Zugangsdaten(string vorname, string email, string passwort, string? adresse) =>
         new(
             email,
             "Deine Zugangsdaten für die Zusehendenverwaltung",
@@ -11,13 +11,15 @@ public static class Mailtexte
 
             hier sind deine Zugangsdaten für die Zusehendenverwaltung.
 
-            Benutzername: {email}
+            {AdressZeile(adresse)}Benutzername: {email}
             Passwort: {passwort}
+
+            Bei der ersten Anmeldung musst du dieses Passwort ändern.
 
             Mit diesen Daten wählst du deine zwei Präsentationen.
             """);
 
-    public static Mail ZugangsdatenAdministration(string vorname, string email, string passwort) =>
+    public static Mail ZugangsdatenAdministration(string vorname, string email, string passwort, string? adresse) =>
         new(
             email,
             "Deine Zugangsdaten für die Zusehendenverwaltung",
@@ -26,9 +28,12 @@ public static class Mailtexte
 
             du hast ein Administrationslogin für die Zusehendenverwaltung bekommen.
 
-            Benutzername: {email}
+            {AdressZeile(adresse)}Benutzername: {email}
             Passwort: {passwort}
             """);
+
+    private static string AdressZeile(string? adresse) =>
+        string.IsNullOrWhiteSpace(adresse) ? string.Empty : $"Adresse: {adresse}\n";
 
     public static Mail Bestaetigung(string vorname, string email, IEnumerable<MailEintragung> eintragungen) =>
         new(

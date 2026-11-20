@@ -86,7 +86,7 @@ public class AdminLoginsController(
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult Loeschen(int id)
     {
-        var fehler = service.Loeschen(id);
+        var fehler = service.Loeschen(id, User.BenutzerId());
 
         if (fehler is null)
         {

@@ -41,6 +41,7 @@ builder.Services
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
         options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Events.OnValidatePrincipal = KontoPruefung.Pruefen;
     });
 
 var app = builder.Build();

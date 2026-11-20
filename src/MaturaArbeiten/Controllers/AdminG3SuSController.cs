@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace MaturaArbeiten.Controllers;
 
 [Authorize(Roles = Rollen.Administration)]
-public class AdminG3SuSController(IG3SuSVerwaltungService service) : Controller
+public class AdminG3SuSController(
+    IG3SuSVerwaltungService service,
+    IZugangsdatenService zugangsdatenService) : Controller
 {
     public IActionResult Index() => View(service.Liste());
 
@@ -55,6 +57,21 @@ public class AdminG3SuSController(IG3SuSVerwaltungService service) : Controller
         }
 
         TempData["Erfolg"] = "Die Änderung wurde gespeichert.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public IActionResult ZugangsdatenSenden(int id)
+    {
+        if (zugangsdatenService.AnG3SuS(id))
+        {
+            TempData["Erfolg"] = "Neue Zugangsdaten wurden verschickt.";
+        }
+        else
+        {
+            TempData["Fehler"] = "Die Zugangsdaten konnten nicht verschickt werden.";
+        }
+
         return RedirectToAction(nameof(Index));
     }
 
