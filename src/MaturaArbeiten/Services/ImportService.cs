@@ -9,7 +9,11 @@ public sealed class ImportService(AppDbContext db) : IImportService
 {
     public ImportErgebnisViewModel PraesentationenLaden(Stream datei)
     {
-        var ergebnis = CsvImport.PraesentationenPruefen(CsvLeser.Lesen(datei));
+        var vorhandene = db.Praesentationen
+            .Select(p => new PraesentationNeu(p.Thema, p.Datum, p.Uhrzeit, p.Raum))
+            .ToList();
+
+        var ergebnis = CsvImport.PraesentationenPruefen(CsvLeser.Lesen(datei), vorhandene);
 
         db.Praesentationen.AddRange(ergebnis.Gueltig.Select(neu => new Praesentation
         {
