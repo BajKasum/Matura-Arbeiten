@@ -10,9 +10,12 @@ public sealed class ZugangsdatenService(
     AppDbContext db,
     IEmailService emailService,
     IPasswordHasher<string> hasher,
-    TimeProvider zeit) : IZugangsdatenService
+    TimeProvider zeit,
+    IConfiguration konfiguration) : IZugangsdatenService
 {
     private const string Zeichen = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    private string? Adresse => konfiguration["Applikation:Adresse"];
 
     public (int Gesendet, int Fehlgeschlagen) Versenden()
     {
@@ -49,7 +52,7 @@ public sealed class ZugangsdatenService(
         }
 
         var passwort = NeuesPasswort();
-        var erfolg = emailService.Senden(Mailtexte.ZugangsdatenAdministration(login.Vorname, login.Email, passwort));
+        var erfolg = emailService.Senden(Mailtexte.ZugangsdatenAdministration(login.Vorname, login.Email, passwort, Adresse));
 
         if (erfolg)
         {
@@ -65,7 +68,7 @@ public sealed class ZugangsdatenService(
     private bool Sende(G3SuS schueler, DateTime jetzt)
     {
         var passwort = NeuesPasswort();
-        var erfolg = emailService.Senden(Mailtexte.Zugangsdaten(schueler.Vorname, schueler.Email, passwort));
+        var erfolg = emailService.Senden(Mailtexte.Zugangsdaten(schueler.Vorname, schueler.Email, passwort, Adresse));
 
         if (erfolg)
         {
