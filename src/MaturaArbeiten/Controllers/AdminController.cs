@@ -3,6 +3,7 @@ using MaturaArbeiten.Services;
 using MaturaArbeiten.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace MaturaArbeiten.Controllers;
 
@@ -11,10 +12,12 @@ public class AdminController(
     IAdministrationService administrationService,
     IImportService importService,
     IZugangsdatenService zugangsdatenService,
-    IBestaetigungService bestaetigungService) : Controller
+    IBestaetigungService bestaetigungService,
+    IMemoryCache zwischenspeicher) : Controller
 {
     private const long MaxDateigroesse = 1_000_000;
     private const string Bestaetigungswort = "ZURÜCKSETZEN";
+    private static readonly TimeSpan ErgebnisDauer = TimeSpan.FromMinutes(30);
 
     public IActionResult Index() => View(administrationService.Uebersicht());
 
@@ -54,6 +57,17 @@ public class AdminController(
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult ImportG3SuS(IFormFile? datei) =>
         Importiere(datei, importService.G3SuSLaden);
+
+    public IActionResult ImportErgebnis(Guid id)
+    {
+        if (zwischenspeicher.TryGetValue(id, out ImportErgebnisViewModel? ergebnis) && ergebnis is not null)
+        {
+            return View("Import", ergebnis);
+        }
+
+        TempData["Fehler"] = "Dieses Import-Ergebnis gibt es nicht mehr.";
+        return RedirectToAction(nameof(Index));
+    }
 
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult ZugangsdatenVersenden()
@@ -114,6 +128,11 @@ public class AdminController(
         }
 
         using var strom = datei!.OpenReadStream();
-        return View("Import", laden(strom));
+        var ergebnis = laden(strom);
+
+        var id = Guid.NewGuid();
+        zwischenspeicher.Set(id, ergebnis, ErgebnisDauer);
+
+        return RedirectToAction(nameof(ImportErgebnis), new { id });
     }
 }

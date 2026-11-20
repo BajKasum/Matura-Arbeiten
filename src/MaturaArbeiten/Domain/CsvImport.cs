@@ -10,19 +10,20 @@ public static class CsvImport
     private static readonly string[] DatumFormate = ["dd.MM.yyyy", "d.M.yyyy"];
     private static readonly string[] UhrzeitFormate = ["HH:mm", "H:mm", "HH:mm:ss"];
 
-    public static CsvErgebnis<PraesentationNeu> PraesentationenPruefen(IEnumerable<CsvZeile> zeilen)
+    public static CsvErgebnis<PraesentationNeu> PraesentationenPruefen(
+        IEnumerable<CsvZeile> zeilen,
+        IEnumerable<PraesentationNeu> vorhandene)
     {
-        var geprueft = zeilen
-            .Skip(1)
-            .Select(zeile => (zeile.Nummer, Ergebnis: ZeilePraesentation(zeile.Felder)))
-            .ToList();
+        var start = new PraesentationStand(
+            ImmutableHashSet.CreateRange(vorhandene.Select(Schluessel)),
+            ImmutableList<PraesentationNeu>.Empty,
+            ImmutableList<CsvFehler>.Empty);
 
-        return new CsvErgebnis<PraesentationNeu>(
-            geprueft.Select(g => g.Ergebnis.Wert).OfType<PraesentationNeu>().ToList(),
-            geprueft
-                .Where(g => g.Ergebnis.Grund is not null)
-                .Select(g => new CsvFehler(g.Nummer, g.Ergebnis.Grund!))
-                .ToList());
+        var ende = zeilen
+            .Skip(1)
+            .Aggregate(start, VerarbeitePraesentation);
+
+        return new CsvErgebnis<PraesentationNeu>(ende.Gueltig, ende.Fehler);
     }
 
     public static CsvErgebnis<G3SuSNeu> G3SuSPruefen(
@@ -56,6 +57,25 @@ public static class CsvImport
             ({ } wert, _) =>
                 stand with { Emails = stand.Emails.Add(wert.Email), Gueltig = stand.Gueltig.Add(wert) }
         };
+
+    private sealed record PraesentationStand(
+        ImmutableHashSet<(string Thema, DateOnly Datum, TimeOnly Uhrzeit, string Raum)> Schluessel,
+        ImmutableList<PraesentationNeu> Gueltig,
+        ImmutableList<CsvFehler> Fehler);
+
+    private static PraesentationStand VerarbeitePraesentation(PraesentationStand stand, CsvZeile zeile) =>
+        ZeilePraesentation(zeile.Felder) switch
+        {
+            (null, var grund) =>
+                stand with { Fehler = stand.Fehler.Add(new CsvFehler(zeile.Nummer, grund!)) },
+            ({ } wert, _) when stand.Schluessel.Contains(Schluessel(wert)) =>
+                stand with { Fehler = stand.Fehler.Add(new CsvFehler(zeile.Nummer, "Diese Präsentation ist doppelt.")) },
+            ({ } wert, _) =>
+                stand with { Schluessel = stand.Schluessel.Add(Schluessel(wert)), Gueltig = stand.Gueltig.Add(wert) }
+        };
+
+    private static (string Thema, DateOnly Datum, TimeOnly Uhrzeit, string Raum) Schluessel(PraesentationNeu p) =>
+        (p.Thema.Trim().ToUpperInvariant(), p.Datum, p.Uhrzeit, p.Raum.Trim().ToUpperInvariant());
 
     private static (PraesentationNeu? Wert, string? Grund) ZeilePraesentation(string[] felder) =>
         felder is [var thema, var datum, var uhrzeit, var raum]
