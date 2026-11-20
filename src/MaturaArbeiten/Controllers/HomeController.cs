@@ -12,6 +12,9 @@ public class HomeController : Controller
         : User.IsInRole(Rollen.G3SuS) ? RedirectToAction("Index", "Praesentation")
         : RedirectToAction("Anmelden", "Account");
 
+    public IActionResult Status(int code) =>
+        code == StatusCodes.Status404NotFound ? View("NichtGefunden") : StatusCode(code);
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
