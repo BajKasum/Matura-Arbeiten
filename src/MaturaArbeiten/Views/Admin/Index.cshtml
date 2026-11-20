@@ -53,6 +53,7 @@
                         <input type="file" class="form-control" id="praesentationenDatei" name="datei" accept=".csv" required />
                         <button type="submit" class="btn btn-primary">Importieren</button>
                     </div>
+                    <div class="form-text">@Mehrzahl.Von(Model.GesamtPraesentationen, "Präsentation", "Präsentationen") geladen</div>
                 </form>
 
                 <form asp-action="ImportG3SuS" method="post" enctype="multipart/form-data" class="mt-3">
@@ -61,6 +62,7 @@
                         <input type="file" class="form-control" id="g3susDatei" name="datei" accept=".csv" required />
                         <button type="submit" class="btn btn-primary">Importieren</button>
                     </div>
+                    <div class="form-text">@Model.GesamtG3SuS G3-SuS geladen</div>
                 </form>
             </div>
         </section>

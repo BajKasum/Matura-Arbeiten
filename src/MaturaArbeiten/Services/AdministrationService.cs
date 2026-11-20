@@ -21,6 +21,7 @@ public sealed class AdministrationService(
 
         return new UebersichtViewModel(
             einstellung.EintragungsphaseOffen,
+            db.Praesentationen.Count(),
             db.G3SuSListe.Count(),
             mitPflicht,
             Regeln.PflichtEintragungen,

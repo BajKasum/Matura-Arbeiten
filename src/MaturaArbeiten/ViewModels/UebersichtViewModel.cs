@@ -2,6 +2,7 @@ namespace MaturaArbeiten.ViewModels;
 
 public sealed record UebersichtViewModel(
     bool PhaseOffen,
+    int GesamtPraesentationen,
     int GesamtG3SuS,
     int MitPflicht,
     int Pflicht,
