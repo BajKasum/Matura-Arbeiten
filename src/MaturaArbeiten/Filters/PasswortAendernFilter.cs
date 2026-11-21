@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MaturaArbeiten.Filters;
 
+// Wer sein Passwort noch ändern muss, kommt nur auf "Passwort ändern", "Abmelden" und die Fehlerseite. Alles andere leitet um.
 public sealed class PasswortAendernFilter : IAsyncActionFilter
 {
     public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

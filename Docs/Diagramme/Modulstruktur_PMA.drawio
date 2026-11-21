@@ -1,0 +1,78 @@
+<mxfile host="app.diagrams.net" agent="Claude">
+  <diagram name="Modulstruktur" id="modulstruktur">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="560" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=left;" value="Modulstruktur im Backend" vertex="1">
+          <mxGeometry height="30" width="500" x="20" y="10" as="geometry" />
+        </mxCell>
+
+        <mxCell id="top" value="Backend: Verwaltung Zusehender an Maturaarbeitspräsentationen" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6C8EBF;strokeColor=#3A5A8C;fontColor=#FFFFFF;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="450" y="60" width="340" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="m1" value="Benutzerverwaltung" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="20" y="180" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="m1_body" value="• Anmeldung prüfen&lt;br&gt;  (G3-SuS / Administration)&lt;br&gt;• Rollen und Rechte verwalten" style="text;html=1;align=left;verticalAlign=top;fontSize=11;spacingLeft=6;fontStyle=0;" vertex="1" parent="m1">
+          <mxGeometry y="34" width="220" height="86" as="geometry" />
+        </mxCell>
+
+        <mxCell id="m2" value="Präsentationsverwaltung" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="265" y="180" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="m2_body" value="• Präsentationen aus CSV laden&lt;br&gt;• Liste mit freien Plätzen&lt;br&gt;  anzeigen" style="text;html=1;align=left;verticalAlign=top;fontSize=11;spacingLeft=6;fontStyle=0;" vertex="1" parent="m2">
+          <mxGeometry y="34" width="220" height="86" as="geometry" />
+        </mxCell>
+
+        <mxCell id="m3" value="Zuweisungssystem (Kernmodul)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontStyle=1;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="510" y="180" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="m3_body" value="• Regeln prüfen&lt;br&gt;  (max. 2 / max. 6)&lt;br&gt;• Eintragung speichern" style="text;html=1;align=left;verticalAlign=top;fontSize=11;spacingLeft=6;fontStyle=0;" vertex="1" parent="m3">
+          <mxGeometry y="34" width="220" height="86" as="geometry" />
+        </mxCell>
+
+        <mxCell id="m4" value="Kommunikationsmodul" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="755" y="180" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="m4_body" value="• Zugangsdaten versenden&lt;br&gt;• Bestätigungsmails versenden&lt;br&gt;• Hinweise an die Administration" style="text;html=1;align=left;verticalAlign=top;fontSize=11;spacingLeft=6;fontStyle=0;" vertex="1" parent="m4">
+          <mxGeometry y="34" width="220" height="86" as="geometry" />
+        </mxCell>
+
+        <mxCell id="m5" value="Administrationsmodul" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="180" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="m5_body" value="• System zurücksetzen&lt;br&gt;• Daten von Hand anpassen&lt;br&gt;• Listen erzeugen&lt;br&gt;• Eintragungsphase öffnen&lt;br&gt;  und schliessen" style="text;html=1;align=left;verticalAlign=top;fontSize=11;spacingLeft=6;fontStyle=0;" vertex="1" parent="m5">
+          <mxGeometry y="34" width="220" height="86" as="geometry" />
+        </mxCell>
+
+        <!-- top box to modules -->
+        <mxCell id="t1" edge="1" parent="1" source="top" target="m1" style="html=1;endArrow=none;strokeColor=#6C8EBF;exitX=0.1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="t2" edge="1" parent="1" source="top" target="m2" style="html=1;endArrow=none;strokeColor=#6C8EBF;exitX=0.3;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="t3" edge="1" parent="1" source="top" target="m3" style="html=1;endArrow=none;strokeColor=#6C8EBF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="t4" edge="1" parent="1" source="top" target="m4" style="html=1;endArrow=none;strokeColor=#6C8EBF;exitX=0.7;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="t5" edge="1" parent="1" source="top" target="m5" style="html=1;endArrow=none;strokeColor=#6C8EBF;exitX=0.9;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <!-- functional dependencies per 5.1.3 -->
+        <mxCell id="d1" value="fragt an: freie Plätze?" edge="1" parent="1" source="m3" target="m2" style="html=1;endArrow=open;endFill=0;strokeColor=#333333;fontSize=9;exitX=0.3;exitY=1;exitDx=0;exitDy=0;entryX=0.7;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="576" y="335" /><mxPoint x="419" y="335" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="d2" value="fragt an: ist G3-SuS?" edge="1" parent="1" source="m3" target="m1" style="html=1;endArrow=open;endFill=0;strokeColor=#333333;fontSize=9;exitX=0.15;exitY=1;exitDx=0;exitDy=0;entryX=0.85;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="543" y="365" /><mxPoint x="207" y="365" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="d3" value="löst aus: Bestätigungsmail" edge="1" parent="1" source="m3" target="m4" style="html=1;endArrow=open;endFill=0;strokeColor=#333333;fontSize=9;exitX=0.7;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="664" y="335" /><mxPoint x="821" y="335" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="d4" value="verwaltet / setzt zurück (alle Module)" edge="1" parent="1" source="m5" target="m1" style="html=1;endArrow=open;endFill=0;dashed=1;strokeColor=#666666;fontSize=9;exitX=0.05;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1011" y="400" /><mxPoint x="130" y="400" /></Array></mxGeometry>
+        </mxCell>
+
+        <mxCell id="note1" value="Die Module sind lose gekoppelt: greift ein Modul auf Daten eines anderen zu, fragt es über eine definierte Schnittstelle nach (nie direkter Datenzugriff)." style="text;html=1;align=left;verticalAlign=middle;fontSize=10;fontStyle=2;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="20" y="440" width="900" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

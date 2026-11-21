@@ -38,8 +38,8 @@ public sealed class EmailProtokollService(
 
         return eintrag.Typ switch
         {
-            "Zugangsdaten" => zugangsdatenService.AnG3SuS(eintrag.G3susId),
-            "Bestaetigung" => bestaetigungService.Senden(eintrag.G3susId) == Versand.Gesendet,
+            EmailProtokoll.Zugangsdaten => zugangsdatenService.AnG3SuS(eintrag.G3susId),
+            EmailProtokoll.Bestaetigung => bestaetigungService.Senden(eintrag.G3susId) == Versand.Gesendet,
             _ => false
         };
     }

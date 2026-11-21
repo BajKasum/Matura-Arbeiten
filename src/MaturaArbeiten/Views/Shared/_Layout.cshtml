@@ -1,41 +1,62 @@
+@inject TimeProvider Zeit
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var rolle = User.IsInRole(Rollen.Administration) ? "Administration" : "G3-SuS";
+}
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Zusehendenverwaltung</title>
+    <link rel="icon" href="~/favicon.ico" sizes="any" />
+    <link rel="icon" href="~/favicon.png" type="image/png" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <header class="d-print-none">
-        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark" aria-label="Hauptmenü">
+        <nav class="navbar navbar-expand-md kopfleiste" aria-label="Hauptmenü">
             <div class="container-xl">
-                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">Zusehendenverwaltung</a>
+                <a class="navbar-brand d-flex align-items-center gap-2 gap-md-3 fw-bold" asp-controller="Home" asp-action="Index" aria-label="Zusehendenverwaltung, Startseite">
+                    <img class="logo" src="~/images/logo-wirtschaftsgymnasium-basel.png" alt="Wirtschaftsgymnasium Basel" width="116" height="40" />
+                    <span class="d-md-none d-lg-inline">Zusehendenverwaltung</span>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#hauptmenue" aria-controls="hauptmenue"
                         aria-expanded="false" aria-label="Menü ein- und ausklappen">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="hauptmenue">
-                    <div class="navbar-nav">
+                    <ul class="navbar-nav align-items-md-center">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <span class="navbar-text text-white">@(User.IsInRole(Rollen.Administration) ? "Administration" : "G3-SuS")</span>
-
                             @if (User.IsInRole(Rollen.G3SuS))
                             {
-                                <a class="nav-link text-white" asp-controller="Praesentation" asp-action="Index">Präsentationen auswählen</a>
-                                <a class="nav-link text-white" asp-controller="Eintragung" asp-action="MeineEintragungen">Meine Eintragungen</a>
+                                var praesentationenAktiv = controller == "Praesentation";
+                                var eintragungenAktiv = controller == "Eintragung";
+
+                                <li class="nav-item">
+                                    <a class="nav-link @(praesentationenAktiv ? "active" : null)" aria-current="@(praesentationenAktiv ? "page" : null)" asp-controller="Praesentation" asp-action="Index">Präsentationen auswählen</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link @(eintragungenAktiv ? "active" : null)" aria-current="@(eintragungenAktiv ? "page" : null)" asp-controller="Eintragung" asp-action="MeineEintragungen">Meine Eintragungen</a>
+                                </li>
                             }
 
-                            <a class="nav-link text-white" asp-controller="Account" asp-action="PasswortAendern">Passwort ändern</a>
-                            <partial name="_Abmelden" />
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span>@User.Identity.Name</span>
+                                    <span class="badge text-bg-primary">@rolle</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-md-end">
+                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="PasswortAendern">Passwort ändern</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><partial name="_Abmelden" /></li>
+                                </ul>
+                            </li>
                         }
-                        else
-                        {
-                            <span class="navbar-text text-white">Wirtschaftsgymnasium Basel</span>
-                        }
-                    </div>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -46,10 +67,21 @@
         }
     </header>
 
+    <div class="druckkopf container-xl">
+        <img src="~/images/logo-wirtschaftsgymnasium-basel.png" alt="Wirtschaftsgymnasium Basel" width="104" height="36" />
+        <div class="text-end">
+            <div class="fw-bold">Zusehendenverwaltung</div>
+            <div>Stand @Zeitzone.InZuerich(Zeit.GetUtcNow().UtcDateTime).ToString("dd.MM.yyyy HH:mm")</div>
+        </div>
+    </div>
+
     <main class="container-xl py-5">
+        <partial name="_Meldungen" />
         @RenderBody()
     </main>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/rueckfrage.js" asp-append-version="true"></script>
+    <script src="~/js/tabellenfilter.js" asp-append-version="true"></script>
 </body>
 </html>

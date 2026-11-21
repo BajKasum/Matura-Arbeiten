@@ -38,7 +38,7 @@ public class AdminController(
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult ZuruecksetzenAusfuehren(string? bestaetigung)
     {
-        if (!string.Equals(bestaetigung?.Trim(), Bestaetigungswort, StringComparison.Ordinal))
+        if (!string.Equals(bestaetigung?.Trim(), Bestaetigungswort, StringComparison.OrdinalIgnoreCase))
         {
             TempData["Fehler"] = $"Bitte gib zur Bestätigung das Wort {Bestaetigungswort} genau so ein.";
             return RedirectToAction(nameof(ZuruecksetzenBestaetigen));
@@ -73,19 +73,13 @@ public class AdminController(
     public IActionResult ZugangsdatenVersenden()
     {
         var (gesendet, fehlgeschlagen) = zugangsdatenService.Versenden();
+        var (erfolg, text) = Meldungen.Versandergebnis(
+            gesendet,
+            fehlgeschlagen,
+            EmailProtokoll.Zugangsdaten,
+            "Alle G3-SuS haben schon Zugangsdaten. Es wurde nichts verschickt.");
 
-        if (gesendet + fehlgeschlagen == 0)
-        {
-            TempData["Fehler"] = "Alle G3-SuS haben schon Zugangsdaten. Es wurde nichts verschickt.";
-        }
-        else if (fehlgeschlagen > 0)
-        {
-            TempData["Fehler"] = $"{fehlgeschlagen} E-Mails konnten nicht verschickt werden. {gesendet} wurden verschickt.";
-        }
-        else
-        {
-            TempData["Erfolg"] = $"{gesendet} Zugangsdaten wurden verschickt.";
-        }
+        TempData[erfolg ? "Erfolg" : "Fehler"] = text;
 
         return RedirectToAction(nameof(Index));
     }
@@ -94,19 +88,13 @@ public class AdminController(
     public IActionResult BestaetigungenVersenden()
     {
         var (gesendet, fehlgeschlagen) = bestaetigungService.AnAlle();
+        var (erfolg, text) = Meldungen.Versandergebnis(
+            gesendet,
+            fehlgeschlagen,
+            "Bestätigungen",
+            "Kein G3-SuS hat schon zwei Eintragungen. Es wurde nichts verschickt.");
 
-        if (gesendet + fehlgeschlagen == 0)
-        {
-            TempData["Fehler"] = "Kein G3-SuS hat schon zwei Eintragungen. Es wurde nichts verschickt.";
-        }
-        else if (fehlgeschlagen > 0)
-        {
-            TempData["Fehler"] = $"{fehlgeschlagen} E-Mails konnten nicht verschickt werden. {gesendet} wurden verschickt.";
-        }
-        else
-        {
-            TempData["Erfolg"] = $"{gesendet} Bestätigungen wurden verschickt.";
-        }
+        TempData[erfolg ? "Erfolg" : "Fehler"] = text;
 
         return RedirectToAction(nameof(Index));
     }

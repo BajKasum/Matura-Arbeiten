@@ -2,12 +2,17 @@ using MaturaArbeiten.Data;
 using MaturaArbeiten.Filters;
 using MaturaArbeiten.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews(optionen => optionen.Filters.Add<PasswortAendernFilter>());
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<PasswortAendernFilter>();
+    ModellbindungMeldungen.Setzen(options.ModelBindingMessageProvider);
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
@@ -36,7 +41,7 @@ builder.Services
     .AddCookie(options =>
     {
         options.LoginPath = "/Account/Anmelden";
-        options.AccessDeniedPath = "/Account/Anmelden";
+        options.AccessDeniedPath = "/Account/KeinZugriff";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
         options.SlidingExpiration = true;
         options.Cookie.HttpOnly = true;
@@ -44,6 +49,10 @@ builder.Services
         options.Cookie.SameSite = SameSiteMode.Lax;
         options.Events.OnValidatePrincipal = KontoPruefung.Pruefen;
     });
+
+builder.Services
+    .AddAuthorizationBuilder()
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
 
 var app = builder.Build();
 
@@ -65,6 +74,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.Use(async (kontext, weiter) =>
+{
+    kontext.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    kontext.Response.Headers["Referrer-Policy"] = "no-referrer";
+    kontext.Response.Headers["Content-Security-Policy"] =
+        "default-src 'self'; img-src 'self' data:; frame-ancestors 'self'; form-action 'self'; base-uri 'self'";
+
+    await weiter();
+});
+
 app.UseStatusCodePagesWithReExecute("/Home/Status", "?code={0}");
 app.UseHttpsRedirection();
 app.UseRouting();
@@ -72,7 +91,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
+app.MapStaticAssets().AllowAnonymous();
 
 app.MapControllerRoute(
     name: "default",

@@ -22,10 +22,10 @@ public sealed class PraesentationService(AppDbContext db) : IPraesentationServic
             .Where(p => p.Eintragungen.Any(e => e.G3susId == g3susId))
             .ToList();
         var eigeneIds = eigene.Select(p => p.Id).ToHashSet();
-        var eigeneTermine = eigene.Select(p => p.Termin).ToList();
+        var eigeneZeitpunkte = eigene.Select(p => p.Zeitpunkt).ToList();
 
         var zeilen = praesentationen
-            .Where(p => eigeneIds.Contains(p.Id) || IstWaehlbar(einstellung, p, eigeneTermine))
+            .Where(p => eigeneIds.Contains(p.Id) || IstWaehlbar(einstellung, p, eigeneZeitpunkte))
             .Select(p => new PraesentationZeile(
                 p.Id,
                 p.Thema,
@@ -92,13 +92,13 @@ public sealed class PraesentationService(AppDbContext db) : IPraesentationServic
     private static bool IstWaehlbar(
         Systemeinstellung einstellung,
         Praesentation praesentation,
-        IReadOnlyCollection<Termin> eigeneTermine) =>
+        IReadOnlyCollection<Zeitpunkt> eigeneZeitpunkte) =>
         Regeln.Pruefe(
             einstellung.EintragungsphaseOffen,
             einstellung.Platzkontingent,
-            praesentation.Termin,
+            praesentation.Zeitpunkt,
             praesentation.Eintragungen.Count,
-            eigeneTermine) is EintragungErgebnis.Erfolg;
+            eigeneZeitpunkte) is EintragungErgebnis.Erfolg;
 
     private static bool NochErreichbar(
         Systemeinstellung einstellung,
@@ -109,18 +109,18 @@ public sealed class PraesentationService(AppDbContext db) : IPraesentationServic
             .Where(p => p.Eintragungen.Any(e => e.G3susId == g3susId))
             .ToList();
         var eigeneIds = eigene.Select(p => p.Id).ToHashSet();
-        var eigeneTermine = eigene.Select(p => p.Termin).ToList();
+        var eigeneZeitpunkte = eigene.Select(p => p.Zeitpunkt).ToList();
 
-        var waehlbareTermine = praesentationen
+        var waehlbareZeitpunkte = praesentationen
             .Where(p => !eigeneIds.Contains(p.Id))
             .Where(p => Regeln.Pruefe(
                 true,
                 einstellung.Platzkontingent,
-                p.Termin,
+                p.Zeitpunkt,
                 p.Eintragungen.Count,
-                eigeneTermine) is EintragungErgebnis.Erfolg)
-            .Select(p => p.Termin);
+                eigeneZeitpunkte) is EintragungErgebnis.Erfolg)
+            .Select(p => p.Zeitpunkt);
 
-        return Regeln.NochErreichbar(eigeneTermine, waehlbareTermine);
+        return Regeln.NochErreichbar(eigeneZeitpunkte, waehlbareZeitpunkte);
     }
 }

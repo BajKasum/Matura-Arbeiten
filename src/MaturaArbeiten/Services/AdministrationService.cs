@@ -25,9 +25,10 @@ public sealed class AdministrationService(
             db.G3SuSListe.Count(),
             mitPflicht,
             Regeln.PflichtEintragungen,
-            VersendetAn(protokoll, "Zugangsdaten"),
-            VersendetAn(protokoll, "Bestaetigung"),
+            VersendetAn(protokoll, EmailProtokoll.Zugangsdaten),
+            VersendetAn(protokoll, EmailProtokoll.Bestaetigung),
             EmailProtokoll.OffeneFehlschlaege(protokoll).Count,
+            db.G3SuSListe.Count(g => g.PasswortHash == null),
             praesentationService.OhneMoeglichkeit());
     }
 
@@ -64,7 +65,7 @@ public sealed class AdministrationService(
 
     private static int VersendetAn(IEnumerable<ProtokollEintrag> protokoll, string typ) =>
         protokoll
-            .Where(e => e.Typ == typ && e.Status == "Gesendet")
+            .Where(e => e.Typ == typ && e.Status == EmailProtokoll.Gesendet)
             .Select(e => e.G3susId)
             .Distinct()
             .Count();

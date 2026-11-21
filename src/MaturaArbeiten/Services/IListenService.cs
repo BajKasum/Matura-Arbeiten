@@ -1,3 +1,4 @@
+using MaturaArbeiten.Domain;
 using MaturaArbeiten.ViewModels;
 
 namespace MaturaArbeiten.Services;
@@ -10,5 +11,9 @@ public interface IListenService
 
     ZuseherlisteViewModel? Zuseherliste(int? praesentationId);
 
-    string? ZuseherlisteCsv(int praesentationId);
+    CsvDatei? ZuseherlisteCsv(int praesentationId);
+
+    IReadOnlyList<ZuseherBlatt> Zuseherlisten();
+
+    string ZuseherlistenCsv();
 }

@@ -29,19 +29,13 @@ public class EmailProtokollController(IEmailProtokollService service) : Controll
     public IActionResult AlleErneutSenden()
     {
         var (gesendet, fehlgeschlagen) = service.AlleErneutSenden();
+        var (erfolg, text) = Meldungen.Versandergebnis(
+            gesendet,
+            fehlgeschlagen,
+            "E-Mails",
+            "Es gibt keine fehlgeschlagenen E-Mails.");
 
-        if (gesendet + fehlgeschlagen == 0)
-        {
-            TempData["Fehler"] = "Es gibt keine fehlgeschlagenen E-Mails.";
-        }
-        else if (fehlgeschlagen > 0)
-        {
-            TempData["Fehler"] = $"{fehlgeschlagen} E-Mails konnten nicht verschickt werden. {gesendet} wurden verschickt.";
-        }
-        else
-        {
-            TempData["Erfolg"] = $"{gesendet} E-Mails wurden verschickt.";
-        }
+        TempData[erfolg ? "Erfolg" : "Fehler"] = text;
 
         return RedirectToAction("Index", "Admin");
     }

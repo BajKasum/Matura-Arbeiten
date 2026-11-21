@@ -78,7 +78,7 @@ public sealed class PraesentationVerwaltungService(AppDbContext db) : IPraesenta
             return new PraesentationErgebnis.Abgewiesen(Doppelt);
         }
 
-        var betroffene = Kollisionen(praesentation, new Termin(neu.Datum, neu.Uhrzeit));
+        var betroffene = Kollisionen(praesentation, new Zeitpunkt(neu.Datum, neu.Uhrzeit));
 
         if (betroffene.Count > 0)
         {
@@ -127,9 +127,9 @@ public sealed class PraesentationVerwaltungService(AppDbContext db) : IPraesenta
                 .Select(p => new PraesentationNeu(p.Thema, p.Datum, p.Uhrzeit, p.Raum))
                 .ToList());
 
-    private IReadOnlyList<string> Kollisionen(Praesentation praesentation, Termin neuerTermin)
+    private IReadOnlyList<string> Kollisionen(Praesentation praesentation, Zeitpunkt neuerZeitpunkt)
     {
-        if (praesentation.Termin == neuerTermin)
+        if (praesentation.Zeitpunkt == neuerZeitpunkt)
         {
             return [];
         }
@@ -140,7 +140,7 @@ public sealed class PraesentationVerwaltungService(AppDbContext db) : IPraesenta
             .Where(e => eingetragene.Contains(e.G3susId) && e.PraesentationId != praesentation.Id)
             .Join(db.Praesentationen, e => e.PraesentationId, p => p.Id, (e, p) => new { e.G3susId, p.Datum, p.Uhrzeit })
             .ToList()
-            .Where(x => Regeln.Kollidiert(new Termin(x.Datum, x.Uhrzeit), neuerTermin))
+            .Where(x => Regeln.Kollidiert(new Zeitpunkt(x.Datum, x.Uhrzeit), neuerZeitpunkt))
             .Select(x => x.G3susId)
             .Distinct()
             .ToList();

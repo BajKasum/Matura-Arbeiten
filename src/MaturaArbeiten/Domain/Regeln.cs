@@ -7,30 +7,31 @@ public static class Regeln
     public static int FreiePlaetze(int platzkontingent, int belegtePlaetze) =>
         platzkontingent - belegtePlaetze;
 
-    public static bool Kollidiert(Termin a, Termin b) => a == b;
+    public static bool Kollidiert(Zeitpunkt a, Zeitpunkt b) => a == b;
 
+    // Präsentationen zur gleichen Zeit zählen nur einmal, weil man nicht beide wählen darf.
     public static bool NochErreichbar(
-        IReadOnlyCollection<Termin> eigeneTermine,
-        IEnumerable<Termin> waehlbareTermine) =>
-        eigeneTermine.Count >= PflichtEintragungen
-        || waehlbareTermine.Distinct().Count() >= PflichtEintragungen - eigeneTermine.Count;
+        IReadOnlyCollection<Zeitpunkt> eigeneZeitpunkte,
+        IEnumerable<Zeitpunkt> waehlbareZeitpunkte) =>
+        eigeneZeitpunkte.Count >= PflichtEintragungen
+        || waehlbareZeitpunkte.Distinct().Count() >= PflichtEintragungen - eigeneZeitpunkte.Count;
 
-    // Feste Reihenfolge: Phase, zwei Eintragungen, freier Platz, Terminkollision. Der erste Grund gewinnt.
+    // Feste Reihenfolge: Phase, zwei Eintragungen, freier Platz, Zeitkollision. Der erste Grund gewinnt.
     public static EintragungErgebnis Pruefe(
         bool phaseOffen,
         int platzkontingent,
-        Termin wunsch,
+        Zeitpunkt wunsch,
         int belegtePlaetze,
-        IReadOnlyCollection<Termin> eigeneTermine) => true switch
+        IReadOnlyCollection<Zeitpunkt> eigeneZeitpunkte) => true switch
     {
         _ when !phaseOffen
             => new EintragungErgebnis.Abgewiesen(Abweisung.PhaseGeschlossen),
-        _ when eigeneTermine.Count >= PflichtEintragungen
+        _ when eigeneZeitpunkte.Count >= PflichtEintragungen
             => new EintragungErgebnis.Abgewiesen(Abweisung.SchonZweiEintragungen),
         _ when FreiePlaetze(platzkontingent, belegtePlaetze) <= 0
             => new EintragungErgebnis.Abgewiesen(Abweisung.PraesentationVoll),
-        _ when eigeneTermine.Any(t => Kollidiert(t, wunsch))
-            => new EintragungErgebnis.Abgewiesen(Abweisung.Terminkollision),
+        _ when eigeneZeitpunkte.Any(t => Kollidiert(t, wunsch))
+            => new EintragungErgebnis.Abgewiesen(Abweisung.Zeitkollision),
         _ => new EintragungErgebnis.Erfolg()
     };
 }

@@ -1,16 +1,9 @@
 @model PraesentationenViewModel
 @{
     ViewData["Title"] = "Präsentationen auswählen";
-}
 
-@if (TempData["Erfolg"] is string erfolg)
-{
-    <div class="alert alert-success mb-4" role="status">@erfolg</div>
-}
-
-@if (TempData["Fehler"] is string fehler)
-{
-    <div class="alert alert-danger mb-4" role="alert">@fehler</div>
+    string Rueckfrage(PraesentationZeile zeile) =>
+        $"Diese Präsentation wählen?\n\n{zeile.Thema}\n{zeile.Datum:dd.MM.yyyy}, {zeile.Uhrzeit:HH:mm} Uhr\n\nNur die Administration kann die Wahl später ändern.";
 }
 
 <h1 class="fs-4 fw-bold text-primary-emphasis">Präsentationen auswählen</h1>
@@ -22,7 +15,7 @@
 }
 else if (Model.GewaehlteAnzahl >= Model.Pflicht)
 {
-    <div class="alert alert-success" role="status">Du hast alle Präsentationen gewählt. Deine Eintragungen findest du unter "Meine Eintragungen".</div>
+    <div class="alert alert-success" role="status">Du hast @(Model.Pflicht == 2 ? "beide" : "alle") Präsentationen gewählt. Deine Eintragungen findest du unter "Meine Eintragungen".</div>
 }
 else if (!Model.NochErreichbar)
 {
@@ -33,7 +26,10 @@ else if (!Model.NochErreichbar)
 
 @if (Model.Zeilen.Count == 0)
 {
-    <p class="text-body-secondary">Im Moment gibt es keine Präsentation, die du wählen kannst.</p>
+    @if (Model.PhaseOffen)
+    {
+        <p class="text-body-secondary">Im Moment gibt es keine Präsentation, die du wählen kannst.</p>
+    }
 }
 else
 {
@@ -65,7 +61,7 @@ else
                             }
                             else
                             {
-                                <form asp-controller="Eintragung" asp-action="WaehlePraesentation" method="post">
+                                <form asp-controller="Eintragung" asp-action="WaehlePraesentation" method="post" data-rueckfrage="@Rueckfrage(zeile)">
                                     <input type="hidden" name="praesentationId" value="@zeile.Id" />
                                     <button type="submit" class="btn btn-primary btn-sm">Auswählen</button>
                                 </form>
@@ -94,7 +90,7 @@ else
                     }
                     else
                     {
-                        <form asp-controller="Eintragung" asp-action="WaehlePraesentation" method="post">
+                        <form asp-controller="Eintragung" asp-action="WaehlePraesentation" method="post" data-rueckfrage="@Rueckfrage(zeile)">
                             <input type="hidden" name="praesentationId" value="@zeile.Id" />
                             <button type="submit" class="btn btn-primary w-100">Auswählen</button>
                         </form>

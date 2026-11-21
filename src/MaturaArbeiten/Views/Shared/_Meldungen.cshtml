@@ -1,0 +1,9 @@
+@if (TempData["Erfolg"] is string erfolg)
+{
+    <div class="alert alert-success mb-4" role="status">@erfolg</div>
+}
+
+@if (TempData["Fehler"] is string fehler)
+{
+    <div class="alert alert-@(ViewData["Fehlerart"] ?? "danger") mb-4" role="alert">@fehler</div>
+}

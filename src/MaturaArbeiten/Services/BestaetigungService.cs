@@ -32,8 +32,8 @@ public sealed class BestaetigungService(
         db.EmailVersandListe.Add(new EmailVersand
         {
             G3susId = g3susId,
-            Typ = "Bestaetigung",
-            Status = erfolg ? "Gesendet" : "Fehlgeschlagen",
+            Typ = EmailProtokoll.Bestaetigung,
+            Status = erfolg ? EmailProtokoll.Gesendet : EmailProtokoll.Fehlgeschlagen,
             GesendetAm = zeit.GetUtcNow().UtcDateTime
         });
         db.SaveChanges();

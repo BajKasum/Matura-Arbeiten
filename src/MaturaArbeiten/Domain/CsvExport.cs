@@ -10,6 +10,7 @@ public static class CsvExport
     public static string Zeile(IEnumerable<string> felder) =>
         string.Join(";", felder.Select(Feld));
 
+    // Ein Apostroph vor =, +, - und @ verhindert, dass Excel das Feld als Formel ausführt.
     private static string Feld(string wert)
     {
         var sicher = wert.Length > 0 && FormelZeichen.Contains(wert[0]) ? "'" + wert : wert;

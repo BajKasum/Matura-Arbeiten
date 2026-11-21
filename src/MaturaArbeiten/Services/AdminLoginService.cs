@@ -7,8 +7,6 @@ namespace MaturaArbeiten.Services;
 
 public sealed class AdminLoginService(AppDbContext db) : IAdminLoginService
 {
-    private const string EmailVergeben = "Diese E-Mail-Adresse gibt es schon.";
-
     public IReadOnlyList<AdminLoginZeile> Liste() =>
         db.Administrationslogins
             .OrderBy(a => a.Nachname)
@@ -29,7 +27,7 @@ public sealed class AdminLoginService(AppDbContext db) : IAdminLoginService
 
         if (db.EmailVergeben(email))
         {
-            return (null, EmailVergeben);
+            return (null, Meldungen.EmailVergeben);
         }
 
         var login = new Administrationslogin
@@ -58,7 +56,7 @@ public sealed class AdminLoginService(AppDbContext db) : IAdminLoginService
 
         if (db.EmailVergeben(email, ausserAdministrationsloginId: id))
         {
-            return EmailVergeben;
+            return Meldungen.EmailVergeben;
         }
 
         login.Vorname = eingabe.Vorname.Trim();

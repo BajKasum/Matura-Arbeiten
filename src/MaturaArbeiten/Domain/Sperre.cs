@@ -7,6 +7,7 @@ public static class Sperre
 
     public static bool IstGesperrt(Konto konto, DateTime jetzt) => konto.GesperrtBis > jetzt;
 
+    // Der letzte erlaubte Fehlversuch löst die Sperre aus und setzt den Zähler auf 0, nach der Sperre gibt es wieder volle Versuche.
     public static Konto NachFalschemPasswort(Konto konto, DateTime jetzt) =>
         konto.Fehlversuche + 1 >= MaxFehlversuche
             ? new Konto(0, jetzt + Dauer)

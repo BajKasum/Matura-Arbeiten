@@ -1,4 +1,4 @@
-﻿@model ErrorViewModel
+﻿@model FehlerViewModel
 @{
     ViewData["Title"] = "Fehler";
 }
@@ -6,9 +6,9 @@
 <h1 class="fs-4 fw-bold text-danger">Es ist ein Fehler aufgetreten</h1>
 <p class="text-body-secondary">Deine Anfrage konnte nicht verarbeitet werden. Bitte versuche es später noch einmal.</p>
 
-@if (Model.ShowRequestId)
+@if (Model.HatAnfrageId)
 {
-    <p class="text-body-secondary">Fehler-ID: <code>@Model.RequestId</code></p>
+    <p class="text-body-secondary">Fehler-ID: <code>@Model.AnfrageId</code></p>
 }
 
 <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Zur Startseite</a>

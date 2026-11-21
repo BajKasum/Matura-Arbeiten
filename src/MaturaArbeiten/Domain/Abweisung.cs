@@ -5,7 +5,7 @@ public enum Abweisung
     PhaseGeschlossen,
     SchonZweiEintragungen,
     PraesentationVoll,
-    Terminkollision,
+    Zeitkollision,
     Konflikt,
     PraesentationUnbekannt,
     G3SuSUnbekannt

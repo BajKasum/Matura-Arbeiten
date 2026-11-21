@@ -8,7 +8,7 @@
     @if (Model.Gewaehlt is not null)
     {
         <div class="d-flex gap-2 d-print-none">
-            <button type="button" class="btn btn-primary" onclick="window.print()">Drucken</button>
+            <button type="button" class="btn btn-primary" data-drucken>Drucken</button>
             <a class="btn btn-outline-primary" asp-action="ZuseherlisteCsv" asp-route-id="@Model.Gewaehlt.Id">CSV</a>
         </div>
     }

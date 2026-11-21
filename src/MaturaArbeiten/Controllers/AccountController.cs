@@ -14,13 +14,13 @@ public class AccountController(
     IPasswortService passwortService,
     TimeProvider zeit) : Controller
 {
-    [HttpGet]
+    [AllowAnonymous, HttpGet]
     public IActionResult Anmelden() =>
         User.Identity?.IsAuthenticated == true
             ? RedirectToAction("Index", "Home")
             : View(new AnmeldenViewModel());
 
-    [HttpPost, ValidateAntiForgeryToken]
+    [AllowAnonymous, HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Anmelden(AnmeldenViewModel eingabe)
     {
         if (!ModelState.IsValid)
@@ -31,7 +31,7 @@ public class AccountController(
         switch (anmeldeService.Anmelden(eingabe.Email.Trim(), eingabe.Passwort))
         {
             case AnmeldeErgebnis.Erfolg erfolg:
-                var anspruechen = new List<Claim>
+                var ansprueche = new List<Claim>
                 {
                     new(ClaimTypes.NameIdentifier, erfolg.Id.ToString()),
                     new(ClaimTypes.Name, erfolg.Name),
@@ -40,12 +40,12 @@ public class AccountController(
 
                 if (erfolg.PasswortAendern)
                 {
-                    anspruechen.Add(new Claim(Ansprueche.PasswortAendern, "true"));
+                    ansprueche.Add(new Claim(Ansprueche.PasswortAendern, "true"));
                 }
 
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(new ClaimsIdentity(anspruechen, CookieAuthenticationDefaults.AuthenticationScheme)));
+                    new ClaimsPrincipal(new ClaimsIdentity(ansprueche, CookieAuthenticationDefaults.AuthenticationScheme)));
 
                 return RedirectToAction("Index", "Home");
 
@@ -59,6 +59,16 @@ public class AccountController(
                 ModelState.AddModelError(string.Empty, Meldungen.AnmeldungFalsch);
                 return View(eingabe);
         }
+    }
+
+    [Authorize, HttpGet]
+    public IActionResult KeinZugriff()
+    {
+        TempData["Fehler"] = User.IsInRole(Rollen.Administration)
+            ? "Diese Seite ist nur für G3-SuS."
+            : "Diese Seite ist nur für die Administration.";
+
+        return RedirectToAction("Index", "Home");
     }
 
     [Authorize, HttpGet]
@@ -102,7 +112,7 @@ public class AccountController(
         return RedirectToAction("Index", "Home");
     }
 
-    [HttpPost, ValidateAntiForgeryToken]
+    [AllowAnonymous, HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Abmelden()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

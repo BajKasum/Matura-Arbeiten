@@ -99,7 +99,7 @@ public sealed class ListenService(AppDbContext db) : IListenService
                 .ToList());
     }
 
-    public string? ZuseherlisteCsv(int praesentationId)
+    public CsvDatei? ZuseherlisteCsv(int praesentationId)
     {
         var liste = Zuseherliste(praesentationId);
 
@@ -108,18 +108,53 @@ public sealed class ListenService(AppDbContext db) : IListenService
             return null;
         }
 
+        return new CsvDatei(
+            $"Zuseherliste_{Dateinamen.Aus(p.Thema)}.csv",
+            ZuseherCsv([new ZuseherBlatt(p, liste.Zuseher)]));
+    }
+
+    public IReadOnlyList<ZuseherBlatt> Zuseherlisten()
+    {
+        var einstellung = db.Systemeinstellungen.Single();
+        var g3sus = db.G3SuSListe.ToDictionary(g => g.Id);
+
+        return db.Praesentationen
+            .Include(p => p.Eintragungen)
+            .OrderBy(p => p.Datum)
+            .ThenBy(p => p.Uhrzeit)
+            .ThenBy(p => p.Raum)
+            .ToList()
+            .Select(p => new ZuseherBlatt(
+                new AdminPraesentationZeile(
+                    p.Id,
+                    p.Thema,
+                    p.Datum,
+                    p.Uhrzeit,
+                    p.Raum,
+                    p.Eintragungen.Count,
+                    p.GetFreiePlaetze(einstellung.Platzkontingent)),
+                Zuseher(p, g3sus)
+                    .Select(z => new ZuseherZeile(z.Nachname, z.Vorname, z.Email))
+                    .ToList()))
+            .ToList();
+    }
+
+    public string ZuseherlistenCsv() => ZuseherCsv(Zuseherlisten());
+
+    private static string ZuseherCsv(IEnumerable<ZuseherBlatt> blaetter)
+    {
         var kopf = new[] { "Thema", "Datum", "Uhrzeit", "Raum", "Nachname", "Vorname", "E-Mail" };
 
-        var zeilen = liste.Zuseher.Select(z => new[]
+        var zeilen = blaetter.SelectMany(blatt => blatt.Zuseher.Select(z => new[]
         {
-            p.Thema,
-            p.Datum.ToString("dd.MM.yyyy"),
-            p.Uhrzeit.ToString("HH:mm"),
-            p.Raum,
+            blatt.Praesentation.Thema,
+            blatt.Praesentation.Datum.ToString("dd.MM.yyyy"),
+            blatt.Praesentation.Uhrzeit.ToString("HH:mm"),
+            blatt.Praesentation.Raum,
             z.Nachname,
             z.Vorname,
             z.Email
-        });
+        }));
 
         return CsvExport.Datei(new[] { kopf }.Concat(zeilen));
     }

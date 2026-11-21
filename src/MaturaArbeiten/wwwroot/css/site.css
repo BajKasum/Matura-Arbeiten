@@ -1,0 +1,195 @@
+:root {
+    --bs-primary: #0038a8;
+    --bs-primary-rgb: 0, 56, 168;
+    --bs-primary-text-emphasis: #1f3864;
+    --bs-link-color: #0038a8;
+    --bs-link-color-rgb: 0, 56, 168;
+    --bs-link-hover-color: #1f3864;
+    --bs-link-hover-color-rgb: 31, 56, 100;
+    --bs-heading-color: #1f3864;
+    --bs-border-color: #b4c2d4;
+    --bs-success: #1e7b34;
+    --bs-success-rgb: 30, 123, 52;
+    --bs-success-text-emphasis: #1e7b34;
+    --bs-success-bg-subtle: #e6f4ea;
+    --bs-success-border-subtle: #1e7b34;
+    --bs-danger: #b85450;
+    --bs-danger-rgb: 184, 84, 80;
+    --bs-danger-border-subtle: #b85450;
+}
+
+.btn-primary {
+    --bs-btn-bg: #0038a8;
+    --bs-btn-border-color: #0038a8;
+    --bs-btn-hover-bg: #002d87;
+    --bs-btn-hover-border-color: #002a7e;
+    --bs-btn-active-bg: #002a7e;
+    --bs-btn-active-border-color: #002575;
+    --bs-btn-disabled-bg: #0038a8;
+    --bs-btn-disabled-border-color: #0038a8;
+    --bs-btn-focus-shadow-rgb: 0, 56, 168;
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #0038a8;
+    --bs-btn-border-color: #0038a8;
+    --bs-btn-hover-bg: #0038a8;
+    --bs-btn-hover-border-color: #0038a8;
+    --bs-btn-active-bg: #0038a8;
+    --bs-btn-active-border-color: #0038a8;
+    --bs-btn-disabled-color: #0038a8;
+    --bs-btn-disabled-border-color: #0038a8;
+    --bs-btn-focus-shadow-rgb: 0, 56, 168;
+}
+
+.btn-danger {
+    --bs-btn-bg: #b85450;
+    --bs-btn-border-color: #b85450;
+    --bs-btn-hover-bg: #9e4541;
+    --bs-btn-hover-border-color: #943f3b;
+    --bs-btn-active-bg: #943f3b;
+    --bs-btn-active-border-color: #8a3a36;
+    --bs-btn-disabled-bg: #b85450;
+    --bs-btn-disabled-border-color: #b85450;
+    --bs-btn-focus-shadow-rgb: 184, 84, 80;
+}
+
+.btn-outline-danger {
+    --bs-btn-color: #b85450;
+    --bs-btn-border-color: #b85450;
+    --bs-btn-hover-bg: #b85450;
+    --bs-btn-hover-border-color: #b85450;
+    --bs-btn-active-bg: #b85450;
+    --bs-btn-active-border-color: #b85450;
+    --bs-btn-disabled-color: #b85450;
+    --bs-btn-disabled-border-color: #b85450;
+    --bs-btn-focus-shadow-rgb: 184, 84, 80;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #0038a8;
+    box-shadow: 0 0 0 0.25rem rgba(0, 56, 168, 0.25);
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: #0038a8;
+}
+
+.card {
+    --bs-card-border-color: #b4c2d4;
+}
+
+.table-light {
+    --bs-table-color: #1f3864;
+    --bs-table-border-color: #b4c2d4;
+}
+
+.nav-underline {
+    --bs-nav-underline-link-active-color: #0038a8;
+}
+
+.kopfleiste {
+    background-color: #fff;
+    border-bottom: 3px solid #0038a8;
+    --bs-navbar-color: #0038a8;
+    --bs-navbar-hover-color: #1f3864;
+    --bs-navbar-active-color: #1f3864;
+    --bs-navbar-brand-color: #1f3864;
+    --bs-navbar-brand-hover-color: #1f3864;
+    --bs-navbar-toggler-border-color: #b4c2d4;
+}
+
+.kopfleiste .logo {
+    height: 40px;
+    width: auto;
+}
+
+@media (max-width: 767.98px) {
+    .kopfleiste .logo {
+        height: 32px;
+    }
+
+    .kopfleiste .navbar-brand {
+        font-size: 1rem;
+        margin-right: 0;
+    }
+}
+
+.nav-underline {
+    column-gap: 1.25rem;
+    row-gap: 0;
+}
+
+.kopfleiste .nav-link.active {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.4rem;
+}
+
+.anmelde-logo {
+    width: 100%;
+    max-width: 240px;
+    height: auto;
+}
+
+.raumtabelle {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.raumtabelle th:nth-child(1) {
+    width: 9rem;
+}
+
+.raumtabelle th:nth-child(2) {
+    width: 7rem;
+}
+
+.raumtabelle th:nth-child(4) {
+    width: 35%;
+}
+
+.druckkopf {
+    display: none;
+}
+
+@media print {
+    .druckkopf {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border-bottom: 3px solid #0038a8;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .druckkopf img {
+        height: 36px;
+        width: auto;
+    }
+
+    main {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    tr {
+        break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    h1,
+    h2 {
+        break-after: avoid;
+    }
+
+    .zuseherliste-blatt + .zuseherliste-blatt {
+        break-before: page;
+    }
+}

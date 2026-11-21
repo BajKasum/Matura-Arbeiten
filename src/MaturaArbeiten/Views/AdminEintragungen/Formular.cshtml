@@ -22,7 +22,7 @@
                         <option value="">Bitte wählen</option>
                         @foreach (var auswahl in Model.G3SuS)
                         {
-                            <option value="@auswahl.Wert" selected="@(auswahl.Wert == Model.Eingabe.G3susId)">@auswahl.Text</option>
+                            <option value="@auswahl.Wert" selected="@(auswahl.Wert == Model.Eingabe.G3susId)" disabled="@(!auswahl.Waehlbar)">@auswahl.Text</option>
                         }
                     </select>
                     <div class="text-danger">@Html.ValidationMessage("G3susId")</div>
@@ -40,7 +40,7 @@
                     <option value="">Bitte wählen</option>
                     @foreach (var auswahl in Model.Praesentationen)
                     {
-                        <option value="@auswahl.Wert" selected="@(auswahl.Wert == Model.Eingabe.PraesentationId)">@auswahl.Text</option>
+                        <option value="@auswahl.Wert" selected="@(auswahl.Wert == Model.Eingabe.PraesentationId)" disabled="@(!auswahl.Waehlbar)">@auswahl.Text</option>
                     }
                 </select>
                 <div class="text-danger">@Html.ValidationMessage("PraesentationId")</div>

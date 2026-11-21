@@ -33,6 +33,7 @@ public static class CsvImport
         return new CsvErgebnis<PraesentationNeu>(ende.Gueltig, ende.Fehler);
     }
 
+    // Prüft alle Zeilen und sammelt die Fehler, statt beim ersten abzubrechen. Doppelt gilt auch gegen die schon gespeicherten E-Mail-Adressen.
     public static CsvErgebnis<G3SuSNeu> G3SuSPruefen(
         IEnumerable<CsvZeile> zeilen,
         IEnumerable<string> vorhandeneEmails)
@@ -74,6 +75,7 @@ public static class CsvImport
         ImmutableList<G3SuSNeu> Gueltig,
         ImmutableList<CsvFehler> Fehler);
 
+    // Gibt den neuen Stand zurück, ohne den alten zu ändern: die Zeile ist ungültig, doppelt oder gültig.
     private static Stand Verarbeite(Stand stand, CsvZeile zeile) =>
         ZeileG3SuS(zeile.Felder) switch
         {

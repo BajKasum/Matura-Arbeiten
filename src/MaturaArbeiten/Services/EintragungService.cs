@@ -143,7 +143,8 @@ public sealed class EintragungService(AppDbContext db, TimeProvider zeit) : IEin
             .ToList()
             .Select(g => new Auswahl(
                 g.Id,
-                $"{g.Nachname} {g.Vorname} ({anzahlJeG3SuS.GetValueOrDefault(g.Id)} von {Regeln.PflichtEintragungen})"))
+                $"{g.Nachname} {g.Vorname} ({anzahlJeG3SuS.GetValueOrDefault(g.Id)} von {Regeln.PflichtEintragungen})",
+                anzahlJeG3SuS.GetValueOrDefault(g.Id) < Regeln.PflichtEintragungen))
             .ToList();
 
         var praesentationen = db.Praesentationen
@@ -153,12 +154,14 @@ public sealed class EintragungService(AppDbContext db, TimeProvider zeit) : IEin
             .ToList()
             .Select(p => new Auswahl(
                 p.Id,
-                $"{p.Thema}, {p.Datum:dd.MM.yyyy} {p.Uhrzeit:HH:mm}, Raum {p.Raum} ({p.GetFreiePlaetze(einstellung.Platzkontingent)} frei)"))
+                $"{p.Thema}, {p.Datum:dd.MM.yyyy} {p.Uhrzeit:HH:mm}, Raum {p.Raum} ({p.GetFreiePlaetze(einstellung.Platzkontingent)} frei)",
+                !p.IstVoll(einstellung.Platzkontingent) || p.Id == eingabe.PraesentationId))
             .ToList();
 
         return new EintragungFormularViewModel(eingabe, g3sus, praesentationen, name);
     }
 
+    // Prüfen und Speichern laufen in einer Serializable-Transaktion, damit gleichzeitige Klicks nie mehr als sechs Zuseher ergeben. Bei einem Konflikt wird einmal wiederholt.
     private EintragungErgebnis Speichern(int g3susId, int praesentationId, bool phaseOffenErzwingen) =>
         db.Versuchen(() => SpeichernEinmal(g3susId, praesentationId, phaseOffenErzwingen))
         ?? new EintragungErgebnis.Abgewiesen(Abweisung.Konflikt);
@@ -213,13 +216,13 @@ public sealed class EintragungService(AppDbContext db, TimeProvider zeit) : IEin
                 p => p.Id,
                 (e, p) => new { p.Datum, p.Uhrzeit })
             .ToList()
-            .Select(x => new Termin(x.Datum, x.Uhrzeit))
+            .Select(x => new Zeitpunkt(x.Datum, x.Uhrzeit))
             .ToList();
 
         return Regeln.Pruefe(
             einstellung.EintragungsphaseOffen || phaseOffenErzwingen,
             einstellung.Platzkontingent,
-            wunsch.Termin,
+            wunsch.Zeitpunkt,
             belegt,
             eigene);
     }

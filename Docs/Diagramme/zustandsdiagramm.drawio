@@ -1,0 +1,109 @@
+<mxfile host="app.diagrams.net" agent="Claude">
+  <diagram name="Zustandsdiagramm" id="state_diagram">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="620" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=left;" value="Zustandsdiagramm: Eintragungsphase" vertex="1">
+          <mxGeometry height="30" width="500" x="40" y="15" as="geometry" />
+        </mxCell>
+
+        <!-- Class Box Top -->
+        <mxCell id="classBox" value="«system»&lt;br&gt;&lt;b&gt;Eintragungsphase&lt;/b&gt;" style="html=1;whiteSpace=wrap;align=center;verticalAlign=top;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="300" y="60" width="220" height="128" as="geometry" />
+        </mxCell>
+        <mxCell id="classLine" style="endArrow=none;html=1;strokeWidth=1;strokeColor=#6C8EBF;" edge="1" parent="classBox">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="47" as="sourcePoint" />
+            <mxPoint x="220" y="47" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="classMethods" value="eintragen()&lt;br&gt;schliessen()&lt;br&gt;oeffnen()&lt;br&gt;zuruecksetzen()" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;fontSize=11;" vertex="1" parent="classBox">
+          <mxGeometry y="47" width="220" height="81" as="geometry" />
+        </mxCell>
+
+        <mxCell id="noteRollen" value="Alle Übergänge löst nur die Administration aus. eintragen() durch einen G3-SuS ist nur im Zustand Offen möglich." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#FFF2CC;strokeColor=#D6B656;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;size=14;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="560" y="80" width="240" height="70" as="geometry" />
+        </mxCell>
+        <!-- Frame -->
+        <mxCell id="frame" value="sm Eintragungsphase (protocol)" style="shape=umlFrame;whiteSpace=wrap;html=1;width=220;height=30;boundedLbl=1;verticalAlign=middle;align=left;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="80" y="230" width="720" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- Dashed Connectors -->
+        <mxCell id="dash1" style="endArrow=none;dashed=1;html=1;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=1;exitDx=0;exitDy=0;strokeColor=#6C8EBF;" edge="1" parent="1" source="classBox" target="frame">
+        </mxCell>
+        <mxCell id="dash2" style="endArrow=none;dashed=1;html=1;entryX=1;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=1;exitDx=0;exitDy=0;strokeColor=#6C8EBF;" edge="1" parent="1" source="classBox" target="frame">
+        </mxCell>
+
+        <!-- Start State -->
+        <mxCell id="startState" style="ellipse;whiteSpace=wrap;html=1;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="140" y="350" width="26" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- State Offen -->
+        <mxCell id="stateOffen" value="Offen" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="260" y="315" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="offenDetail" value="G3-SuS können sich eintragen&lt;br&gt;(Administration kann jederzeit&lt;br&gt;nachträglich anpassen)" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fontStyle=0;" vertex="1" parent="stateOffen">
+          <mxGeometry y="26" width="180" height="54" as="geometry" />
+        </mxCell>
+
+        <!-- State Geschlossen -->
+        <mxCell id="stateGeschlossen" value="Geschlossen" style="rounded=1;whiteSpace=wrap;html=1;arcSize=20;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;verticalAlign=top;spacingTop=6;" vertex="1" parent="1">
+          <mxGeometry x="560" y="315" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="geschlossenDetail" value="G3-SuS können sich nicht&lt;br&gt;mehr eintragen. Administration&lt;br&gt;kann weiterhin anpassen" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fontStyle=0;" vertex="1" parent="stateGeschlossen">
+          <mxGeometry y="26" width="180" height="54" as="geometry" />
+        </mxCell>
+
+        <!-- Edge: Start -> Offen -->
+        <mxCell id="edgeStart" edge="1" parent="1" source="startState" target="stateOffen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="labelStart" value="Schuljahresstart /&lt;br&gt;System-Zurücksetzen" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;fontSize=10;points=[];" vertex="1" connectable="0" parent="edgeStart">
+          <mxGeometry x="-0.1" y="-1" relative="1" as="geometry">
+            <mxPoint x="-6" y="-34" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edge: Offen -> Geschlossen -->
+        <mxCell id="edgeClose" edge="1" parent="1" source="stateOffen" target="stateGeschlossen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="labelClose" value="schliessen()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;fontSize=10;points=[];" vertex="1" connectable="0" parent="edgeClose">
+          <mxGeometry x="0" y="-1" relative="1" as="geometry">
+            <mxPoint x="0" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edge: Geschlossen -> Offen (wieder oeffnen) -->
+        <mxCell id="edgeOpen" edge="1" parent="1" source="stateGeschlossen" target="stateOffen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0;exitY=0.6;exitDx=0;exitDy=0;entryX=1;entryY=0.6;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="labelOpen" value="oeffnen()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;fontSize=10;points=[];" vertex="1" connectable="0" parent="edgeOpen">
+          <mxGeometry x="0" y="1" relative="1" as="geometry">
+            <mxPoint x="0" y="16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edge: Geschlossen -> Offen -->
+        <mxCell id="edgeReset" edge="1" parent="1" source="stateGeschlossen" target="stateOffen" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.9;exitY=1;exitDx=0;exitDy=0;entryX=0.1;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+             <Array as="points">
+                <mxPoint x="722" y="465" />
+                <mxPoint x="278" y="465" />
+             </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="labelReset" value="zuruecksetzen() / alle Daten löschen" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;fontSize=10;points=[];" vertex="1" connectable="0" parent="edgeReset">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint x="0" y="12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

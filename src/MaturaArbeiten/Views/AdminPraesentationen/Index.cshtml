@@ -3,16 +3,6 @@
     ViewData["Title"] = "Präsentationen";
 }
 
-@if (TempData["Erfolg"] is string erfolg)
-{
-    <div class="alert alert-success mb-4" role="status">@erfolg</div>
-}
-
-@if (TempData["Fehler"] is string fehler)
-{
-    <div class="alert alert-danger mb-4" role="alert">@fehler</div>
-}
-
 <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
     <div>
         <h1 class="fs-4 fw-bold text-primary-emphasis">Präsentationen</h1>
@@ -46,8 +36,8 @@ else
                 @foreach (var zeile in Model.Zeilen)
                 {
                     var rueckfrage = zeile.Zuseher == 0
-                        ? "Diese Präsentation wirklich löschen?"
-                        : $"Diese Präsentation wirklich löschen? {Mehrzahl.Von(zeile.Zuseher, "Eintragung wird", "Eintragungen werden")} mitgelöscht.";
+                        ? $"\"{zeile.Thema}\" wirklich löschen?"
+                        : $"\"{zeile.Thema}\" wirklich löschen? {Mehrzahl.Von(zeile.Zuseher, "Eintragung wird", "Eintragungen werden")} mitgelöscht.";
 
                     <tr>
                         <td>@zeile.Thema</td>
@@ -65,7 +55,7 @@ else
                         <td class="text-nowrap">
                             <a class="btn btn-outline-primary btn-sm" asp-action="Bearbeiten" asp-route-id="@zeile.Id">Ändern</a>
                             <form asp-action="Loeschen" asp-route-id="@zeile.Id" method="post" class="d-inline"
-                                  onsubmit="return confirm('@rueckfrage')">
+                                  data-rueckfrage="@rueckfrage">
                                 <button type="submit" class="btn btn-outline-danger btn-sm">Löschen</button>
                             </form>
                         </td>

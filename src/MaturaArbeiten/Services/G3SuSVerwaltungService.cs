@@ -1,4 +1,5 @@
 using MaturaArbeiten.Data;
+using MaturaArbeiten.Domain;
 using MaturaArbeiten.Models;
 using MaturaArbeiten.ViewModels;
 
@@ -6,8 +7,6 @@ namespace MaturaArbeiten.Services;
 
 public sealed class G3SuSVerwaltungService(AppDbContext db) : IG3SuSVerwaltungService
 {
-    private const string EmailVergeben = "Diese E-Mail-Adresse gibt es schon.";
-
     public IReadOnlyList<G3SuSZeile> Liste()
     {
         var anzahl = db.Eintragungen
@@ -41,7 +40,7 @@ public sealed class G3SuSVerwaltungService(AppDbContext db) : IG3SuSVerwaltungSe
 
         if (db.EmailVergeben(email))
         {
-            return EmailVergeben;
+            return Meldungen.EmailVergeben;
         }
 
         db.G3SuSListe.Add(new G3SuS
@@ -68,7 +67,7 @@ public sealed class G3SuSVerwaltungService(AppDbContext db) : IG3SuSVerwaltungSe
 
         if (db.EmailVergeben(email, ausserG3SuSId: id))
         {
-            return EmailVergeben;
+            return Meldungen.EmailVergeben;
         }
 
         schueler.Vorname = eingabe.Vorname.Trim();

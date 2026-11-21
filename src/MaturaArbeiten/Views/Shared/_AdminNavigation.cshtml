@@ -14,10 +14,10 @@
 
 <nav class="bg-body-tertiary border-bottom" aria-label="Administration">
     <div class="container-xl">
-        <ul class="nav nav-underline flex-nowrap overflow-x-auto">
+        <ul class="nav nav-underline flex-wrap">
             @foreach (var (name, text) in eintraege)
             {
-                var aktiv = controller == name;
+                var aktiv = controller == name || (name == "Admin" && controller == "EmailProtokoll");
 
                 <li class="nav-item">
                     <a class="nav-link text-nowrap @(aktiv ? "active" : "text-primary-emphasis")" aria-current="@(aktiv ? "page" : null)" asp-controller="@name" asp-action="Index">@text</a>

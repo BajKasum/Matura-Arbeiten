@@ -19,11 +19,19 @@ public class ListenController(IListenService service) : Controller
         service.Zuseherliste(id) is { } liste ? View(liste) : NotFound();
 
     public IActionResult ZuseherlisteCsv(int id) =>
-        service.ZuseherlisteCsv(id) is { } csv ? Csv(csv, $"Zuseherliste_{id}.csv") : NotFound();
+        service.ZuseherlisteCsv(id) is { } datei ? Csv(datei.Inhalt, datei.Name) : NotFound();
 
-    private FileContentResult Csv(string inhalt, string dateiname) =>
-        File(
+    public IActionResult Zuseherlisten() => View(service.Zuseherlisten());
+
+    public IActionResult ZuseherlistenCsv() => Csv(service.ZuseherlistenCsv(), "Zuseherlisten.csv");
+
+    private FileContentResult Csv(string inhalt, string dateiname)
+    {
+        Response.Headers.CacheControl = "no-store";
+
+        return File(
             Encoding.UTF8.GetPreamble().Concat(Encoding.UTF8.GetBytes(inhalt)).ToArray(),
             "text/csv; charset=utf-8",
             dateiname);
+    }
 }

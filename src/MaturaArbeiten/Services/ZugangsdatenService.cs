@@ -14,6 +14,7 @@ public sealed class ZugangsdatenService(
     IConfiguration konfiguration) : IZugangsdatenService
 {
     private const string Zeichen = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    private const int PasswortLaenge = 12;
 
     private string? Adresse => konfiguration["Applikation:Adresse"];
 
@@ -81,8 +82,8 @@ public sealed class ZugangsdatenService(
         db.EmailVersandListe.Add(new EmailVersand
         {
             G3susId = schueler.Id,
-            Typ = "Zugangsdaten",
-            Status = erfolg ? "Gesendet" : "Fehlgeschlagen",
+            Typ = EmailProtokoll.Zugangsdaten,
+            Status = erfolg ? EmailProtokoll.Gesendet : EmailProtokoll.Fehlgeschlagen,
             GesendetAm = jetzt
         });
         db.SaveChanges();
@@ -91,5 +92,5 @@ public sealed class ZugangsdatenService(
     }
 
     private static string NeuesPasswort() =>
-        new(RandomNumberGenerator.GetItems<char>(Zeichen, 12));
+        new(RandomNumberGenerator.GetItems<char>(Zeichen, PasswortLaenge));
 }

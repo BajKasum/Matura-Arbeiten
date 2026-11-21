@@ -11,10 +11,10 @@ public class Praesentation
     public string Raum { get; set; } = string.Empty;
     public List<Eintragung> Eintragungen { get; set; } = [];
 
-    public Termin Termin => new(Datum, Uhrzeit);
+    public Zeitpunkt Zeitpunkt => new(Datum, Uhrzeit);
 
     public int GetFreiePlaetze(int platzkontingent) =>
-        Regeln.FreiePlaetze(platzkontingent, Eintragungen.Count);
+        Math.Max(0, Regeln.FreiePlaetze(platzkontingent, Eintragungen.Count));
 
     public bool IstVoll(int platzkontingent) => GetFreiePlaetze(platzkontingent) <= 0;
 }

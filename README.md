@@ -11,7 +11,7 @@ Es gibt zwei Rollen:
 | Rolle | Aufgaben |
 |---|---|
 | G3-SuS | Präsentationen mit freien Plätzen ansehen, genau zwei auswählen, die eigenen Eintragungen mit Datum, Uhrzeit und Raum ansehen, das Passwort ändern |
-| Administration | Präsentationen und G3-SuS per CSV importieren, Zugangsdaten und Bestätigungen per E-Mail auslösen, Listen erzeugen, G3-SuS, Eintragungen und Administrationslogins verwalten, Eintragungsphase öffnen und schliessen, das System für ein neues Schuljahr zurücksetzen |
+| Administration | Präsentationen und G3-SuS per CSV importieren, Zugangsdaten und Bestätigungen per E-Mail auslösen, Listen erzeugen, Präsentationen, G3-SuS, Eintragungen und Administrationslogins verwalten, Eintragungsphase öffnen und schliessen, das System für ein neues Schuljahr zurücksetzen |
 
 Diese Regeln prüft die Applikation schon bei der Auswahl:
 
@@ -25,7 +25,7 @@ Diese Regeln prüft die Applikation schon bei der Auswahl:
 | Bereich | Verwendet |
 |---|---|
 | Sprache und Framework | C#, ASP.NET Core MVC, .NET 10 |
-| Oberfläche | Razor-Views, Bootstrap 5.3 (ohne eigenes CSS) |
+| Oberfläche | Razor-Views, Bootstrap 5.3 mit einer kleinen eigenen CSS-Datei (`wwwroot/css/site.css`) |
 | Datenbank | SQL Server (lokal SQL Server Express) |
 | Datenzugriff | Entity Framework Core 10 |
 | Anmeldung | Cookie-Anmeldung, Passwörter mit PBKDF2, Sperre nach fünf falschen Versuchen |
@@ -146,21 +146,23 @@ dotnet test MaturaArbeiten.slnx
 
 ### Datenbank
 
-Der Connection String steht in `src/MaturaArbeiten/appsettings.json`. Er verwendet die Windows-Anmeldung, es ist kein Passwort nötig:
+Der Connection String steht in `src/MaturaArbeiten/appsettings.Development.json`. Er verwendet die Windows-Anmeldung, es ist kein Passwort nötig:
 
 ```text
 Server=.\SQLEXPRESS;Database=MaturaArbeitenDb;Trusted_Connection=True;TrustServerCertificate=True;
 ```
 
-Wer eine andere SQL-Server-Instanz benutzt, ändert dort den Servernamen.
+Wer eine andere SQL-Server-Instanz benutzt, ändert dort den Servernamen. Im Betrieb kommen `ConnectionStrings__DefaultConnection` und `Applikation__Adresse` (die Adresse in den E-Mails) aus den Einstellungen des App Service.
 
 ## Dokumente
 
 Im Ordner `Docs/` liegen die Unterlagen der Abgabe:
 
 - Lastenheft
+- Anforderungsspezifikation
 - Software Design
 - Anforderungsliste (Excel)
+- `Docs/Diagramme/`: alle Diagramme als draw.io-Dateien (Anforderungsanalyse und Software Design)
 
 ## Arbeitsweise mit Git
 

@@ -1,0 +1,65 @@
+@model IReadOnlyList<ZuseherBlatt>
+@{
+    ViewData["Title"] = "Alle Zuseherlisten";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4 d-print-none">
+    <div>
+        <h1 class="fs-4 fw-bold text-primary-emphasis">Alle Zuseherlisten</h1>
+        <p class="text-body-secondary mb-0">
+            @Mehrzahl.Von(Model.Count, "Präsentation", "Präsentationen"), beim Drucken jede auf einer eigenen Seite.
+        </p>
+    </div>
+    @if (Model.Count > 0)
+    {
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-primary" data-drucken>Drucken</button>
+            <a class="btn btn-outline-primary" asp-action="ZuseherlistenCsv">CSV</a>
+        </div>
+    }
+</div>
+
+@if (Model.Count == 0)
+{
+    <p class="text-body-secondary">Es sind noch keine Präsentationen geladen.</p>
+}
+
+@foreach (var blatt in Model)
+{
+    <section class="zuseherliste-blatt mb-5">
+        <h2 class="fs-5 fw-bold">@blatt.Praesentation.Thema</h2>
+        <p class="text-body-secondary">
+            @blatt.Praesentation.Datum.ToString("dd.MM.yyyy"), @blatt.Praesentation.Uhrzeit.ToString("HH:mm") Uhr, Raum @blatt.Praesentation.Raum
+            · @blatt.Praesentation.Zuseher Zuseher
+        </p>
+
+        @if (blatt.Zuseher.Count == 0)
+        {
+            <p class="text-body-secondary">Für diese Präsentation hat sich noch niemand eingetragen.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Nachname</th>
+                            <th scope="col">Vorname</th>
+                            <th scope="col">E-Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var zeile in blatt.Zuseher)
+                        {
+                            <tr>
+                                <td>@zeile.Nachname</td>
+                                <td>@zeile.Vorname</td>
+                                <td>@zeile.Email</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+}
