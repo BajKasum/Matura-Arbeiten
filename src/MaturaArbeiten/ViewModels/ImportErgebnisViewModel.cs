@@ -5,4 +5,5 @@ namespace MaturaArbeiten.ViewModels;
 public sealed record ImportErgebnisViewModel(
     string Titel,
     int Geladen,
-    IReadOnlyList<CsvFehler> Fehler);
+    IReadOnlyList<CsvFehler> Fehler,
+    string? Ablehnung = null);

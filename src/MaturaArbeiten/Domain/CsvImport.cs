@@ -1,25 +1,32 @@
 ﻿using System.Collections.Immutable;
-using System.Globalization;
 using System.Net.Mail;
 
 namespace MaturaArbeiten.Domain;
 
 public static class CsvImport
 {
-    private static readonly CultureInfo Kultur = CultureInfo.InvariantCulture;
-    private static readonly string[] DatumFormate = ["dd.MM.yyyy", "d.M.yyyy"];
-    private static readonly string[] UhrzeitFormate = ["HH:mm", "H:mm", "HH:mm:ss"];
+    private static readonly string[] PraesentationKopf = ["Thema", "Datum", "Uhrzeit", "Raum"];
+    private static readonly string[] G3SuSKopf = ["Vorname", "Nachname", "E-Mail"];
+
+    private const string KeineDatenzeilen = "Die Datei enthält keine Datenzeilen.";
 
     public static CsvErgebnis<PraesentationNeu> PraesentationenPruefen(
         IEnumerable<CsvZeile> zeilen,
         IEnumerable<PraesentationNeu> vorhandene)
     {
+        var datei = zeilen.ToList();
+
+        if (Ablehnung(datei, PraesentationKopf) is { } grund)
+        {
+            return new CsvErgebnis<PraesentationNeu>([], [], grund);
+        }
+
         var start = new PraesentationStand(
-            ImmutableHashSet.CreateRange(vorhandene.Select(Schluessel)),
+            ImmutableHashSet.CreateRange(vorhandene.Select(PraesentationPruefung.Schluessel)),
             ImmutableList<PraesentationNeu>.Empty,
             ImmutableList<CsvFehler>.Empty);
 
-        var ende = zeilen
+        var ende = datei
             .Skip(1)
             .Aggregate(start, VerarbeitePraesentation);
 
@@ -30,17 +37,37 @@ public static class CsvImport
         IEnumerable<CsvZeile> zeilen,
         IEnumerable<string> vorhandeneEmails)
     {
+        var datei = zeilen.ToList();
+
+        if (Ablehnung(datei, G3SuSKopf) is { } grund)
+        {
+            return new CsvErgebnis<G3SuSNeu>([], [], grund);
+        }
+
         var start = new Stand(
             ImmutableHashSet.CreateRange(StringComparer.OrdinalIgnoreCase, vorhandeneEmails),
             ImmutableList<G3SuSNeu>.Empty,
             ImmutableList<CsvFehler>.Empty);
 
-        var ende = zeilen
+        var ende = datei
             .Skip(1)
             .Aggregate(start, Verarbeite);
 
         return new CsvErgebnis<G3SuSNeu>(ende.Gueltig, ende.Fehler);
     }
+
+    private static string? Ablehnung(IReadOnlyList<CsvZeile> datei, string[] kopf) =>
+        datei.Count == 0 ? KeineDatenzeilen
+        : !IstKopfzeile(datei[0], kopf)
+            ? $"Die Datei wurde nicht geladen. Die erste Zeile muss die Spaltennamen enthalten: {string.Join("; ", kopf)}."
+        : datei.Count == 1 ? KeineDatenzeilen
+        : null;
+
+    private static bool IstKopfzeile(CsvZeile zeile, string[] kopf) =>
+        zeile.Felder.Length == kopf.Length
+        && zeile.Felder
+            .Zip(kopf, (feld, name) => string.Equals(feld.Trim(), name, StringComparison.OrdinalIgnoreCase))
+            .All(gleich => gleich);
 
     private sealed record Stand(
         ImmutableHashSet<string> Emails,
@@ -68,27 +95,16 @@ public static class CsvImport
         {
             (null, var grund) =>
                 stand with { Fehler = stand.Fehler.Add(new CsvFehler(zeile.Nummer, grund!)) },
-            ({ } wert, _) when stand.Schluessel.Contains(Schluessel(wert)) =>
+            ({ } wert, _) when stand.Schluessel.Contains(PraesentationPruefung.Schluessel(wert)) =>
                 stand with { Fehler = stand.Fehler.Add(new CsvFehler(zeile.Nummer, "Diese Präsentation ist doppelt.")) },
             ({ } wert, _) =>
-                stand with { Schluessel = stand.Schluessel.Add(Schluessel(wert)), Gueltig = stand.Gueltig.Add(wert) }
+                stand with { Schluessel = stand.Schluessel.Add(PraesentationPruefung.Schluessel(wert)), Gueltig = stand.Gueltig.Add(wert) }
         };
-
-    private static (string Thema, DateOnly Datum, TimeOnly Uhrzeit, string Raum) Schluessel(PraesentationNeu p) =>
-        (p.Thema.Trim().ToUpperInvariant(), p.Datum, p.Uhrzeit, p.Raum.Trim().ToUpperInvariant());
 
     private static (PraesentationNeu? Wert, string? Grund) ZeilePraesentation(string[] felder) =>
         felder is [var thema, var datum, var uhrzeit, var raum]
-            ? ZeilePraesentation(thema.Trim(), datum.Trim(), uhrzeit.Trim(), raum.Trim())
+            ? PraesentationPruefung.Pruefen(thema, datum, uhrzeit, raum)
             : (null, "Die Zeile hat nicht genau vier Spalten.");
-
-    private static (PraesentationNeu? Wert, string? Grund) ZeilePraesentation(
-        string thema, string datum, string uhrzeit, string raum) =>
-        thema.Length is 0 or > 200 ? (null, "Thema fehlt oder ist länger als 200 Zeichen.")
-        : raum.Length is 0 or > 20 ? (null, "Raum fehlt oder ist länger als 20 Zeichen.")
-        : !DateOnly.TryParseExact(datum, DatumFormate, Kultur, DateTimeStyles.None, out var d) ? (null, "Datum ist nicht im Format TT.MM.JJJJ.")
-        : !TimeOnly.TryParseExact(uhrzeit, UhrzeitFormate, Kultur, DateTimeStyles.None, out var t) ? (null, "Uhrzeit ist nicht im Format HH:MM.")
-        : (new PraesentationNeu(thema, d, t, raum), null);
 
     private static (G3SuSNeu? Wert, string? Grund) ZeileG3SuS(string[] felder) =>
         felder is [var vorname, var nachname, var email]

@@ -18,6 +18,7 @@ builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddSingleton<IPasswordHasher<string>, PasswordHasher<string>>();
 builder.Services.AddScoped<IAnmeldeService, AnmeldeService>();
 builder.Services.AddScoped<IPraesentationService, PraesentationService>();
+builder.Services.AddScoped<IPraesentationVerwaltungService, PraesentationVerwaltungService>();
 builder.Services.AddScoped<IEintragungService, EintragungService>();
 builder.Services.AddScoped<IImportService, ImportService>();
 builder.Services.AddScoped<IZugangsdatenService, ZugangsdatenService>();
