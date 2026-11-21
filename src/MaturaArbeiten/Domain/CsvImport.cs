@@ -8,18 +8,29 @@ public static class CsvImport
 {
     private static readonly CultureInfo Kultur = CultureInfo.InvariantCulture;
     private static readonly string[] DatumFormate = ["dd.MM.yyyy", "d.M.yyyy"];
-    private static readonly string[] UhrzeitFormate = ["HH:mm", "H:mm", "HH:mm:ss"];
+    private static readonly string[] UhrzeitFormate = ["HH:mm"];
+    private static readonly string[] PraesentationKopf = ["Thema", "Datum", "Uhrzeit", "Raum"];
+    private static readonly string[] G3SuSKopf = ["Vorname", "Nachname", "E-Mail"];
+
+    private const string KeineDatenzeilen = "Die Datei enthält keine Datenzeilen.";
 
     public static CsvErgebnis<PraesentationNeu> PraesentationenPruefen(
         IEnumerable<CsvZeile> zeilen,
         IEnumerable<PraesentationNeu> vorhandene)
     {
+        var datei = zeilen.ToList();
+
+        if (Ablehnung(datei, PraesentationKopf) is { } grund)
+        {
+            return new CsvErgebnis<PraesentationNeu>([], [], grund);
+        }
+
         var start = new PraesentationStand(
             ImmutableHashSet.CreateRange(vorhandene.Select(Schluessel)),
             ImmutableList<PraesentationNeu>.Empty,
             ImmutableList<CsvFehler>.Empty);
 
-        var ende = zeilen
+        var ende = datei
             .Skip(1)
             .Aggregate(start, VerarbeitePraesentation);
 
@@ -30,17 +41,37 @@ public static class CsvImport
         IEnumerable<CsvZeile> zeilen,
         IEnumerable<string> vorhandeneEmails)
     {
+        var datei = zeilen.ToList();
+
+        if (Ablehnung(datei, G3SuSKopf) is { } grund)
+        {
+            return new CsvErgebnis<G3SuSNeu>([], [], grund);
+        }
+
         var start = new Stand(
             ImmutableHashSet.CreateRange(StringComparer.OrdinalIgnoreCase, vorhandeneEmails),
             ImmutableList<G3SuSNeu>.Empty,
             ImmutableList<CsvFehler>.Empty);
 
-        var ende = zeilen
+        var ende = datei
             .Skip(1)
             .Aggregate(start, Verarbeite);
 
         return new CsvErgebnis<G3SuSNeu>(ende.Gueltig, ende.Fehler);
     }
+
+    private static string? Ablehnung(IReadOnlyList<CsvZeile> datei, string[] kopf) =>
+        datei.Count == 0 ? KeineDatenzeilen
+        : !IstKopfzeile(datei[0], kopf)
+            ? $"Die Datei wurde nicht geladen. Die erste Zeile muss die Spaltennamen enthalten: {string.Join("; ", kopf)}."
+        : datei.Count == 1 ? KeineDatenzeilen
+        : null;
+
+    private static bool IstKopfzeile(CsvZeile zeile, string[] kopf) =>
+        zeile.Felder.Length == kopf.Length
+        && zeile.Felder
+            .Zip(kopf, (feld, name) => string.Equals(feld.Trim(), name, StringComparison.OrdinalIgnoreCase))
+            .All(gleich => gleich);
 
     private sealed record Stand(
         ImmutableHashSet<string> Emails,
