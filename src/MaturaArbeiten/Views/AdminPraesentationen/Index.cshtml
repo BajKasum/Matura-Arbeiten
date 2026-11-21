@@ -3,11 +3,25 @@
     ViewData["Title"] = "Präsentationen";
 }
 
-<h1 class="fs-4 fw-bold text-primary-emphasis">Präsentationen</h1>
-<p class="text-body-secondary mb-4">
-    @Mehrzahl.Von(Model.Zeilen.Count, "Präsentation", "Präsentationen"), Platzkontingent @Model.Platzkontingent.
-    Präsentationen werden nicht einzeln geändert: Fehler in der CSV-Datei korrigieren und neu laden.
-</p>
+@if (TempData["Erfolg"] is string erfolg)
+{
+    <div class="alert alert-success mb-4" role="status">@erfolg</div>
+}
+
+@if (TempData["Fehler"] is string fehler)
+{
+    <div class="alert alert-danger mb-4" role="alert">@fehler</div>
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+    <div>
+        <h1 class="fs-4 fw-bold text-primary-emphasis">Präsentationen</h1>
+        <p class="text-body-secondary mb-0">
+            @Mehrzahl.Von(Model.Zeilen.Count, "Präsentation", "Präsentationen"), Platzkontingent @Model.Platzkontingent.
+        </p>
+    </div>
+    <a class="btn btn-primary" asp-action="Neu">Präsentation anlegen</a>
+</div>
 
 @if (Model.Zeilen.Count == 0)
 {
@@ -25,11 +39,16 @@ else
                     <th scope="col">Raum</th>
                     <th scope="col">Zuseher</th>
                     <th scope="col">Freie Plätze</th>
+                    <th scope="col">Aktion</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var zeile in Model.Zeilen)
                 {
+                    var rueckfrage = zeile.Zuseher == 0
+                        ? "Diese Präsentation wirklich löschen?"
+                        : $"Diese Präsentation wirklich löschen? {Mehrzahl.Von(zeile.Zuseher, "Eintragung wird", "Eintragungen werden")} mitgelöscht.";
+
                     <tr>
                         <td>@zeile.Thema</td>
                         <td>@zeile.Datum.ToString("dd.MM.yyyy")</td>
@@ -42,6 +61,13 @@ else
                             {
                                 <span class="badge text-bg-danger ms-2">voll</span>
                             }
+                        </td>
+                        <td class="text-nowrap">
+                            <a class="btn btn-outline-primary btn-sm" asp-action="Bearbeiten" asp-route-id="@zeile.Id">Ändern</a>
+                            <form asp-action="Loeschen" asp-route-id="@zeile.Id" method="post" class="d-inline"
+                                  onsubmit="return confirm('@rueckfrage')">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Löschen</button>
+                            </form>
                         </td>
                     </tr>
                 }

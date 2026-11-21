@@ -1,0 +1,43 @@
+@model PraesentationFormular
+@{
+    var neu = ViewContext.RouteData.Values["action"]?.ToString() == "Neu";
+    ViewData["Title"] = neu ? "Präsentation anlegen" : "Präsentation ändern";
+}
+
+<h1 class="fs-4 fw-bold text-primary-emphasis mb-4">@ViewData["Title"]</h1>
+
+@if (ViewData.ModelState.TryGetValue(string.Empty, out var modellFehler) && modellFehler.Errors.Count > 0)
+{
+    <div class="alert alert-danger" role="alert">@string.Join(" ", modellFehler.Errors.Select(f => f.ErrorMessage))</div>
+}
+
+<div class="row">
+    <div class="col-12 col-md-8 col-lg-6">
+        <form method="post" asp-action="@(neu ? "Neu" : "Bearbeiten")" asp-route-id="@ViewContext.RouteData.Values["id"]">
+            <div class="mb-3">
+                <label asp-for="Thema" class="form-label">Thema</label>
+                <input asp-for="Thema" class="form-control" maxlength="200" autocomplete="off" required />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Datum" class="form-label">Datum</label>
+                <input asp-for="Datum" class="form-control" maxlength="10" placeholder="TT.MM.JJJJ" autocomplete="off" required />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Uhrzeit" class="form-label">Uhrzeit</label>
+                <input asp-for="Uhrzeit" class="form-control" maxlength="5" placeholder="HH:MM" autocomplete="off" required />
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Raum" class="form-label">Raum</label>
+                <input asp-for="Raum" class="form-control" maxlength="20" autocomplete="off" required />
+            </div>
+
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-primary" asp-action="Index">Abbrechen</a>
+                <button type="submit" class="btn btn-primary">Speichern</button>
+            </div>
+        </form>
+    </div>
+</div>
